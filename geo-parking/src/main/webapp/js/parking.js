@@ -1,22 +1,24 @@
 
+// setTimeout(() => {
+//     document.querySelectorAll('#parkingsFetched .row .card').forEach(card => {
+//         card.style.opacity = 0.1;
+//     })
 
-document.addEventListener('DOMContentLoaded', ()=>{
+
+//     document.querySelectorAll('.fa-circle-notch').forEach(spinner => {
+//         spinner.style.display = "inline-flex";
+//         spinner.style.opacity = 1;
+//     })
+
+// }, 0);
+
+
+document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchParkingBtn').addEventListener('click', fetchParkings);
-
-
-
-    // Some feature
-    $('#searchParking').on('mouseover', function(){
-        $(this).popover({
-            content: '3-letter at least', placement: 'left'
-        });
-    }) 
-    $('#searchParking').on('mouseleave', function(){
-        $(this).popover('hide');
-    })    
 
 })
 
+// Fetch available parkings
 function fetchParkings() {
     const searchParkingEle = document.getElementById('searchParking');
     let searchParking = searchParkingEle.value;
@@ -46,24 +48,49 @@ function fetchParkings() {
 
 }
 
+// Create cards and fill the body
 function loadParkingCards(data) {
 
+    const parkingCardContainer = document.querySelector('#parkingsFetched .row');
+
+    parkingCardContainer.innerHTML = null;
+
+    const element = document.createElement('div');
+    element.className = "col-sm-6 col-lg-3";
+
     const ele = `
-        <div class="card">
+        <!-- Card Started -->
+        <i class="fas fa-circle-notch fa-pulse"></i>
+        <div class="card text-white bg-dark mb-3" >
             <div class="card-header">
-                Featured
+                Asansol
             </div>
             <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                
+                <h5 class="card-title">Parking name</h5>
+                <p class="card-text">
+                <Address>
+                    Vardhan meds, Manberia
+                    Barakar, Asansol
+                    West Bengal-713324
+                </Address>
+                </p>
+                <div>
+                    <button data-toggle="modal" data-target="#parkingAvailabilityCheckModal" class="btn btn-primary">Book
+                        Spot</button>
+                    <img class="card-img" style="height: 50px; width: 35px; cursor: pointer;"
+                        src="./image/map-thumbnail.png" alt="location">
+                </div>
             </div>
         </div>
+        <!-- Card ended -->
     `
 
-    // document.getElementById('parkingsFetched').innerHTML = null;
-
-    document.getElementById('parkingsFetched').innerHTML += (ele);
-
     
+
+    element.innerHTML += ele;
+
+    parkingCardContainer.appendChild(element);
+
+
 }

@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="./css/fontawesome/css/all.css">
 
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
@@ -44,26 +44,31 @@
         <div id="parkingsFetched" class="py-3 m-3">
 
             <div class="row">
-                
+
                 <!-- Col started -->
-                <div class="col-sm-6 col-lg-3">
+                <div class="col-sm-6 col-lg-3" >
                     <!-- Card Started -->
-                    <div class="card text-white bg-dark mb-3">
+                    <i class="fas fa-circle-notch fa-pulse"></i>
+                    <div class="card text-white bg-dark mb-3" >
                         <div class="card-header">
                             Asansol
-                        </div>                        
+                        </div>
                         <div class="card-body">
+                            
                             <h5 class="card-title">Parking name</h5>
                             <p class="card-text">
-                                <Address>
-                                    Vardhan meds, Manberia 
-                                    Barakar, Asansol
-                                    West Bengal-713324
-                                </Address>
+                            <Address>
+                                Vardhan meds, Manberia
+                                Barakar, Asansol
+                                West Bengal-713324
+                            </Address>
                             </p>
                             <div>
-                                <a href="#" class="btn btn-primary">Book Spot</a>
-                                <img class="card-img" style="height: 50px; width: 35px;" src="./image/map-thumbnail.png" alt="location">
+                                <button id="payForBookingSlotBtn" class="btn btn-success" hidden="true">Make Payment</button>
+                                <button id="checkBookingSlotAvailabilityBtn"  data-toggle="modal" data-target="#parkingAvailabilityCheckModal" class="btn btn-primary">Book
+                                    Spot</button>
+                                <img class="card-img" style="height: 50px; width: 35px; cursor: pointer;"
+                                    src="./image/map-thumbnail.png" alt="location">
                             </div>
                         </div>
                     </div>
@@ -71,45 +76,7 @@
                 </div>
                 <!-- Col over -->
 
-                <!-- Col started -->
-                <div class="col-sm-6 col-lg-3">
-                    <!-- Card Started -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Asansol
-                        </div>                        
-                        <div class="card-body bg-dark text-white">
-                            <h5 class="card-title">Parking name</h5>
-                            <p class="card-text">
-                                <Address>
-                                    Vardhan meds, Manberia 
-                                    Barakar, Asansol
-                                    West Bengal-713324
-                                </Address>
-                            </p>
-                            <div>
-                                <a href="#" class="btn btn-primary">Book Spot</a>
-                                <img class="card-img" style="height: 50px; width: 35px;" src="./image/map-thumbnail.png" alt="location">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card ended -->
-                </div>
-                <!-- Col over -->
 
-                <div class="col-sm-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-header">
-                            Asansol
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                            </p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
             </div>
 
 
@@ -117,15 +84,76 @@
         </div>
         <!-- End of fetched parkings -->
 
-
     </main>
 
 
+    <!-- Modal -->
+    <div class="modal fade" id="parkingAvailabilityCheckModal" tabindex="-1" role="dialog" aria-labelledby="parkingAvailabilityCheckModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" id="checkAvailabilityModalForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Booking Time</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <!-- Arrival Date time -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Arrival</span>
+                            </div>
+                            <input id="InputArrivalDate" type="date" class="form-control">
+                            <input id="InputArrivalTime" type="time" class="form-control">
+                        </div>
+                        <!-- Departure Date time -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Departure</span>
+                            </div>
+                            <input id="InputDepartureDate" type="date" class="form-control">                            
+                            <input id="InputDepartureTime" type="time" class="form-control">                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Check Availability</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End of Booking Modal -->
 
 
+
+
+    <script src="./js/index.js"></script>
 
     <script src="./js/parking.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <script src="./js/book_slot.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <!-- JavaScript Bundle with Popper -->
+
+
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
