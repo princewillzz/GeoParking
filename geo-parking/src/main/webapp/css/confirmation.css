@@ -1,0 +1,52 @@
+main{
+	margin-top: 5px;
+	margin-bottom: 5rem;
+}
+.heading {
+	padding: 10px;
+	text-align: center;
+}
+.heading > h1 {
+	margin-top: 2rem;
+	padding: 10px;
+}
+.confirmationForm{
+	text-align: center;
+    padding: 20px;
+    margin: 20px;
+    overflow: hidden;
+}
+.ParkingNameContainer {
+	max-height: 10rem;
+}
+.ParkingName{
+	width: 94%;
+}
+label {
+    color: grey;
+    margin-left: 25%;
+    margin-right: 25%;
+    letter-spacing: 2px;
+}
+
+@media only screen and (max-width: 500px) {
+    .confirmationForm{
+        text-align: center;
+        margin: auto;
+        width: 100vw;
+    }
+    .col{
+        padding: 2px;
+        margin: 2px;
+    }
+}
+@media only screen and (min-width: 500px) {
+    .confirmationForm{
+        text-align: center;
+        margin: auto;
+        width: 50vw;
+        min-width: 500px;
+    }
+}
+
+

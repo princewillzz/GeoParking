@@ -1,0 +1,26 @@
+main{
+  padding: 20px;
+  margin: 10px;
+}
+
+.form_container{
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.form-control {
+  width: 300px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.registration_form {
+  display: none;
+  transition: all 0.8s ease;
+}
+.login_form {
+  transition: all 0.8s ease;
+  display: block;
+}

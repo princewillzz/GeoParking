@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Booking {
 
     @Id
     @GeneratedValue
+    @Column(name = "uid", nullable = false, updatable = false, unique = true)
     private UUID uid;
 
     private Date createdAt;
@@ -36,6 +38,7 @@ public class Booking {
     @Column(nullable = false)
     private Date toTimeDate;
 
+    @Embedded
     private BookingBillEmbeddable bill;
 
     @ManyToOne(fetch = FetchType.LAZY)

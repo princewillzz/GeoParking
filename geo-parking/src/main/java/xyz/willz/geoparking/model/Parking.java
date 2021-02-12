@@ -23,8 +23,8 @@ public class Parking {
 
     @Id
     @GeneratedValue
-    @Column(name = "id", unique = true, nullable = false, updatable = false)
-    private UUID id;
+    @Column(name = "uid", unique = true, nullable = false, updatable = false)
+    private UUID uid;
 
     @Column(nullable = false)
     private String latitude;
