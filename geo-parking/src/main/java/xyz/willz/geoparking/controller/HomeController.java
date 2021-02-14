@@ -13,4 +13,10 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping(value = "test")
+    @ResponseBody
+    public String test() {
+        return "Test";
+    }
+
 }
