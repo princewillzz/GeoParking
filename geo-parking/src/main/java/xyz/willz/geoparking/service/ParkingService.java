@@ -36,6 +36,7 @@ public class ParkingService {
     }
 
 
+    // Search all parkings related to a particular address keyword
     @Transactional(readOnly = true)
     public Set<ParkingDTO> searchParkingsForAddress(final String address)  {
         return parkingRepository.findAllByAddressContainingIgnoreCase(address)

@@ -52,6 +52,7 @@ public class ParkingRestController {
     }
 
 
+    // Search parkings with address similiar to the key
     @GetMapping("/parking/search/")
     public ResponseEntity<?> getParkingsForAddress(
         @RequestBody(required = true) final ParkingDTO parkingDTO
