@@ -49,7 +49,6 @@ public class ParkingRestController {
         ).collect(Collectors.toList()));
     }
 
-
     // Search parkings with address similiar to the key
     @GetMapping("/parking/search/")
     public ResponseEntity<?> getParkingsForAddress(
