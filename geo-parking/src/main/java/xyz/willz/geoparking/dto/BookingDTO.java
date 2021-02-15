@@ -1,11 +1,13 @@
 package xyz.willz.geoparking.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
 public class BookingDTO {
 
-    private String uid;
+    private UUID uid;
 
     private String createdAt;
 

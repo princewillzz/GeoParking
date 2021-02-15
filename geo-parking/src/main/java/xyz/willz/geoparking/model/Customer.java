@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +19,7 @@ import lombok.Setter;
 @Table(name = "customer")
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer {
 
     @Id
@@ -34,6 +39,7 @@ public class Customer {
     private String email;
 
     @Column(nullable = false)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     private Boolean isActive;

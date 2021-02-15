@@ -12,6 +12,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.hibernate.annotations.Type;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,10 +23,12 @@ import lombok.Setter;
 @Table(name = "parking", uniqueConstraints = { @UniqueConstraint(columnNames = { "latitude", "longitude" }) })
 @Setter
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Parking {
 
     @Id
     @GeneratedValue
+    @Type(type="uuid-char")
     @Column(name = "uid", unique = true, nullable = false, updatable = false)
     private UUID uid;
 
@@ -32,11 +38,22 @@ public class Parking {
     @Column(nullable = false)
     private String longitude;
 
-    @Column(name = "address", columnDefinition = "JSON")
+    @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
     @Column(nullable = false, columnDefinition = "boolean DEFAULT true")
     private Boolean isActive;
+
+    @Column(nullable = false)
+    private Integer total;
+
+    @Column(nullable = false)
+    private Integer occupied;
+
+    @Column(nullable = false)
+    private Integer vacant;
+
+    private long noOfTimesBooked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Renter renter;

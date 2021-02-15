@@ -2,19 +2,19 @@ spring:
   mvc:
     view:
       prefix: /
-      suffix: .jsp
+      suffix: .html
   jpa:  
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect 
     show-sql: true
     hibernate:  
-      ddl-auto: update  
+      ddl-auto: update
   datasource: 
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3306/geoparking"  
+    url: "jdbc:mysql://localhost:3306/geo_parking"  
     username: root  
-    password: root
+    password: password
 
     
 

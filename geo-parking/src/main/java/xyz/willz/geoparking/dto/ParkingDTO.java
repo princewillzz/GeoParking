@@ -1,11 +1,13 @@
 package xyz.willz.geoparking.dto;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
 public class ParkingDTO {
 
-    private String uid;
+    private UUID uid;
 
     private String latitude;
 
@@ -14,5 +16,13 @@ public class ParkingDTO {
     private String address;
 
     private Boolean isActive;
+
+    private Integer total;
+
+    private Integer occupied;
+
+    private Integer vacant;
+
+    private long noOfTimesBooked;
 
 }

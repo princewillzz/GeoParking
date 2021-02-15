@@ -14,6 +14,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.hibernate.annotations.Type;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,12 +25,17 @@ import lombok.Setter;
 @Table(name = "booking")
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Booking {
 
     @Id
     @GeneratedValue
+    @Type(type = "uuid-char")
     @Column(name = "uid", nullable = false, updatable = false, unique = true)
     private UUID uid;
+
+    @Column(nullable = false, unique = true)
+    private String bookingKey;
 
     private Date createdAt;
 
