@@ -18,15 +18,12 @@ public class RenterService {
 
     private final RenterRepository renterRepository;
     
-    private final RenterMapper renterMapper;
 
     @Autowired
     protected RenterService(
-        final RenterRepository renterRepository,
-        final RenterMapper renterMapper
+        final RenterRepository renterRepository        
     ) {
         this.renterRepository = renterRepository;
-        this.renterMapper = renterMapper;
     }
 
 
@@ -45,7 +42,7 @@ public class RenterService {
     @Transactional
     public Renter createRenter(final RenterDTO renterDTO) {
 
-        final Renter renter = renterMapper.toRenterEntity(renterDTO);
+        final Renter renter = RenterMapper.INSTANCE.toRenterEntity(renterDTO);
         
         return renterRepository.save(renter);
     }
@@ -53,7 +50,7 @@ public class RenterService {
     @Transactional
     public Renter updateRenter(final RenterDTO renterDTO) {
 
-        final Renter renter = renterMapper.toRenterEntity(renterDTO);
+        final Renter renter = RenterMapper.INSTANCE.toRenterEntity(renterDTO);
 
         return renterRepository.save(renter);
     }

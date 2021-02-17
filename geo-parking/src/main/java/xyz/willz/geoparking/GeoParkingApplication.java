@@ -11,5 +11,4 @@ public class GeoParkingApplication {
 
 		System.out.println("Application Started...✔✔✔🙌💯✔");
 	}
-
 }
