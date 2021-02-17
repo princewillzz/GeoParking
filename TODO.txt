@@ -1,0 +1,69 @@
+                                            GEO-PARKING
+          
+---------------- BACKEND---------------------                                            
+
+➡️ Search Parking                                             
+➡️ Featured parking
+➡️ Check availability
+➡️
+➡️
+
+
+➡️ Make booking
+➡️ Make Payment
+➡️ Retrieve bookings for customer
+➡️ Retrieve booking for renter
+➡️
+➡️
+
+
+➡️ Create customer
+➡️ Create renter
+➡️ Retrieve customer
+➡️ Retrieve renter
+➡️ Update customer
+➡️ Update renter
+➡️
+➡️ 
+
+
+➡️ Image storage service
+➡️
+➡️
+
+
+
+--------------- FRONTEND----------------------
+📌️ Load Featured parkings
+📌️ Load parkings on search dynamically
+📌️ Check availability
+📌️ Locate on Map
+📌️ Represent bunch of parking on map
+📌️ 
+📌️ 
+
+
+📌️ Sign in/up Renter
+📌️ Sign in/up Customer
+📌️ Update customer Account
+📌️ update renter account
+📌️ 
+📌️ 
+
+
+----Renter
+📌️ Add Parking
+📌️ Update Parking
+📌️ See bookings
+📌️ 
+📌️ 
+
+--Customer
+📌️ Book Parking
+📌️ Pay for booking
+📌️ See previous/present bookings
+📌️ 
+📌️ 
+
+
+
