@@ -11,3 +11,31 @@
     margin-right: 10px;
   }
 }
+
+.modal label {
+  font-weight: bold;
+  margin-left: auto;
+}
+
+#LoginCustomerModal .modal-header h3 {
+  margin-left: 40%;
+}
+
+#RegisterCustomerModal .modal-header h3 {
+  margin-left: 30%;
+}
+
+.modal-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.modal-header:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.modal-footer,
+.modal-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}

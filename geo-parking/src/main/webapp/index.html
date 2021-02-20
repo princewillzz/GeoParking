@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/fontawesome/css/all.css">
     <link rel="stylesheet" href="./css/navbar.css">
 
+
     <!-- CSS only -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -18,7 +19,7 @@
 
 <body>
 
-
+    <!-- Start Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="mx-2">
             <a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
@@ -53,6 +54,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item" href="#">Edit</a>
                       <a class="dropdown-item" href="#">Order</a>
+                      <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Logout</a>
                     </div>
                 </li> 
@@ -61,13 +63,18 @@
                 </li>      
                 <li class="nav-item">
                     <a class="nav-link active" href="/about">About</a>
-                </li>     
+                </li>  
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#LoginCustomerModal">Sign-in/up <span class="sr-only">(current)</span></a>
+                </li>   
             </ul>
 
         </div>
     </nav>
+    <!-- End of Navbar -->
    
 
+    <!-- Start of main content -->
     <main class="py-3 my-3" style="text-align: center; min-height: 50vh;">
 
         <h1 class="my-3 py-3">Find Parking</h1>
@@ -136,9 +143,10 @@
         <!-- End of fetched parkings -->
 
     </main>
+    <!-- End of main body -->
 
 
-    <!-- Modal -->
+    <!-- AParking vailability Modal -->
     <div class="modal fade" id="parkingAvailabilityCheckModal" tabindex="-1" role="dialog"
         aria-labelledby="parkingAvailabilityCheckModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -177,6 +185,156 @@
     </div>
     <!-- End of Booking Modal -->
 
+
+
+
+    <!-- Login Page Modal -->
+
+    <div class="modal fade" id="LoginCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content ">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h3 class="modal-title">Login</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form action="/customer/login" method="POST">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputEmailAddress">Email</label>
+                            <input name="username" class="form-control py-4" id="inputEmailAddress" type="email"
+                                aria-describedby="emailHelp" placeholder="Enter email address" />
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputPassword">Password</label>
+                            <input name="password" class="form-control py-4" id="inputPassword" type="password"
+                                aria-describedby="passwordHelp" placeholder="Enter password" />
+                        </div>
+
+                        <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block" type="submit"">Login</button>
+                        </div>
+
+                        <div>
+                            <a href=" forgot-password" class="small" style="margin-left: auto;">Forgot Password</a>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                            data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- End of Login Page Modal -->
+
+    <!-- Register Modal -->
+
+    <div class="modal fade" id="RegisterCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content ">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h3 class="modal-title">Create Account</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <form action="/register" method="POST">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="regInputFirstName">First Name</label>
+                                    <input name="firstName" class="form-control py-4" id="regInputFirstName" type="text"
+                                        placeholder="Enter first name" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="regInputLastName">Last Name</label>
+                                    <input name="lastName" class="form-control py-4" id="regInputLastName" type="text"
+                                        placeholder="Enter last name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1" for="regInputEmailAddress">Email</label>
+                            <input name="email" class="form-control py-4" id="regInputEmailAddress" type="email"
+                                aria-describedby="emailHelp" placeholder="Enter email address" />
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1" for="regInputContactNumber">Mobile</label>
+                            <input name="contactNo" class="form-control py-4" id="regInputContactNumber" type="text"
+                                placeholder="Enter mobile no." />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="regInputPassword">Password</label>
+                                    <input name="password" class="form-control py-4" id="regInputPassword" type="password"
+                                        placeholder="Enter password" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="regInputConfirmPassword">Confirm
+                                        Password</label>
+                                    <input name="rePassword" class="form-control py-4" id="regInputConfirmPassword"
+                                        type="password" placeholder="Confirm password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="small mb-1" for="regInputReferralCode">Referral Code</label>
+                            <input name="referralCode" value="" class="form-control py-4" id="regInputReferralCode"
+                                type="text" placeholder="Enter Referral Code (if any)" />
+                        </div>
+                        <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block"
+                                type="submit">Register</button></div>
+                    </form>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                                data-target="#LoginCustomerModal">Have an account? Go to login</a>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- End of register modal -->
 
    
    
