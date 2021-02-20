@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +14,11 @@ import xyz.willz.geoparking.dao.CustomerRepository;
 import xyz.willz.geoparking.dto.CustomerDTO;
 import xyz.willz.geoparking.mapper.CustomerMapper;
 import xyz.willz.geoparking.model.Customer;
+import xyz.willz.geoparking.principal.CustomerPrincipal;
 
 @Service
 @Qualifier("customerService")
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
 
     private final CustomerRepository customerRepository;
 
@@ -55,5 +59,11 @@ public class CustomerService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        final Customer customer = customerRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not available"));
 
+        return new CustomerPrincipal(customer);
+
+    }
 }

@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/fontawesome/css/all.css">
+    <link rel="stylesheet" href="./css/navbar.css">
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -18,6 +19,54 @@
 <body>
 
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="mx-2">
+            <a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
+        </div>
+        <!-- Image and text -->
+        <a class="navbar-brand" href="/">
+            <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
+                class="d-inline-block align-top" alt="">
+            Geo-Parking
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"></li>
+            </ul>
+
+            <ul class="navbar-nav justify-content-end mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      My Profile
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Order</a>
+                      <a class="dropdown-item" href="#">Logout</a>
+                    </div>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link active" href="/contact-us">Contact-us</a>
+                </li>      
+                <li class="nav-item">
+                    <a class="nav-link active" href="/about">About</a>
+                </li>     
+            </ul>
+
+        </div>
+    </nav>
+   
 
     <main class="py-3 my-3" style="text-align: center; min-height: 50vh;">
 
@@ -48,7 +97,7 @@
                 <!-- Col started -->
                 <div class="col-sm-6 col-lg-3">
                     <!-- Card Started -->
-                    <i class="fas fa-circle-notch fa-pulse"></i>
+                    <i class="fas fa-circle-notch fa-pulse" aria-hidden="true"></i>
                     <div class="card text-white bg-dark mb-3">
                         <div class="card-header">
                             Asansol
@@ -129,7 +178,8 @@
     <!-- End of Booking Modal -->
 
 
-
+   
+   
 
     <script src="./js/index.js"></script>
 
@@ -161,6 +211,8 @@
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
 
+
 </body>
+
 
 </html>

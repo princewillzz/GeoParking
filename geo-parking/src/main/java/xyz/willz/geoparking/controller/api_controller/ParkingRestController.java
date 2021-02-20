@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,10 @@ import xyz.willz.geoparking.model.Parking;
 import xyz.willz.geoparking.service.ParkingService;
 import xyz.willz.geoparking.utilities.ParkingAvailabilityForm;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api")
 public class ParkingRestController {
-
-    private Logger logger = LoggerFactory.getLogger(ParkingRestController.class);
 
     private final ParkingService parkingService;
 
@@ -43,7 +43,7 @@ public class ParkingRestController {
     }
 
     @GetMapping("/secured/parking/is-available")
-    public ResponseEntity<?> checkAvailabilityForParking(@RequestBody final ParkingAvailabilityForm details) {
+    public ResponseEntity<HttpStatus> checkAvailabilityForParking(@RequestBody final ParkingAvailabilityForm details) {
 
         try {
             System.out.println(details);
@@ -54,7 +54,7 @@ public class ParkingRestController {
             }
             
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -68,7 +68,7 @@ public class ParkingRestController {
         ).collect(Collectors.toList()));
     }
 
-    // Search parkings with address similiar to the key
+    // Search parkings with address similar to the key
     @GetMapping("/parking/search/")
     public ResponseEntity<?> getParkingsForAddress(
         @RequestBody(required = true) final ParkingDTO parkingDTO
@@ -88,7 +88,7 @@ public class ParkingRestController {
             // send parking dto to the service layer for saving it in the databases
             return ResponseEntity.ok(parkingService.saveParking(parkingDTO));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         
         return ResponseEntity.badRequest().build();
@@ -111,7 +111,7 @@ public class ParkingRestController {
                 ParkingMapper.INSTANCE.toParkingDTO(parking)
             );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return ResponseEntity.badRequest().build();

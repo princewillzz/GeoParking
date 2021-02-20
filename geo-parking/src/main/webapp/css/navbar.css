@@ -1,0 +1,13 @@
+.navbar li a {
+  transition: all 0.35s;
+}
+
+.navbar li a:hover {
+  border-bottom: 2px solid #f8e71c;
+}
+
+@media (min-width: 1000px) {
+  .navbar .nav-item {
+    margin-right: 10px;
+  }
+}
