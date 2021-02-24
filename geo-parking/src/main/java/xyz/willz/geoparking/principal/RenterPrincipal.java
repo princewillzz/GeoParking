@@ -11,7 +11,9 @@ import java.util.Collections;
 
 public class RenterPrincipal implements UserDetails {
 
-    private final Renter renter;
+  	private static final long serialVersionUID = 1L;
+      
+	private final Renter renter;
 
     @Autowired
     public RenterPrincipal(final Renter renter) {

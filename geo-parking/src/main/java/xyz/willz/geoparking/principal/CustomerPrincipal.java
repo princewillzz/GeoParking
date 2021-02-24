@@ -11,7 +11,8 @@ import java.util.Collections;
 
 public class CustomerPrincipal implements UserDetails {
 
-    private final Customer customer;
+	private static final long serialVersionUID = 1L;
+	private final Customer customer;
 
     @Autowired
     public CustomerPrincipal(final Customer customer) {

@@ -81,7 +81,7 @@
 
         <!-- The SearchParking Form Container -->
 
-        <div class="container-fluid">
+        <form class="container-fluid" id="searchParkingForm">
             <div class="input-group mb-3 mx-auto my-3" style="width: 60%;">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Parking</span>
@@ -91,21 +91,22 @@
 
             </div>
             <div>
-                <button id="searchParkingBtn" type="button" class="btn btn-success">Find Parking</button>
+                <button id="searchParkingBtn" type="submit" class="btn btn-success">Find Parking</button>
             </div>
-        </div>
+        </form>
         <!-- End Of SearchParking Form -->
 
         <!-- Parkings fetched from backend -->
         <div id="parkingsFetched" class="py-3 m-3">
 
             <div class="row">
-
+            
                 <!-- Col started -->
-                <div class="col-sm-6 col-lg-3">
+                <!-- <div class="col-sm-6 col-lg-3"> -->
                     <!-- Card Started -->
-                    <i class="fas fa-circle-notch fa-pulse" aria-hidden="true"></i>
-                    <div class="card text-white bg-dark mb-3">
+                    <!-- <i class="fas fa-circle-notch fa-pulse" aria-hidden="true"></i>
+                    <div id="FeatchedParkingCard0" 
+                    class="card text-white bg-dark mb-3">
                         <div class="card-header">
                             Asansol
                         </div>
@@ -120,39 +121,60 @@
                             </Address>
                             </p>
                             <div>
-                                <button id="payForBookingSlotBtn" class="btn btn-success" hidden="true">Make
-                                    Payment</button>
-                                <button id="checkBookingSlotAvailabilityBtn" data-toggle="modal"
-                                    data-target="#parkingAvailabilityCheckModal" class="btn btn-primary">Book
+                                <button 
+                                class="payForBookingSlotBtn btn btn-success" 
+                                hidden="true">
+                                Make Payment
+                                </button>
+
+                                <button data-toggle="modal"
+                                    onclick="setParkingIdInAvailabilityModal(0)"
+                                    data-target="#parkingAvailabilityCheckModal" 
+                                    class="checkBookingSlotAvailabilityBtn btn btn-primary">Book
                                     Spot</button>
-                                <img class="card-img" style="height: 50px; width: 35px; cursor: pointer;"
+                                <img class="card-img" 
+                                style="height: 50px; width: 35px; cursor: pointer;"
                                     src="./image/map-thumbnail.png" alt="location">
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Card ended -->
-                </div>
+                <!-- </div> -->
                 <!-- Col over -->
-
 
             </div>
 
-
-
         </div>
         <!-- End of fetched parkings -->
+
+
+        <hr class="w-75">
+
+        <h2>Featured For You</h2>
+        
+        <!-- Featured Parkings -->
+        <div class="py-3 m-3">
+
+            <div id="featuredParkingContainer" class="row">
+
+            </div>
+
+        </div>
+        <!-- End of featured parkings -->
 
     </main>
     <!-- End of main body -->
 
 
-    <!-- AParking vailability Modal -->
+    <!-- Parking availability Modal -->
     <div class="modal fade" id="parkingAvailabilityCheckModal" tabindex="-1" role="dialog"
         aria-labelledby="parkingAvailabilityCheckModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form class="modal-content" id="checkAvailabilityModalForm">
+                <input type="text" id="ParkingIdInputAvailableModal" hidden>
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Booking Time</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Booking Time <span id="GreenTickCheckAvailability" style="color: rgb(136, 202, 37); display: none;"><i class="far fa-check-circle"></i></span> </h5>
+                    
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -343,7 +365,7 @@
 
     <script src="./js/parking.js"></script>
 
-    <script src="./js/book_slot.js"></script>
+    <script src="./js/check_availability_slot.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

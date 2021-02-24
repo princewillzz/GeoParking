@@ -14,6 +14,7 @@ import xyz.willz.geoparking.dao.RenterRepository;
 import xyz.willz.geoparking.dto.RenterDTO;
 import xyz.willz.geoparking.mapper.RenterMapper;
 import xyz.willz.geoparking.model.Renter;
+import xyz.willz.geoparking.principal.RenterPrincipal;
 
 @Service
 @Qualifier("renterService")
@@ -63,7 +64,7 @@ public class RenterService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Renter renter = renterRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Renter not found"));
 
-        return null;
+        return new RenterPrincipal(renter);
 
     }
 }

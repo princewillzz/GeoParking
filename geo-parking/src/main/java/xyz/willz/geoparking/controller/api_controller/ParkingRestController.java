@@ -1,16 +1,10 @@
 package xyz.willz.geoparking.controller.api_controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
 import xyz.willz.geoparking.dto.ParkingDTO;
 import xyz.willz.geoparking.mapper.ParkingMapper;
 import xyz.willz.geoparking.model.Parking;
@@ -42,7 +37,7 @@ public class ParkingRestController {
 
     }
 
-    @GetMapping("/secured/parking/is-available")
+    @GetMapping("/parking/is-available")
     public ResponseEntity<HttpStatus> checkAvailabilityForParking(@RequestBody final ParkingAvailabilityForm details) {
 
         try {
@@ -60,6 +55,16 @@ public class ParkingRestController {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 
+
+    // Search parkings with address similar to the key
+    @PostMapping("/parking/search")
+    public ResponseEntity<?> getParkingsForAddress(
+        @RequestBody(required = true) final String parkingAddress
+    ) {
+        return ResponseEntity.ok().body(parkingService.searchParkingsForAddress(parkingAddress));
+    }
+
+
     @GetMapping("/parking")
     public ResponseEntity<?> getParkings() {
         
@@ -68,14 +73,7 @@ public class ParkingRestController {
         ).collect(Collectors.toList()));
     }
 
-    // Search parkings with address similar to the key
-    @GetMapping("/parking/search/")
-    public ResponseEntity<?> getParkingsForAddress(
-        @RequestBody(required = true) final ParkingDTO parkingDTO
-    ) {
-
-        return ResponseEntity.ok().body(parkingService.searchParkingsForAddress(parkingDTO.getAddress()));
-    }
+    
 
 
     // Consume json to save a new parking
@@ -119,7 +117,7 @@ public class ParkingRestController {
 
 
     // Get some featured parkings
-    @GetMapping(value = "/parking/popular")
+    @GetMapping(value = "/parking/featured")
     public ResponseEntity<?> getPopularParkings() {
 
         return ResponseEntity.ok().body(parkingService.getPopularParkings());

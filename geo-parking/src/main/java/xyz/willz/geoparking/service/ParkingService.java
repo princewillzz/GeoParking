@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,10 @@ public class ParkingService {
                 .map(parking -> ParkingMapper.INSTANCE.toParkingDTO(parking)).collect(Collectors.toList());
     }
 
+
+//    TODO Later------**************************************************------------------------------------------------
+    //    Test purpose
+    AtomicBoolean availableStatus = new AtomicBoolean(false);
     @Transactional(readOnly = true)
     // Check if the booking is available for the current timing
     public boolean isParkingAvailable(final ParkingAvailabilityForm details) throws ParseException {
@@ -79,10 +84,11 @@ public class ParkingService {
         final Date arrivalDate = sdfInput.parse(details.getArrivalDate()+details.getArrivalTime());
         // parse departure time
         final Date departureDate = sdfInput.parse(details.getDepartureDate() + details.getDepartureTime());
-        
-        
 
-        return true;
+//        Testing purpose only
+        availableStatus.set(!availableStatus.get());
+        return availableStatus.get();
     }
+//    TODO--------*************************************************************************--------------------
 
 }
