@@ -14,6 +14,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.hibernate.annotations.Type;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Table(name = "booking")
 @Getter
 @Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"customer", "parking"})
 public class Booking {
 
     @Id
@@ -34,7 +35,7 @@ public class Booking {
     @Column(name = "uid", nullable = false, updatable = false, unique = true)
     private UUID uid;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String bookingKey;
 
     private Date createdAt;
@@ -55,6 +56,18 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Parking parking;
+
+
+    @Column(unique = true, nullable = true)
+    private String razorpayOrderId;
+
+    @Column(unique = true, nullable = true)
+    private String razorpayPaymentId;
+    
+    private String razorpaySignature;
+
+    private boolean isPaymentDone;
+
 
     @PrePersist
     void prePersist() {

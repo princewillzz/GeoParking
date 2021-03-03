@@ -8,7 +8,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParkingAvailabilityForm {
 
-    
+    String parkingId;
     String arrivalDate;
     String arrivalTime;
     String departureDate;

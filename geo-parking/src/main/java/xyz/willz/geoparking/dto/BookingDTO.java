@@ -2,6 +2,8 @@ package xyz.willz.geoparking.dto;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -22,5 +24,18 @@ public class BookingDTO {
     private Double wallet;
 
     private Double discount;
+
+    @JsonProperty(value = "order_id")
+    private String razorpayOrderId;
+
+    @JsonProperty(value = "payment_id")
+    private String razorpayPaymentId;
+    
+    @JsonProperty(value = "signature")
+    private String razorpaySignature;
+
+    private boolean isPaymentDone;
+
+
 
 }

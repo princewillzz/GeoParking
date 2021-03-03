@@ -53,6 +53,9 @@ public class Parking {
     @Column(nullable = false)
     private Integer vacant;
 
+    @Column(nullable = false)
+    private Double hourlyRate;
+
     private long noOfTimesBooked;
 
     @ManyToOne(fetch = FetchType.LAZY)

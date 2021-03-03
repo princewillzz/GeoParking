@@ -4,11 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .addEventListener("submit", function (e) {
             e.preventDefault();
 
-            const parkingId = document
-                .getElementById("parkingAvailabilityCheckModal")
-                .querySelector("#ParkingIdInputAvailableModal").value;
-
-            checkAvailability(parkingId);
+            checkAvailability();
         });
 });
 
@@ -20,20 +16,8 @@ function setParkingIdInAvailabilityModal(parkingId) {
     handleGreenTickOnCheckAvailable(false);
 }
 
-function checkAvailability(parkingId) {
-    const arrivalDate = $("#InputArrivalDate").val();
-    const arrivalTime = $("#InputArrivalTime").val();
-
-    const departureDate = $("#InputDepartureDate").val();
-    const departureTime = $("#InputDepartureTime").val();
-
-    const data = {
-        parkingId: parkingId,
-        arrivalDate: arrivalDate,
-        arrivalTime: arrivalTime,
-        departureDate: departureDate,
-        departureTime: departureTime,
-    };
+function checkAvailability() {
+    const data = getCheckAvailabilityFormData();
 
     console.log(data);
 
@@ -72,16 +56,48 @@ function checkAvailability(parkingId) {
     //         (parking.querySelector(".payForBookingSlotBtn").hidden = false)
     // );
 
+    // If the slot was available do the tasks
+
     handleGreenTickOnCheckAvailable(true);
 }
 
+// Get inputs in the check availability modal as a json object
+function getCheckAvailabilityFormData() {
+    const parkingId = document
+        .getElementById("parkingAvailabilityCheckModal")
+        .querySelector("#ParkingIdInputAvailableModal").value;
+
+    const arrivalDate = $("#InputArrivalDate").val();
+    const arrivalTime = $("#InputArrivalTime").val();
+
+    const departureDate = $("#InputDepartureDate").val();
+    const departureTime = $("#InputDepartureTime").val();
+
+    const data = {
+        parkingId,
+        arrivalDate,
+        arrivalTime,
+        departureDate,
+        departureTime,
+    };
+
+    return data;
+}
+
+// Handle the green tick and button colour change on hide and show of the check availability modal
 function handleGreenTickOnCheckAvailable(status) {
     console.log(status);
     if (status) {
         document.querySelector(
+            "#parkingAvailabilityCheckModal .payToBookBtn"
+        ).hidden = false;
+        document.querySelector(
             "#parkingAvailabilityCheckModal #GreenTickCheckAvailability"
         ).style.display = "inline";
     } else {
+        document.querySelector(
+            "#parkingAvailabilityCheckModal .payToBookBtn"
+        ).hidden = true;
         document.querySelector(
             "#parkingAvailabilityCheckModal #GreenTickCheckAvailability"
         ).style.display = "none";

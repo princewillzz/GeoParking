@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <title>Document</title>
 
     <link rel="stylesheet" href="./css/index.css">
@@ -76,6 +78,8 @@
 
     <!-- Start of main content -->
     <main class="py-3 my-3" style="text-align: center; min-height: 50vh;">
+
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
         <h1 class="my-3 py-3">Find Parking</h1>
 
@@ -200,6 +204,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="payToBookBtn btn btn-success" onclick="payToBookParkingSlot()" hidden>Pay to Book</button>
                     <button type="submit" class="btn btn-primary">Check Availability</button>
                 </div>
             </form>
@@ -357,8 +362,7 @@
     </div>
 
     <!-- End of register modal -->
-
-   
+  
    
 
     <script src="./js/index.js"></script>
@@ -366,6 +370,8 @@
     <script src="./js/parking.js"></script>
 
     <script src="./js/check_availability_slot.js"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script><script src="https://apis.google.com/js/platform.js" async defer></script><script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -392,6 +398,9 @@
         crossorigin="anonymous"></script>
 
 
+    <script src="./js/book_parking.js"></script>
+
+    
 </body>
 
 
