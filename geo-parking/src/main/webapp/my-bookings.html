@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="_csrf" content="${_csrf.token}" />
+		<!-- default header name is X-CSRF-TOKEN -->
+		<meta name="_csrf_header" content="${_csrf.headerName}" />
+		<!-- ... -->
+		<title>My Orders</title>
+
+		<!-- CSS only -->
+		<link rel="stylesheet" href="./css/fontawesome/css/all.css" />
+		<link rel="stylesheet" href="./css/navbar.css" />
+
+		<!-- CSS only -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+			crossorigin="anonymous"
+		/>
+	</head>
+
+	<body>
+		<div class="card" style="max-width: 97%; margin: 1rem; padding: 5px">
+			<ul class="nav nav-pills nav-fill">
+				<div style="margin: auto; padding: 0.5rem">
+					<div class="nav-item">
+						<img
+							src="https://www.transparenttextures.com/patterns/lyonnette.png"
+							alt="Card image cap"
+						/>
+					</div>
+				</div>
+
+				<div class="flex-sm-column" style="padding: 20px; margin: auto">
+					<li class="nav-item" style="color: red">
+						<strong
+							>ToPay: ${eachOrder.orderBill.amountToPay}</strong
+						>
+					</li>
+					<li class="nav-item">
+						<strike
+							>Discount: ${eachOrder.orderBill.discount}</strike
+						>
+					</li>
+					<li class="nav-item">
+						<strike
+							>Wallet used: ${eachOrder.orderBill.wallet}</strike
+						>
+					</li>
+					<li class="nav-item">
+						<strong
+							>Total: ${eachOrder.orderBill.totalAmount}</strong
+						>
+					</li>
+					<!-- <li class="nav-item">
+                        <strong>Delivery: </strong>
+                    </li> -->
+				</div>
+
+				<div class="flex-sm-column" style="padding: 20px; margin: auto">
+					<li class="nav-item">
+						<strong>${eachOrder.orderStatus}</strong>
+					</li>
+					<p></p>
+					<li class="nav-item">OrderTime: ${eachOrder.orderTime}</li>
+					<li>Delivery: ${eachOrder.deliveryDate}</li>
+				</div>
+				<div class="flex-sm-column" style="padding: 20px; margin: auto">
+					<li class="nav-item">
+						<c:if test="${!eachOrder.paymentStatus}">
+							<a class="nav-link" style="color: rgb(202, 35, 35)">
+								Un-Paid
+								<i
+									class="fa fa-credit-card"
+									aria-hidden="true"
+								></i>
+							</a>
+						</c:if>
+						<c:if test="${eachOrder.paymentStatus}">
+							<a class="nav-link" style="color: rgb(30, 186, 30)">
+								Paid
+								<i class="fa fa-check" aria-hidden="true"></i>
+							</a>
+						</c:if>
+					</li>
+
+					<form
+						class="nav-item"
+						action="/customer/my-order/pay-or-upload"
+						method="post"
+					>
+						<input
+							type="hidden"
+							name="${_csrf.parameterName}"
+							value="${_csrf.token}"
+						/>
+						<input
+							type="text"
+							name="orderId"
+							value="${eachOrder.id}"
+							hidden
+						/>
+						<c:if test="${!eachOrder.paymentStatus}">
+							<button class="btn btn-danger" type="submit">
+								Upload Photo / pay
+							</button>
+						</c:if>
+						<c:if test="${eachOrder.paymentStatus}">
+							<button class="btn btn-success" type="submit">
+								Upload Photo / pay
+							</button>
+						</c:if>
+					</form>
+				</div>
+			</ul>
+		</div>
+	</body>
+</html>

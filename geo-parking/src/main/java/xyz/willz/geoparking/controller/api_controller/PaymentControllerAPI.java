@@ -21,12 +21,11 @@ public class PaymentControllerAPI {
     private final BookingService bookingService;
     private final RazorpayPaymentService razorpayPaymentService;
 
-
-    @PutMapping("/payment/success")
+    @PutMapping("/secured/payment/success")
     public ResponseEntity<?> paymentSuccessfull(@RequestBody final BookingDTO bookingDTO) {
 
         try {
-            
+
             return ResponseEntity.ok().body(bookingService.makeBookingSuccessfull(bookingDTO));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -36,5 +35,4 @@ public class PaymentControllerAPI {
 
     }
 
-    
 }

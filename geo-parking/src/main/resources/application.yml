@@ -1,22 +1,28 @@
-spring: 
-  mvc:
-    view:
-      prefix: /
-      suffix: .html
-  jpa:  
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect 
-    show-sql: true
-    hibernate:  
-      ddl-auto: update
-  datasource: 
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3306/geo_parking"  
-    username: root  
-    password: password
+spring:
+    mvc:
+        view:
+            prefix: /
+            suffix: .html
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL8Dialect
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: "jdbc:mysql://localhost:3306/geo_parking"
+        username: root
+        password: password
 
-    
-
-    
-
+    security:
+        oauth2:
+            client:
+                registration:
+                    # facebook:
+                    #     clientId: 894879177721141
+                    #     clientSecret: a6cb9c7e9fcd1620ec75d02b485d997f
+                    google:
+                        clientId: 1093210577780-ck5jj6coeeoe5bfskh2v1c14undm0lq3.apps.googleusercontent.com
+                        clientSecret: ZE2bEntLWK2otwmVIuehZRNx

@@ -1,6 +1,5 @@
 package xyz.willz.geoparking.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,43 +17,7 @@ import xyz.willz.geoparking.service.RenterService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Order(1)
-    @Configuration
-    public static class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        private final CustomerService customerService;
-
-        @Autowired
-        public CustomerSecurityConfig(@Qualifier("customerService") final CustomerService customerService) {
-            this.customerService = customerService;
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(customerService);
-
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/customer/**")
-                    .authorizeRequests()
-                    .anyRequest()
-                    .hasRole("CUSTOMER")
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .loginProcessingUrl("/customer/login")
-                    .failureUrl("/login")
-                    .defaultSuccessUrl("/", true).permitAll()
-                    .and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
-                    .invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN")
-                    .and().csrf().disable();
-
-        }
-    }
-
     @Configuration
     public static class RenterConfig extends WebSecurityConfigurerAdapter {
 
@@ -72,20 +35,32 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .antMatcher("/renter/**")
-                    .authorizeRequests().anyRequest().hasRole("RENTER")
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .loginProcessingUrl("/customer/login")
-                    .failureUrl("/renter/login")
-                    .defaultSuccessUrl("/retner", true).permitAll()
-                    .and()
-                    .logout().logoutUrl("/logout")
-                    .logoutSuccessUrl("/renter/login")
-                    .invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
+            http.csrf().disable().antMatcher("/renter/**").authorizeRequests().anyRequest().hasRole("RENTER").and()
+                    .formLogin().loginPage("/renter/login").loginProcessingUrl("/renter/login")
+                    .failureUrl("/renter/login").defaultSuccessUrl("/renter", true).permitAll().and().logout()
+                    .logoutUrl("/renter/logout").logoutSuccessUrl("/renter/login").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
+        }
+    }
+
+    @Order(2)
+    @Configuration
+    public static class Rest extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.csrf().disable().antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/**")
+                    .hasRole("USER").anyRequest().authenticated();
+        }
+    }
+
+    @Order(3)
+    @Configuration
+    public static class OauthCustomerSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.csrf().disable().authorizeRequests().antMatchers("/login/**").hasRole("USER").and().oauth2Login()
+                    .defaultSuccessUrl("/", true).and().logout().logoutSuccessUrl("/");
         }
     }
 

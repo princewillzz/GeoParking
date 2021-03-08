@@ -1,41 +1,56 @@
 .navbar li a {
-  transition: all 0.35s;
+	transition: all 0.35s;
 }
 
 .navbar li a:hover {
-  border-bottom: 2px solid #f8e71c;
+	border-bottom: 2px solid #f8e71c;
 }
 
 @media (min-width: 1000px) {
-  .navbar .nav-item {
-    margin-right: 10px;
-  }
+	.navbar .nav-item {
+		margin-right: 10px;
+	}
 }
 
 .modal label {
-  font-weight: bold;
-  margin-left: auto;
+	font-weight: bold;
+	margin-left: auto;
 }
 
 #LoginCustomerModal .modal-header h3 {
-  margin-left: 40%;
+	margin-left: 40%;
 }
 
 #RegisterCustomerModal .modal-header h3 {
-  margin-left: 30%;
+	margin-left: 30%;
 }
 
 .modal-header {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+	background-color: rgba(0, 0, 0, 0.03);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .modal-header:first-child {
-  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+	border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
 }
 
 .modal-footer,
 .modal-header {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+	background-color: rgba(0, 0, 0, 0.03);
+	border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Edit profile modal css */
+.userProfilePhoto {
+	display: inline-block;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+.profilePhoto {
+	background-image: url("http://placehold.it/400x200");
 }

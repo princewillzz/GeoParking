@@ -28,26 +28,23 @@ public class ParkingRestController {
 
     private final ParkingService parkingService;
 
-
     @Autowired
-    protected ParkingRestController(
-        @Qualifier("parkingService") final ParkingService parkingService
-    ) {
+    protected ParkingRestController(@Qualifier("parkingService") final ParkingService parkingService) {
         this.parkingService = parkingService;
 
     }
 
-    @GetMapping("/parking/is-available")
+    @GetMapping("/secured/parking/is-available")
     public ResponseEntity<HttpStatus> checkAvailabilityForParking(@RequestBody final ParkingAvailabilityForm details) {
 
         try {
             System.out.println(details);
 
             final boolean isAvailable = parkingService.isParkingAvailable(details);
-            if(isAvailable) {
+            if (isAvailable) {
                 return ResponseEntity.ok().build();
             }
-            
+
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -55,32 +52,22 @@ public class ParkingRestController {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 
-
     // Search parkings with address similar to the key
     @PostMapping("/parking/search")
-    public ResponseEntity<?> getParkingsForAddress(
-        @RequestBody(required = true) final String parkingAddress
-    ) {
+    public ResponseEntity<?> getParkingsForAddress(@RequestBody(required = true) final String parkingAddress) {
         return ResponseEntity.ok().body(parkingService.searchParkingsForAddress(parkingAddress));
     }
 
-
     @GetMapping("/parking")
     public ResponseEntity<?> getParkings() {
-        
-        return ResponseEntity.ok(parkingService.getAllparkings().parallelStream().map(parking -> 
-            ParkingMapper.INSTANCE.toParkingDTO(parking)
-        ).collect(Collectors.toList()));
+
+        return ResponseEntity.ok(parkingService.getAllparkings().parallelStream()
+                .map(parking -> ParkingMapper.INSTANCE.toParkingDTO(parking)).collect(Collectors.toList()));
     }
-
-    
-
 
     // Consume json to save a new parking
     @PostMapping("/parking")
-    public ResponseEntity<?> createParking(
-        @RequestBody final ParkingDTO parkingDTO
-    ) {
+    public ResponseEntity<?> createParking(@RequestBody final ParkingDTO parkingDTO) {
 
         try {
             // send parking dto to the service layer for saving it in the databases
@@ -88,33 +75,26 @@ public class ParkingRestController {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        
+
         return ResponseEntity.badRequest().build();
     }
 
-
-
     // Get parking details for a particular id
     @GetMapping("/parking/{id}")
-    public ResponseEntity<?> getParkingWithId(
-        @PathVariable("id") final UUID id
-    ) {
-        
+    public ResponseEntity<?> getParkingWithId(@PathVariable("id") final UUID id) {
+
         try {
             // Fetch Parking entity from the parking service
             final Parking parking = parkingService.getParking(id);
 
-            // Get mapper using context instance and map the entity to DTO then return 
-            return ResponseEntity.ok().body(
-                ParkingMapper.INSTANCE.toParkingDTO(parking)
-            );
+            // Get mapper using context instance and map the entity to DTO then return
+            return ResponseEntity.ok().body(ParkingMapper.INSTANCE.toParkingDTO(parking));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
         return ResponseEntity.badRequest().build();
     }
-
 
     // Get some featured parkings
     @GetMapping(value = "/parking/featured")

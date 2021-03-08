@@ -1,114 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta
+			name="google-signin-client_id"
+			content="1093210577780-ck5jj6coeeoe5bfskh2v1c14undm0lq3.apps.googleusercontent.com"
+		/>
+		<title>Document</title>
 
+		<link rel="stylesheet" href="./css/index.css" />
+		<link rel="stylesheet" href="./css/fontawesome/css/all.css" />
+		<link rel="stylesheet" href="./css/navbar.css" />
 
-    <title>Document</title>
+		<!-- CSS only -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+			crossorigin="anonymous"
+		/>
+	</head>
 
-    <link rel="stylesheet" href="./css/index.css">
-    <link rel="stylesheet" href="./css/fontawesome/css/all.css">
-    <link rel="stylesheet" href="./css/navbar.css">
-
-
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-
-<body>
-
-    <!-- Start Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="mx-2">
+	<body>
+		<!-- Start Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<!-- <div class="mx-2">
             <a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
-        </div>
-        <!-- Image and text -->
-        <a class="navbar-brand" href="/">
-            <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
-                class="d-inline-block align-top" alt="">
-            Geo-Parking
-        </a>
+        </div> -->
+			<!-- Image and text -->
+			<a class="navbar-brand mx-4" href="/">
+				<img
+					src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
+					width="30"
+					height="30"
+					class="d-inline-block align-top"
+					alt=""
+				/>
+				Geo-Parking
+			</a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarTogglerDemo02"
+				aria-controls="navbarTogglerDemo02"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"></li>
+				</ul>
 
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"></li>
-            </ul>
+				<ul class="navbar-nav justify-content-end mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="/"
+							>Home <span class="sr-only">(current)</span></a
+						>
+					</li>
 
-            <ul class="navbar-nav justify-content-end mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                </li>
-                
-                <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      My Profile
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="#">Edit</a>
-                      <a class="dropdown-item" href="#">Order</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Logout</a>
-                    </div>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link active" href="/contact-us">Contact-us</a>
-                </li>      
-                <li class="nav-item">
-                    <a class="nav-link active" href="/about">About</a>
-                </li>  
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#LoginCustomerModal">Sign-in/up <span class="sr-only">(current)</span></a>
-                </li>   
-            </ul>
+					<li
+						class="nav-item dropdown active"
+						id="navbarDropdownAuthenticated"
+						style="display: none"
+					>
+						<a
+							class="nav-link dropdown-toggle"
+							href="#"
+							id="navbarDropdownMenuLink"
+							data-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							My Profile
+						</a>
+						<div
+							class="dropdown-menu"
+							aria-labelledby="navbarDropdownMenuLink"
+						>
+							<button
+								type="button"
+								class="dropdown-item"
+								data-toggle="modal"
+								data-target="#EditProfileInfoModal"
+								style="cursor: pointer"
+							>
+								Edit Info
+							</button>
+							<a
+								class="dropdown-item"
+								href="/customer/my-bookings"
+								>My Bookings</a
+							>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/logout">Logout</a>
+						</div>
+					</li>
 
-        </div>
-    </nav>
-    <!-- End of Navbar -->
-   
+					<li class="nav-item">
+						<a class="nav-link active" href="/contact-us"
+							>Contact-us</a
+						>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/about">About</a>
+					</li>
+					<li class="nav-item active" id="navbarUnAuthenticated">
+						<a class="nav-link" href="/oauth2/authorization/google"
+							>Sign-in/up
+							<span class="sr-only">(current)</span></a
+						>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<!-- End of Navbar -->
 
-    <!-- Start of main content -->
-    <main class="py-3 my-3" style="text-align: center; min-height: 50vh;">
+		<!-- Start of main content -->
+		<main class="py-3 my-3" style="text-align: center; min-height: 50vh">
+			<!-- Google Authentication logo -->
+			<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
 
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+			<h1 class="my-3 py-3">Find Parking</h1>
 
-        <h1 class="my-3 py-3">Find Parking</h1>
+			<!-- The SearchParking Form Container -->
 
-        <!-- The SearchParking Form Container -->
+			<form class="container-fluid" id="searchParkingForm">
+				<div class="input-group mb-3 mx-auto my-3" style="width: 60%">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon3"
+							>Parking</span
+						>
+					</div>
+					<input
+						id="searchParking"
+						placeholder="search"
+						type="text"
+						class="form-control"
+						id="basic-url"
+						aria-describedby="basic-addon3"
+					/>
+				</div>
+				<div>
+					<button
+						id="searchParkingBtn"
+						type="submit"
+						class="btn btn-success"
+					>
+						Find Parking
+					</button>
+				</div>
+			</form>
+			<!-- End Of SearchParking Form -->
 
-        <form class="container-fluid" id="searchParkingForm">
-            <div class="input-group mb-3 mx-auto my-3" style="width: 60%;">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon3">Parking</span>
-                </div>
-                <input id="searchParking" placeholder="search" type="text" class="form-control" id="basic-url"
-                    aria-describedby="basic-addon3">
-
-            </div>
-            <div>
-                <button id="searchParkingBtn" type="submit" class="btn btn-success">Find Parking</button>
-            </div>
-        </form>
-        <!-- End Of SearchParking Form -->
-
-        <!-- Parkings fetched from backend -->
-        <div id="parkingsFetched" class="py-3 m-3">
-
-            <div class="row">
-            
-                <!-- Col started -->
-                <!-- <div class="col-sm-6 col-lg-3"> -->
-                    <!-- Card Started -->
-                    <!-- <i class="fas fa-circle-notch fa-pulse" aria-hidden="true"></i>
+			<!-- Parkings fetched from backend -->
+			<div id="parkingsFetched" class="py-3 m-3">
+				<div class="row">
+					<!-- Col started -->
+					<!-- <div class="col-sm-6 col-lg-3"> -->
+					<!-- Card Started -->
+					<!-- <i class="fas fa-circle-notch fa-pulse" aria-hidden="true"></i>
                     <div id="FeatchedParkingCard0" 
                     class="card text-white bg-dark mb-3">
                         <div class="card-header">
@@ -142,266 +200,290 @@
                             </div>
                         </div>
                     </div> -->
-                    <!-- Card ended -->
-                <!-- </div> -->
-                <!-- Col over -->
+					<!-- Card ended -->
+					<!-- </div> -->
+					<!-- Col over -->
+				</div>
+			</div>
+			<!-- End of fetched parkings -->
 
-            </div>
+			<hr class="w-75" />
 
-        </div>
-        <!-- End of fetched parkings -->
+			<h2>Featured For You</h2>
 
+			<!-- Featured Parkings -->
+			<div class="py-3 m-3">
+				<div id="featuredParkingContainer" class="row"></div>
+			</div>
+			<!-- End of featured parkings -->
+		</main>
+		<!-- End of main body -->
 
-        <hr class="w-75">
+		<!-- Modal -->
+		<div
+			class="modal fade"
+			id="EditProfileInfoModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="EditProfileInfoModalTitle"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5
+							class="modal-title"
+							id="exampleModalLongTitle"
+							style="margin-left: 35%"
+						>
+							Profile Info
+						</h5>
+						<button
+							type="button"
+							class="close"
+							data-dismiss="modal"
+							aria-label="Close"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-4">
+									<!-- First col -->
+									<div
+										class="userProfilePhoto profilePhoto"
+									></div>
+								</div>
+								<div class="col-7 ml-auto">
+									<!-- Second Col -->
 
-        <h2>Featured For You</h2>
-        
-        <!-- Featured Parkings -->
-        <div class="py-3 m-3">
+									<div>
+										<div class="form-group">
+											<label for="profileInfoFirstName"
+												><small
+													>First Name</small
+												></label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="profileInfoFirstName"
+												aria-describedby="emailHelp"
+												placeholder="First Name"
+											/>
+										</div>
+										<div class="form-group">
+											<label for="profileInfoLastName"
+												><small>Last Name</small></label
+											>
+											<input
+												type="text"
+												class="form-control"
+												id="profileInfoLastName"
+												placeholder="Last Name"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr />
+							<!-- Mobile Number change -->
+							<div class="row">
+								<div class="col text-center">
+									<label>Mobile No.</label>
+									<input
+										type="text"
+										class="form-control w-75 mx-auto"
+										id="profileInfoMobileNumber"
+										placeholder="Mobile No."
+									/>
+								</div>
+							</div>
+							<!-- Mobile Number change End -->
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-dismiss="modal"
+						>
+							Close
+						</button>
+						<button
+							type="button"
+							class="btn btn-primary save-profile-btn"
+							onclick="updateProfileInfo()"
+						>
+							<span
+								class="spinner-border spinner-border-sm"
+								role="status"
+								aria-hidden="true"
+								style="display: none"
+							></span>
+							Save changes
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-            <div id="featuredParkingContainer" class="row">
+		<!-- Parking availability Modal -->
+		<div
+			class="modal fade"
+			id="parkingAvailabilityCheckModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="parkingAvailabilityCheckModalTitle"
+			aria-hidden="true"
+		>
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<form class="modal-content" id="checkAvailabilityModalForm">
+					<input
+						type="text"
+						id="ParkingIdInputAvailableModal"
+						hidden
+					/>
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">
+							Booking Time
+							<span
+								id="GreenTickCheckAvailability"
+								style="color: rgb(136, 202, 37); display: none"
+								><i class="far fa-check-circle"></i
+							></span>
+						</h5>
 
-            </div>
+						<button
+							type="button"
+							class="close"
+							data-dismiss="modal"
+							aria-label="Close"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<!-- Arrival Date time -->
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text"
+										>Arrival</span
+									>
+								</div>
+								<input
+									id="InputArrivalDate"
+									type="date"
+									class="form-control"
+								/>
+								<input
+									id="InputArrivalTime"
+									type="time"
+									class="form-control"
+								/>
+							</div>
+							<!-- Departure Date time -->
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text"
+										>Departure</span
+									>
+								</div>
+								<input
+									id="InputDepartureDate"
+									type="date"
+									class="form-control"
+								/>
+								<input
+									id="InputDepartureTime"
+									type="time"
+									class="form-control"
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="payToBookBtn btn btn-success"
+							onclick="payToBookParkingSlot()"
+							hidden
+						>
+							Pay to Book
+						</button>
+						<button type="submit" class="btn btn-primary">
+							Check Availability
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- End of Booking Modal -->
 
-        </div>
-        <!-- End of featured parkings -->
+		<script src="./js/index.js"></script>
 
-    </main>
-    <!-- End of main body -->
+		<script src="./js/parking.js"></script>
 
+		<script src="./js/check_availability_slot.js"></script>
 
-    <!-- Parking availability Modal -->
-    <div class="modal fade" id="parkingAvailabilityCheckModal" tabindex="-1" role="dialog"
-        aria-labelledby="parkingAvailabilityCheckModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <form class="modal-content" id="checkAvailabilityModalForm">
-                <input type="text" id="ParkingIdInputAvailableModal" hidden>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Booking Time <span id="GreenTickCheckAvailability" style="color: rgb(136, 202, 37); display: none;"><i class="far fa-check-circle"></i></span> </h5>
-                    
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <!-- Arrival Date time -->
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Arrival</span>
-                            </div>
-                            <input id="InputArrivalDate" type="date" class="form-control">
-                            <input id="InputArrivalTime" type="time" class="form-control">
-                        </div>
-                        <!-- Departure Date time -->
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Departure</span>
-                            </div>
-                            <input id="InputDepartureDate" type="date" class="form-control">
-                            <input id="InputDepartureTime" type="time" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="payToBookBtn btn btn-success" onclick="payToBookParkingSlot()" hidden>Pay to Book</button>
-                    <button type="submit" class="btn btn-primary">Check Availability</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- End of Booking Modal -->
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<script
+			src="https://apis.google.com/js/platform.js"
+			async
+			defer
+		></script>
+		<script
+			src="https://apis.google.com/js/platform.js"
+			async
+			defer
+		></script>
 
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
 
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+			integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+			crossorigin="anonymous"
+		></script>
+		<!-- JavaScript Bundle with Popper -->
 
+		<!-- JavaScript Bundle with Popper -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+			crossorigin="anonymous"
+		></script>
 
-    <!-- Login Page Modal -->
+		<script src="./js/book_parking.js"></script>
+		<script src="./js/navbar.js"></script>
 
-    <div class="modal fade" id="LoginCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+		<!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content ">
-                <!-- Header -->
-                <div class="modal-header">
-                    <h3 class="modal-title">Login</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body">
-                    <form action="/customer/login" method="POST">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                        <div class="form-group">
-                            <label class="small mb-1" for="inputEmailAddress">Email</label>
-                            <input name="username" class="form-control py-4" id="inputEmailAddress" type="email"
-                                aria-describedby="emailHelp" placeholder="Enter email address" />
-                        </div>
-                        <div class="form-group">
-                            <label class="small mb-1" for="inputPassword">Password</label>
-                            <input name="password" class="form-control py-4" id="inputPassword" type="password"
-                                aria-describedby="passwordHelp" placeholder="Enter password" />
-                        </div>
-
-                        <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block" type="submit"">Login</button>
-                        </div>
-
-                        <div>
-                            <a href=" forgot-password" class="small" style="margin-left: auto;">Forgot Password</a>
-                        </div>
-
-                    </form>
-                </div>
-
-                <!-- Footer -->
-                <div class="modal-footer">
-                    <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
-                            data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-    </div>
-
-    <!-- End of Login Page Modal -->
-
-    <!-- Register Modal -->
-
-    <div class="modal fade" id="RegisterCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content ">
-                <!-- Header -->
-                <div class="modal-header">
-                    <h3 class="modal-title">Create Account</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body">
-                    <form action="/register" method="POST">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="regInputFirstName">First Name</label>
-                                    <input name="firstName" class="form-control py-4" id="regInputFirstName" type="text"
-                                        placeholder="Enter first name" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="regInputLastName">Last Name</label>
-                                    <input name="lastName" class="form-control py-4" id="regInputLastName" type="text"
-                                        placeholder="Enter last name" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="small mb-1" for="regInputEmailAddress">Email</label>
-                            <input name="email" class="form-control py-4" id="regInputEmailAddress" type="email"
-                                aria-describedby="emailHelp" placeholder="Enter email address" />
-                        </div>
-                        <div class="form-group">
-                            <label class="small mb-1" for="regInputContactNumber">Mobile</label>
-                            <input name="contactNo" class="form-control py-4" id="regInputContactNumber" type="text"
-                                placeholder="Enter mobile no." />
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="regInputPassword">Password</label>
-                                    <input name="password" class="form-control py-4" id="regInputPassword" type="password"
-                                        placeholder="Enter password" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="regInputConfirmPassword">Confirm
-                                        Password</label>
-                                    <input name="rePassword" class="form-control py-4" id="regInputConfirmPassword"
-                                        type="password" placeholder="Confirm password" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="small mb-1" for="regInputReferralCode">Referral Code</label>
-                            <input name="referralCode" value="" class="form-control py-4" id="regInputReferralCode"
-                                type="text" placeholder="Enter Referral Code (if any)" />
-                        </div>
-                        <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block"
-                                type="submit">Register</button></div>
-                    </form>
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="modal-footer">
-                        <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
-                                data-target="#LoginCustomerModal">Have an account? Go to login</a>
-
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
-
-
-    </div>
-
-    <!-- End of register modal -->
-  
-   
-
-    <script src="./js/index.js"></script>
-
-    <script src="./js/parking.js"></script>
-
-    <script src="./js/check_availability_slot.js"></script>
-
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script><script src="https://apis.google.com/js/platform.js" async defer></script><script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-        crossorigin="anonymous"></script>
-    <!-- JavaScript Bundle with Popper -->
-
-
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-        crossorigin="anonymous"></script>
-
-
-    <script src="./js/book_parking.js"></script>
-
-    
-</body>
-
-
+		<!-- <script>
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        }
+    </script> -->
+	</body>
 </html>
