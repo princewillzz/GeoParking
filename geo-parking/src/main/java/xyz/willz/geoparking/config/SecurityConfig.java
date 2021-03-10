@@ -59,8 +59,8 @@ public class SecurityConfig {
     public static class OauthCustomerSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable().authorizeRequests().antMatchers("/login/**").hasRole("USER").and().oauth2Login()
-                    .defaultSuccessUrl("/", true).and().logout().logoutSuccessUrl("/");
+            http.csrf().disable().authorizeRequests().antMatchers("/login/**", "/customer/**").hasRole("USER").and()
+                    .oauth2Login().defaultSuccessUrl("/").and().logout().logoutSuccessUrl("/");
         }
     }
 

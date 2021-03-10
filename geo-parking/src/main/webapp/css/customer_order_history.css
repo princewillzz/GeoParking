@@ -1,0 +1,57 @@
+body {
+	background-color: rgb(239, 241, 241);
+}
+
+.booking-card-wrapper {
+	/* display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	grid-auto-rows: (100px, auto); */
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.booking-card {
+	box-sizing: border-box;
+	padding: 5px;
+	margin: 1rem;
+	width: 18rem;
+	border-radius: 1rem;
+	/* flex-direction: row; */
+	background-image: "https://b.kisscc0.com/20180517/rhq/kisscc0-parking-transport-car-park-house-traffic-5afd7a09a9a3a4.2002531015265612896949.jpg";
+	box-shadow: 2px 2px 5px 5px rgb(179, 178, 178);
+}
+
+.booking-card:hover {
+	box-shadow: 5px 5px 10px 10px rgb(179, 178, 178);
+}
+
+#paymentDoneDiv {
+	text-align: center;
+}
+.btn-paid-success {
+	border-radius: 1rem;
+	background-color: rgb(209, 235, 224);
+	margin-right: 10px;
+}
+
+.btn-receipt {
+	border-radius: 1rem;
+}
+
+#failureDiv {
+	text-align: center;
+}
+
+@media screen and (max-width: 52em) {
+	.booking-card-wrapper {
+		justify-content: center;
+	}
+}
+@media screen and (min-width: 52em) {
+	.booking-card-wrapper {
+		/* margin-inline: 50px; */
+		justify-content: center;
+	}
+}

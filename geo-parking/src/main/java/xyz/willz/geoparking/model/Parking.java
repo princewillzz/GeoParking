@@ -28,9 +28,12 @@ public class Parking {
 
     @Id
     @GeneratedValue
-    @Type(type="uuid-char")
+    @Type(type = "uuid-char")
     @Column(name = "uid", unique = true, nullable = false, updatable = false)
     private UUID uid;
+
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     private String latitude;

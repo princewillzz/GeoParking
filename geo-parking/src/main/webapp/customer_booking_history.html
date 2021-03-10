@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+    name="google-signin-client_id"
+    content="1093210577780-ck5jj6coeeoe5bfskh2v1c14undm0lq3.apps.googleusercontent.com"
+  />
+    <!-- Bootstrap CSS -->
+		<link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+  />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/customer_order_history.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <title>My booking history</title>
+    <body>
+
+      	<!-- Start Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+			<!-- <div class="mx-2">
+            <a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
+        </div> -->
+			<!-- Image and text -->
+			<a class="navbar-brand mx-4" href="/">
+				<img
+					src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
+					width="30"
+					height="30"
+					class="d-inline-block align-top"
+					alt=""
+				/>
+				Geo-Parking
+			</a>
+
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarTogglerDemo02"
+				aria-controls="navbarTogglerDemo02"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"></li>
+				</ul>
+
+				<ul class="navbar-nav justify-content-end mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="/"
+							>Home <span class="sr-only">(current)</span></a
+						>
+					</li>
+
+					<li
+						class="nav-item dropdown active"
+						id="navbarDropdownAuthenticated"
+						style="display: none"
+					>
+						<a
+							class="nav-link dropdown-toggle"
+							href="#"
+							id="navbarDropdownMenuLink"
+							data-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							My Profile
+						</a>
+						<div
+							class="dropdown-menu"
+							aria-labelledby="navbarDropdownMenuLink"
+						>
+							<button
+								type="button"
+								class="dropdown-item"
+								data-toggle="modal"
+								data-target="#EditProfileInfoModal"
+								style="cursor: pointer"
+							>
+								Edit Info
+							</button>
+							<a
+								class="dropdown-item"
+								href="/customer/my-bookings"
+								>My Bookings</a
+							>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/logout">Logout</a>
+						</div>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link active" href="/contact-us"
+							>Contact-us</a
+						>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/about">About</a>
+					</li>
+					<li class="nav-item active" id="navbarUnAuthenticated">
+						<a class="nav-link" href="/oauth2/authorization/google"
+							>Sign-in/up
+							<span class="sr-only">(current)</span></a
+						>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<!-- End of Navbar -->
+
+      
+     
+      <main class="">
+        <div class="booking-card-wrapper " id="bookingCardContainer">
+          
+        </div>
+      </main>
+        
+
+
+      	<!-- Profile Modal -->
+      <div
+        class="modal fade"
+        id="EditProfileInfoModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="EditProfileInfoModalTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5
+                class="modal-title"
+                id="exampleModalLongTitle"
+                style="margin-left: 35%"
+              >
+                Profile Info
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-4">
+                    <!-- First col -->
+                    <div
+                      class="userProfilePhoto profilePhoto"
+                    ></div>
+                  </div>
+                  <div class="col-7 ml-auto">
+                    <!-- Second Col -->
+
+                    <div>
+                      <div class="form-group">
+                        <label for="profileInfoFirstName"
+                          ><small
+                            >First Name</small
+                          ></label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="profileInfoFirstName"
+                          aria-describedby="emailHelp"
+                          placeholder="First Name"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="profileInfoLastName"
+                          ><small>Last Name</small></label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="profileInfoLastName"
+                          placeholder="Last Name"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <!-- Mobile Number change -->
+                <div class="row">
+                  <div class="col text-center">
+                    <label>Mobile No.</label>
+                    <input
+                      type="text"
+                      class="form-control w-75 mx-auto"
+                      id="profileInfoMobileNumber"
+                      placeholder="Mobile No."
+                    />
+                  </div>
+                </div>
+                <!-- Mobile Number change End -->
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary save-profile-btn"
+                onclick="updateProfileInfo()"
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                  style="display: none"
+                ></span>
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    
+    <script src="/js/customer_booking_history.js"></script>
+
+    <script
+			src="https://apis.google.com/js/platform.js"
+			async
+			defer
+		></script>
+
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+			integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+			crossorigin="anonymous"
+		></script>
+
+    <script src="/js/navbar.js"></script>
+  </body>
+</html>

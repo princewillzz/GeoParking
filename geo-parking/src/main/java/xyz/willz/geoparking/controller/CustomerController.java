@@ -9,7 +9,7 @@ public class CustomerController {
 
     @GetMapping(value = "/customer/my-bookings")
     public ModelAndView myBookingsView() {
-        return new ModelAndView("my-bookings");
+        return new ModelAndView("customer_booking_history");
     }
 
 }

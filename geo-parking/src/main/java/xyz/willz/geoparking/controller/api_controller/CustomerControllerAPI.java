@@ -53,11 +53,11 @@ public class CustomerControllerAPI {
     }
 
     @GetMapping(value = "/secured/my-bookings")
-    public List<Booking> getAllMyBookings() {
+    public ResponseEntity<List<BookingDTO>> getAllMyBookings() {
 
         var userDetails = (DefaultOidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return customerService.getAllBookingsForCustomer(new Customer(userDetails));
+        return ResponseEntity.ok().body(customerService.getAllBookingsForCustomer(new Customer(userDetails)));
 
     }
 

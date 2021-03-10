@@ -30,12 +30,12 @@ public class BookingDTO {
 
     @JsonProperty(value = "payment_id")
     private String razorpayPaymentId;
-    
+
     @JsonProperty(value = "signature")
     private String razorpaySignature;
 
     private boolean isPaymentDone;
 
-
+    private ParkingDTO parking;
 
 }

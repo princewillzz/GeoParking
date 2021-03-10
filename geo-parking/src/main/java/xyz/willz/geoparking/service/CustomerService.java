@@ -1,8 +1,8 @@
 package xyz.willz.geoparking.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,9 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import xyz.willz.geoparking.dao.CustomerRepository;
 import xyz.willz.geoparking.dto.BookingDTO;
 import xyz.willz.geoparking.dto.CustomerDTO;
+import xyz.willz.geoparking.dto.ParkingDTO;
+import xyz.willz.geoparking.mapper.BookingMapper;
 import xyz.willz.geoparking.mapper.CustomerMapper;
+import xyz.willz.geoparking.mapper.ParkingMapper;
 import xyz.willz.geoparking.model.Booking;
 import xyz.willz.geoparking.model.Customer;
+import xyz.willz.geoparking.model.Parking;
 
 @Service
 @Slf4j
@@ -81,9 +85,22 @@ public class CustomerService {
 
     }
 
-    public List<Booking> getAllBookingsForCustomer(final Customer customer) {
+    public List<BookingDTO> getAllBookingsForCustomer(final Customer customer) {
 
-        return applicationContext.getBean(BookingService.class).bookingsForCustomer(customer);
+        final List<Booking> listOfBookings = applicationContext.getBean(BookingService.class)
+                .bookingsForCustomer(customer);
+
+        final List<BookingDTO> listOfBookingDTOs = listOfBookings.stream().map(booking -> {
+            final BookingDTO bookingDTO = BookingMapper.INSTANCE.toBookingDTO(booking);
+
+            final ParkingDTO parkingDTO = ParkingMapper.INSTANCE.toParkingDTO(booking.getParking());
+
+            bookingDTO.setParking(parkingDTO);
+
+            return bookingDTO;
+        }).collect(Collectors.toList());
+
+        return listOfBookingDTOs;
     }
 
 }
