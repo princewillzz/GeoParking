@@ -29,6 +29,33 @@ setTimeout(() => {
 	xhr.send(null);
 }, 0);
 
+function sendTokenForMobileChange() {
+	const mobile = document.getElementById("profileInfoMobileNumber").value;
+
+	if (mobile.length < 10) {
+		alert("Enter valid mobile number...!");
+		return false;
+	}
+	updatingProfileSpinner(true);
+
+	const url = "/api/secured/customer/mobile/sendtoken?mobile=" + mobile;
+	const xhr = new XMLHttpRequest();
+	xhr.open("GET", url, true);
+
+	xhr.onreadystatechange = function () {
+		if (this.readyState === 4 && this.status === 200) {
+			updatingProfileSpinner(false);
+
+			alert("Verification token sent to your email...");
+		} else if (this.readyState === 4) {
+			updatingProfileSpinner(false);
+			alert("Check your Info...!");
+		}
+	};
+
+	xhr.send();
+}
+
 // update profile Info
 function updateProfileInfo() {
 	const modal = document.getElementById("EditProfileInfoModal");

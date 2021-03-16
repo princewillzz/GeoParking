@@ -41,8 +41,20 @@
 }
 
 /* Edit profile modal css */
+
+.profilePhotoContainer {
+	cursor: pointer;
+}
+
+.profilePhotoContainer:hover > .profilePhoto {
+	opacity: 0.4;
+}
+.profilePhotoContainer:hover > #cameraIconSvg {
+	display: block;
+}
+
 .userProfilePhoto {
-	display: inline-block;
+	display: relative;
 	width: 150px;
 	height: 150px;
 	border-radius: 50%;
@@ -52,5 +64,19 @@
 	background-size: cover;
 }
 .profilePhoto {
+	/* position: relative; */
+	/* cursor: pointer; */
 	background-image: url("http://placehold.it/400x200");
+	/* text-align: center; */
+}
+
+#cameraIconSvg {
+	display: none;
+	position: absolute;
+	font-size: 50px;
+	align-self: center;
+	z-index: 100;
+	padding-top: 40px;
+	padding-left: 50px;
+	/* cursor: pointer; */
 }

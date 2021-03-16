@@ -26,3 +26,16 @@ spring:
                     google:
                         clientId: 1093210577780-ck5jj6coeeoe5bfskh2v1c14undm0lq3.apps.googleusercontent.com
                         clientSecret: ZE2bEntLWK2otwmVIuehZRNx
+
+    mail:
+        protocol: smtp
+        host: smtp.gmail.com
+        port: 587
+        username: nishiganu22@gmail.com
+        password: vrbjxmryehadjplr
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true

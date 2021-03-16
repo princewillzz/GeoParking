@@ -27,4 +27,6 @@ public class ParkingDTO {
 
     private long noOfTimesBooked;
 
+    private double hourlyRate;
+
 }

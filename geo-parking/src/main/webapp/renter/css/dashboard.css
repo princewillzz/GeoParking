@@ -6,3 +6,37 @@ body {
 	padding: 0;
 	margin: 0;
 }
+
+.parkingImageCard .carousel img {
+	height: 300px;
+}
+
+.parkingCard {
+	margin-bottom: 1rem;
+	box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+	transition: 0.3s all;
+	border: 2px solid #fff;
+	border-radius: 10px;
+	width: 30rem;
+}
+
+.parkingCard:hover {
+	transform: scale(1.02);
+}
+
+@media only screen and (max-width: 1100px) {
+	.parkingCard {
+		margin-left: 50%;
+		width: 20rem;
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	.parkingCard {
+		left: 5%;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+}

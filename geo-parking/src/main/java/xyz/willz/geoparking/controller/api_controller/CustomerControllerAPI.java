@@ -9,16 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.willz.geoparking.dto.BookingDTO;
 import xyz.willz.geoparking.dto.CustomerDTO;
-import xyz.willz.geoparking.model.Booking;
 import xyz.willz.geoparking.model.Customer;
 import xyz.willz.geoparking.service.CustomerService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/")
@@ -59,6 +58,19 @@ public class CustomerControllerAPI {
 
         return ResponseEntity.ok().body(customerService.getAllBookingsForCustomer(new Customer(userDetails)));
 
+    }
+
+    @GetMapping("/secured/customer/mobile/sendtoken")
+    public ResponseEntity<?> sendTokenToMail(@RequestParam(value = "mobile", required = true) String mobile) {
+
+        System.out.println(mobile);
+
+        final DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        customerService.sendtokenToUpdateMobile(principal.getSubject(), mobile);
+
+        return ResponseEntity.ok().build();
     }
 
 }

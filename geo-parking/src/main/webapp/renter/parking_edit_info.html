@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Geo-parking</title>
+
+		<link rel="stylesheet" href="/css/fontawesome/css/all.css" />
+
+		<!-- CSS only -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="/renter/css/parking_edit_info.css" />
+	</head>
+	<body>
+		<main class="my-3 py-3 mx-auto">
+			<div class="m-3 py-3">
+				<ul class="images" id="parkingImagesContainer">
+					<li>
+						<i class="fas fa-trash-alt"></i>
+						<img src="/image/img1.svg" alt="" srcset="" />
+					</li>
+					<li>
+						<i class="fas fa-trash-alt"></i>
+						<img src="/image/img1.svg" alt="" srcset="" />
+					</li>
+					<li>
+						<i class="fas fa-trash-alt"></i>
+						<img src="/image/img1.svg" alt="" srcset="" />
+					</li>
+				</ul>
+				<div>
+					<button
+						id="uploadParkingImageBtn"
+						type="button"
+						class="btn btn-success"
+					>
+						Upload
+					</button>
+				</div>
+			</div>
+
+			<div class="container text-center">
+				<div class="parking-form-container">
+					<h2>Edit Parking Details</h2>
+					<form
+						id="parkingForm"
+						action="/renter/parking/update"
+						method="POST"
+					>
+						<input type="text" id="parkingIdInput" hidden />
+						<div class="form-group">
+							<label for="parkingNameInput">Parking name</label>
+							<input
+								type="text"
+								class="form-control"
+								id="parkingNameInput"
+								placeholder="Parking Name"
+							/>
+						</div>
+						<div class="form-group">
+							<label for="parkingAddressInput"
+								>Full Address</label
+							>
+							<textarea
+								class="form-control"
+								id="parkingAddressInput"
+								rows="3"
+							></textarea>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<label for="parkingTotalInput">Total</label>
+									<input
+										type="number"
+										class="form-control"
+										id="parkingTotalInput"
+										placeholder="Total"
+									/>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label for="parkingOccupiedInput"
+										>Occupied</label
+									>
+									<input
+										type="number"
+										class="form-control"
+										id="parkingOccupiedInput"
+										placeholder="Occupied"
+									/>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<label for="parkingVacantInput"
+										>Vacant</label
+									>
+									<input
+										type="number"
+										class="form-control"
+										id="parkingVacantInput"
+										placeholder="Vacant"
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="parkingHourlyRateInput"
+								>Hourly Rate</label
+							>
+							<input
+								class="form-control w-50 mx-auto"
+								id="parkingHourlyRateInput"
+								type="number"
+								placeholder="Hourly rate"
+							/>
+						</div>
+
+						<div class="my-3">
+							<button class="btn btn-primary m-3" type="submit">
+								Save
+							</button>
+							<button class="btn btn-danger m-3" type="button">
+								delete
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</main>
+
+		<!-- <script src="./js/update_parking.js"></script> -->
+		<script src="/renter/js/update_parking.js"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

@@ -1,6 +1,9 @@
 package xyz.willz.geoparking.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.willz.geoparking.dao.CustomerRepository;
+import xyz.willz.geoparking.dao.UserMobileUpdateTokenRepository;
 import xyz.willz.geoparking.dto.BookingDTO;
 import xyz.willz.geoparking.dto.CustomerDTO;
 import xyz.willz.geoparking.dto.ParkingDTO;
@@ -22,6 +26,7 @@ import xyz.willz.geoparking.mapper.ParkingMapper;
 import xyz.willz.geoparking.model.Booking;
 import xyz.willz.geoparking.model.Customer;
 import xyz.willz.geoparking.model.Parking;
+import xyz.willz.geoparking.model.UserMobileUpdateToken;
 
 @Service
 @Slf4j
@@ -30,10 +35,13 @@ import xyz.willz.geoparking.model.Parking;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final UserMobileUpdateTokenRepository userMobileUpdateTokenRepository;
 
     private final CustomerMapper customerMapper;
 
     private final ApplicationContext applicationContext;
+
+    private final MailService mailService;
 
     @Transactional(readOnly = true)
     public Customer getCustomer(final String id) throws UsernameNotFoundException {
@@ -101,6 +109,53 @@ public class CustomerService {
         }).collect(Collectors.toList());
 
         return listOfBookingDTOs;
+    }
+
+    public void sendtokenToUpdateMobile(final String customerId, String mobile) {
+
+        final Customer customer = this.getCustomer(customerId);
+
+        String token = this.saveTokenToUpdateUserMobile(customer, mobile);
+
+        final StringBuffer body = new StringBuffer()
+
+                .append("<html><body><a>http://localhost:8080/customer/update?mobile=").append(mobile)
+                .append("&&token=").append(token).append("</a>").append("<h2>Click on the link to update mobile</h2>")
+                .append("</body></html>");
+
+        mailService.sendEmail(customer.getEmail(), "Geo Parking update mobile", body.toString());
+
+    }
+
+    @Transactional
+    private String saveTokenToUpdateUserMobile(final Customer customer, final String mobile) {
+        final UserMobileUpdateToken token = new UserMobileUpdateToken();
+        token.setCustomer(customer);
+        token.setMobile(mobile);
+
+        return userMobileUpdateTokenRepository.save(token).getId().toString();
+
+    }
+
+    @Transactional
+    public Customer updateCustomerMobile(final String customerId, final String token, final String mobile) {
+
+        final UserMobileUpdateToken tokenEntity = userMobileUpdateTokenRepository.findById(UUID.fromString(token))
+                .orElseThrow();
+
+        if (tokenEntity.getExpirationTime().before(new Date(System.currentTimeMillis()))) {
+            throw new RuntimeException("Token Expired");
+        }
+
+        final Customer customer = tokenEntity.getCustomer();
+
+        if (customer.getId().equals(customerId) && tokenEntity.getMobile().equals(mobile)) {
+            customer.setMobile(mobile);
+        } else {
+            throw new RuntimeException("Tampered url");
+        }
+
+        return customer;
     }
 
 }
