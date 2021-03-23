@@ -1,0 +1,127 @@
+import {
+	Divider,
+	IconButton,
+	InputBase,
+	makeStyles,
+	Paper,
+} from "@material-ui/core";
+import { RestoreOutlined, SearchOutlined } from "@material-ui/icons";
+import React, { useState } from "react";
+import BookSlotModal from "../book-slot-modal/BookSlotModal";
+import ParkingCard from "../parking-card/ParkingCard";
+import "./SearchParking.css";
+
+const searchBarStyle = makeStyles((theme) => ({
+	root: {
+		padding: "2px 4px",
+		display: "flex",
+		alignItems: "center",
+		width: "min(400px, 80vw)",
+	},
+	input: {
+		marginLeft: theme.spacing(1),
+		flex: 1,
+	},
+	iconButton: {
+		padding: 10,
+	},
+	divider: {
+		height: 28,
+		margin: 4,
+	},
+}));
+
+// const parkingCardContainerStyle = makeStyles((theme) => ({
+// 	root: {
+// 		flexGrow: 1,
+// 		maxWidth: 400,
+// 	},
+// 	paper: {
+// 		padding: theme.spacing(2),
+// 		textAlign: "center",
+// 		color: theme.palette.text.secondary,
+// 	},
+// }));
+
+export default function SearchParking() {
+	const searchBarClasses = searchBarStyle();
+	// const parkingCardContainerClasses = parkingCardContainerStyle();
+
+	// styling state values
+	const [isSearchElevated, setIsSearchElevated] = useState(false);
+
+	// State values
+	const [searchParkingString, setSearchParkingString] = useState("");
+
+	const handleSearchParking = () => {
+		console.log(searchParkingString);
+	};
+
+	const [openBookSlotModal, setOpenBookSlotModal] = useState(false);
+	const handleOpenBookSlotModal = () => {
+		setOpenBookSlotModal(true);
+	};
+
+	const handleCloseBookSlotModal = () => {
+		setOpenBookSlotModal(false);
+	};
+
+	return (
+		<>
+			<h1 style={{ textAlign: "center", fontWeight: 400, marginTop: 50 }}>
+				Parkings
+			</h1>
+
+			<div className="parkingSearchContainer">
+				<IconButton type="button">
+					<RestoreOutlined />
+				</IconButton>
+
+				<Paper
+					onMouseOver={() => setIsSearchElevated(true)}
+					onMouseLeave={() => setIsSearchElevated(false)}
+					elevation={isSearchElevated ? 4 : 1}
+					onSubmit={handleSearchParking}
+					component="form"
+					className={searchBarClasses.root}
+				>
+					<InputBase
+						value={searchParkingString}
+						onChange={(e) => setSearchParkingString(e.target.value)}
+						className={searchBarClasses.input}
+						placeholder="Search Parkings"
+						inputProps={{ "aria-label": "search parkings" }}
+					/>
+
+					<IconButton
+						type="submit"
+						className={searchBarClasses.iconButton}
+						aria-label="search"
+					>
+						<SearchOutlined />
+					</IconButton>
+					<Divider
+						className={searchBarClasses.divider}
+						orientation="vertical"
+					/>
+				</Paper>
+			</div>
+			<div className="parkingsFetched">
+				<ParkingCard
+					handleOpenBookSlotModal={handleOpenBookSlotModal}
+				/>
+				{/* <ParkingCard />
+				<ParkingCard />
+				<ParkingCard />
+				<ParkingCard /> */}
+			</div>
+
+			<BookSlotModal
+				openBookSlotModal={openBookSlotModal}
+				handleCloseBookSlotModal={handleCloseBookSlotModal}
+			/>
+
+			<hr style={{ width: "80%" }} />
+		</>
+	);
+}

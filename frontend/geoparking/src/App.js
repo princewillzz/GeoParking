@@ -1,13 +1,11 @@
+import React from "react";
 import "./App.css";
-
-import { Button } from "@material-ui/core";
+import Home from "./pages/Home";
 
 function App() {
 	return (
 		<>
-			<Button variant="contained" color="secondary">
-				Hello
-			</Button>
+			<Home />
 		</>
 	);
 }
