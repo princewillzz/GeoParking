@@ -1,0 +1,27 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: API-GATEWAY
+    # cloud:
+    #     gateway:
+    #         routes:
+    #             - id: common-service
+    #               uri: lb://common-service
+    #               predicates:
+    #                   - Path=/**
+    #               filters:
+    #                   - name: CircuitBreakerConfiguration
+    #                     args:
+    #                         name: myCircuitBreaker
+    #                         fallbackuri: forward:/commonServiceFallBack
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            default-zone: http://localhost:8761/eureka
+    instance:
+        hostname: localhost
