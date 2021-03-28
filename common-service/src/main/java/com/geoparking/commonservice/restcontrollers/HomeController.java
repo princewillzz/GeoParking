@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping
     public String test() {
-        return "public: private: admin";
+        return "public: user: admin";
     }
 
     @GetMapping(value = "public")
@@ -16,12 +16,12 @@ public class HomeController {
         return "Public";
     }
 
-    @GetMapping(value = "private")
+    @GetMapping(value = "/auth/user")
     public String privatetest() {
-        return "private";
+        return "user";
     }
 
-    @GetMapping(value = "admin")
+    @GetMapping(value = "/auth/admin")
     public String admintest() {
         return "admin";
     }

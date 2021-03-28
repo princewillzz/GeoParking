@@ -18,9 +18,14 @@ public class GatewayConfig {
 
     @Bean
     public RouteLocator myRouter(RouteLocatorBuilder routeLocatorBuilder) {
-        return routeLocatorBuilder.routes().route(p -> p.path("/**").filters(
-                f -> f.circuitBreaker(c -> c.setName("myCircuitBreaker").setFallbackUri("/commonServiceFallBack")))
-                .uri("lb://common-service")).build();
+        return routeLocatorBuilder.routes()
+                .route(p -> p.path("/auth/**")
+                        .uri("lb://profile-service"))
+                .route(p -> p.path("/**")
+                        .filters(f -> f.circuitBreaker(
+                                c -> c.setName("commonServiceCircuitBreaker").setFallbackUri("/commonServiceFallBack")))
+                        .uri("lb://common-service"))
+                .build();
     }
 
     @Bean
@@ -28,7 +33,8 @@ public class GatewayConfig {
 
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
                 .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
-                .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(4)).build()).build());
+                .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(4)).build())
+                .build());
     }
 
 }
