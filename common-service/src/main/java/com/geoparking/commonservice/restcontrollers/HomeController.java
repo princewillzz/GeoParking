@@ -1,6 +1,7 @@
 package com.geoparking.commonservice.restcontrollers;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -11,17 +12,12 @@ public class HomeController {
         return "public: user: admin";
     }
 
-    @GetMapping(value = "public")
-    public String publictest() {
-        return "Public";
-    }
-
-    @GetMapping(value = "/auth/user")
-    public String privatetest() {
+    @GetMapping(value = "user")
+    public String usertest() {
         return "user";
     }
 
-    @GetMapping(value = "/auth/admin")
+    @GetMapping(value = "admin")
     public String admintest() {
         return "admin";
     }

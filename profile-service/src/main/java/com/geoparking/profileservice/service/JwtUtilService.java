@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ public class JwtUtilService {
     }
 
     private Claims extractAllClaims(String token) {
+        System.out.println("Extracting claims: " + SECRET_KEY + " " + token);
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
@@ -41,7 +44,9 @@ public class JwtUtilService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-//        claims.put("role", user)
+        claims.put("authorities", userDetails.getAuthorities()
+                                    .stream().map(GrantedAuthority::getAuthority)
+                                    .collect(Collectors.toList()));
 
         return createToken(claims, userDetails.getUsername());
 

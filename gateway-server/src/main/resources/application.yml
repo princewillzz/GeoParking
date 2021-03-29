@@ -4,18 +4,6 @@ server:
 spring:
     application:
         name: API-GATEWAY
-    # cloud:
-    #     gateway:
-    #         routes:
-    #             - id: common-service
-    #               uri: lb://common-service
-    #               predicates:
-    #                   - Path=/**
-    #               filters:
-    #                   - name: CircuitBreakerConfiguration
-    #                     args:
-    #                         name: myCircuitBreaker
-    #                         fallbackuri: forward:/commonServiceFallBack
 
 eureka:
     client:

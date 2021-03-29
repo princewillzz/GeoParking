@@ -28,20 +28,20 @@ public class ProfileController {
     @Autowired
     private JwtUtilService jwtUtilService;
 
-//    @GetMapping("/auth/hello")
-//    public String hello() {
-//        return "Hello world";
-//    }
+    @GetMapping("/auth/hello")
+    public String hello() {
+        return "Hello world";
+    }
 
-//    @GetMapping("/auth/user")
-//    public String user() {
-//        return "user profile in profile service";
-//    }
-//
-//    @GetMapping("/auth/admin")
-//    public String admin() {
-//        return "admin profile in profile service";
-//    }
+    @GetMapping("/auth/user")
+    public String user() {
+        return "user profile in profile service";
+    }
+
+    @GetMapping("/auth/admin")
+    public String admin() {
+        return "admin profile in profile service";
+    }
 
 
     @PostMapping("/auth/authenticate")
