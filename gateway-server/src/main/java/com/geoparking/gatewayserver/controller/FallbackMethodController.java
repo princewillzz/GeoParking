@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/fallback")
 public class FallbackMethodController {
 
-    @RequestMapping(value = "/commonServiceFallBack", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "/common-service", method = { RequestMethod.GET, RequestMethod.POST })
     public String commonServiceFallBackMethod() {
         return "Common Service is down please Try later...!";
     }
