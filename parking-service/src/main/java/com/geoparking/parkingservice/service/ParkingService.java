@@ -49,6 +49,23 @@ public class ParkingService {
         return parkingRepository.findAll();
     }
 
+    /**
+     * retrive parking with activity status
+     * 
+     * @param status active status
+     * @return list of parking dto
+     */
+    public List<ParkingDTO> getAllParkingsWithStatus(final boolean status) {
+        return fetchAllWithStatusFromDatabase(status).parallelStream().map(parkingMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // database query
+    @Transactional(readOnly = true)
+    private List<Parking> fetchAllWithStatusFromDatabase(final boolean status) {
+        return parkingRepository.findByActive(status);
+    }
+
     // Get a parking
     public ParkingDTO getParking(final String parkingId) throws NoSuchElementException {
         return parkingMapper.toDTO(fetchPakringWithIdFromDatabase(parkingId));
@@ -110,7 +127,7 @@ public class ParkingService {
         // Generic validation
         validateParkingEntity(parkingToUpdate);
 
-        return parkingMapper.toDTO(parkingRepository.save(parkingToUpdate));
+        return parkingMapper.toDTO(saveParkingToDatabase(parkingToUpdate));
 
     }
 
@@ -130,6 +147,17 @@ public class ParkingService {
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
+    }
+
+    // Delete a parking
+    @Transactional
+    public void deleteParkingWithId(final String parkingId) {
+
+        final Parking parking = fetchPakringWithIdFromDatabase(parkingId);
+        parking.setActive(false);
+
+        saveParkingToDatabase(parking);
+
     }
 
 }

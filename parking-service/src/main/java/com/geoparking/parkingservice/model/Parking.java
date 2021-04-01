@@ -28,4 +28,6 @@ public class Parking {
     @NotNull(message = "cannot be null")
     private Double hourlyRent;
 
+    private boolean active = true;
+
 }
