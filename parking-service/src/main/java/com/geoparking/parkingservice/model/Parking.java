@@ -1,7 +1,11 @@
 package com.geoparking.parkingservice.model;
 
-
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,9 +15,17 @@ public class Parking {
 
     @Id
     private String id;
-    private String name;
-    private String address;
-    private String hourlyRent;
 
+    @NotNull
+    @NotBlank
+    private String name;
+
+    @NotNull
+    @NotBlank
+    @Size(min = 10)
+    private String address;
+
+    @NotNull
+    private String hourlyRent;
 
 }
