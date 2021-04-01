@@ -16,16 +16,16 @@ public class Parking {
     @Id
     private String id;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "cannot be null")
+    @NotBlank(message = "cannot be blank")
     private String name;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 10)
+    @NotNull(message = "cannot be null")
+    @NotBlank(message = "cannot be blank")
+    @Size(min = 5, max = 300)
     private String address;
 
-    @NotNull
-    private String hourlyRent;
+    @NotNull(message = "cannot be null")
+    private Double hourlyRent;
 
 }

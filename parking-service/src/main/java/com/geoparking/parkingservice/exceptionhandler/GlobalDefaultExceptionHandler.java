@@ -1,4 +1,4 @@
-package com.geoparking.parkingservice.handler;
+package com.geoparking.parkingservice.exceptionhandler;
 
 import com.geoparking.parkingservice.Exception.InvalidParkingAddressException;
 

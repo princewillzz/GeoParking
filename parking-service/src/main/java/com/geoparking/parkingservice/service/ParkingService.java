@@ -5,7 +5,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
 
 import com.geoparking.parkingservice.Exception.InvalidParkingAddressException;
 import com.geoparking.parkingservice.dto.ParkingDTO;
@@ -18,10 +20,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
-
-//import com.geoparking.parkingservice.mapper.ParkingMapper;
 
 @Service
 @Qualifier("parkingService")
@@ -37,27 +38,45 @@ public class ParkingService {
         this.parkingMapper = parkingMapper;
     }
 
-    // Get all parkings list
+    // Get all parking from the database then covert it to dto
     public List<ParkingDTO> getAllParkings() {
-        return parkingRepository.findAll().stream().map(parkingMapper::toDTO).collect(Collectors.toList());
+        return fetchAllparkingFromDatabase().stream().map(parkingMapper::toDTO).collect(Collectors.toList());
+    }
+
+    // get all parking from the database
+    @Transactional(readOnly = true)
+    private List<Parking> fetchAllparkingFromDatabase() {
+        return parkingRepository.findAll();
     }
 
     // Get a parking
     public ParkingDTO getParking(final String parkingId) throws NoSuchElementException {
-        return parkingMapper.toDTO(parkingRepository.findById(parkingId).orElseThrow());
+        return parkingMapper.toDTO(fetchPakringWithIdFromDatabase(parkingId));
     }
 
-    // Add a parking
-    public ParkingDTO createParking(final ParkingDTO parkingDTO) {
+    // get the parking Entity from the database
+    @Transactional(readOnly = true)
+    private Parking fetchPakringWithIdFromDatabase(final String parkingId) throws NoSuchElementException {
+        return parkingRepository.findById(parkingId).orElseThrow();
+    }
+
+    // Add a parking to the database then return its dto
+    public ParkingDTO createParking(final ParkingDTO parkingDTO) throws ConstraintViolationException {
 
         log.info("Saving a new parking info in the database");
 
         final Parking parking = parkingMapper.toEntity(parkingDTO);
 
-        return parkingMapper.toDTO(parkingRepository.save(parking));
+        return parkingMapper.toDTO(saveParkingToDatabase(parking));
     }
 
-    // Search List of Parkings based on the address provided
+    @Transactional
+    private Parking saveParkingToDatabase(final Parking parking) {
+        validateParkingEntity(parking);
+        return parkingRepository.save(parking);
+    }
+
+    // Search List of Parkings based on the address provided then convert into dto
     public Set<ParkingDTO> fetchParkingsWithAddress(final String address) {
 
         // address must not be blanck and must be of length greater than 3
@@ -67,9 +86,50 @@ public class ParkingService {
 
         final Pageable pageable = PageRequest.of(0, 20);
 
-        return parkingRepository.findBySimiliarAddress(address, pageable).stream().map(parkingMapper::toDTO)
+        return fetchParkingsSimiliarToAddressFromDatabase(address, pageable).stream().map(parkingMapper::toDTO)
                 .collect(Collectors.toSet());
 
+    }
+
+    // Fetch similiar address parking data from the database
+    private List<Parking> fetchParkingsSimiliarToAddressFromDatabase(final String address, final Pageable pageable) {
+        return parkingRepository.findBySimiliarAddress(address, pageable);
+    }
+
+    @Transactional
+    public ParkingDTO updateParkingInfo(ParkingDTO parkingDTO)
+            throws ConstraintViolationException, IllegalStateException {
+
+        if (parkingDTO.getId() == null)
+            throw new IllegalStateException("Insufficient data...");
+
+        final Parking parkingToUpdate = fetchPakringWithIdFromDatabase(parkingDTO.getId());
+
+        setFieldsToUpdate(parkingToUpdate, parkingDTO);
+
+        // Generic validation
+        validateParkingEntity(parkingToUpdate);
+
+        return parkingMapper.toDTO(parkingRepository.save(parkingToUpdate));
+
+    }
+
+    // Change the field that can be updated
+    private void setFieldsToUpdate(final Parking parking, final ParkingDTO parkingDTO) {
+
+        parking.setAddress(parkingDTO.getAddress());
+        parking.setHourlyRent(parkingDTO.getHourlyRent());
+        parking.setName(parkingDTO.getName());
+
+    }
+
+    // Validate parking entity absed on the constaint provided in the parking entity
+    private void validateParkingEntity(final Parking parking) throws ConstraintViolationException {
+        Set<ConstraintViolation<Parking>> violations = Validation.buildDefaultValidatorFactory().getValidator()
+                .validate(parking);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
     }
 
 }
