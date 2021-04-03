@@ -7,7 +7,9 @@ import {
 	TextField,
 } from "@material-ui/core";
 import { CheckCircleOutlineRounded, Close } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../authentication/ProvideAuth";
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -88,8 +90,31 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function BookSlotModal({ openBookSlotModal, handleCloseBookSlotModal }) {
+function BookSlotModal({
+	openBookSlotModal,
+	handleCloseBookSlotModal,
+	selectedParkingId,
+}) {
 	const classes = useStyles();
+
+	const auth = useAuth();
+
+	// Reset or initialize state on modal different parking selection
+	useEffect(() => {
+		setIsParkingAvailableForBooking(false);
+	}, [selectedParkingId]);
+
+	const [
+		isParkingAvailableForBooking,
+		setIsParkingAvailableForBooking,
+	] = useState(false);
+
+	// TODO-----------
+	// handle if the parking is available for booking
+	const handleCheckIsParkingAvailable = () => {
+		//  to be completed for with api calls
+		setIsParkingAvailableForBooking(true);
+	};
 
 	return (
 		<Modal
@@ -103,11 +128,13 @@ function BookSlotModal({ openBookSlotModal, handleCloseBookSlotModal }) {
 			<div className={classes.paper}>
 				<div className={classes.modalHeader} id="book-slot-modal-title">
 					<h5 className={classes.modalTitle}>
-						Check Availability
-						<CheckCircleOutlineRounded
-							color="primary"
-							style={{ color: "green", marginInline: 5 }}
-						/>
+						Check Availability parkingId--{selectedParkingId}
+						{isParkingAvailableForBooking && (
+							<CheckCircleOutlineRounded
+								color="primary"
+								style={{ color: "green", marginInline: 5 }}
+							/>
+						)}
 					</h5>
 					<Close
 						onClick={handleCloseBookSlotModal}
@@ -158,14 +185,33 @@ function BookSlotModal({ openBookSlotModal, handleCloseBookSlotModal }) {
 					</Container>
 				</div>
 				<div className={classes.modalFooter}>
+					<>
+						{isParkingAvailableForBooking &&
+							(!auth.isUserLoggedIn ? (
+								<Link
+									to="/login"
+									style={{ textDecoration: "none" }}
+								>
+									<Button
+										variant="outlined"
+										color="secondary"
+									>
+										Login To Book
+									</Button>
+								</Link>
+							) : (
+								<Button
+									className={classes.modalSuccessBtn}
+									color="primary"
+									variant="contained"
+								>
+									Pay to Book
+								</Button>
+							))}
+					</>
+
 					<Button
-						className={classes.modalSuccessBtn}
-						color="primary"
-						variant="contained"
-					>
-						Pay to Book
-					</Button>
-					<Button
+						onClick={handleCheckIsParkingAvailable}
 						className={classes.modalPrimarybtn}
 						color="primary"
 						variant="contained"

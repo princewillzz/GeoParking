@@ -47,6 +47,11 @@ export default function SearchParking() {
 	const searchBarClasses = searchBarStyle();
 	// const parkingCardContainerClasses = parkingCardContainerStyle();
 
+	// Selected parking's id for modal
+	const [selectedParkingIdForModal, setSelectedParkingIdForModal] = useState(
+		null
+	);
+
 	// styling state values
 	const [isSearchElevated, setIsSearchElevated] = useState(false);
 
@@ -58,7 +63,8 @@ export default function SearchParking() {
 	};
 
 	const [openBookSlotModal, setOpenBookSlotModal] = useState(false);
-	const handleOpenBookSlotModal = () => {
+	const handleOpenBookSlotModal = (selectedParkingIdForModal) => {
+		setSelectedParkingIdForModal(selectedParkingIdForModal);
 		setOpenBookSlotModal(true);
 	};
 
@@ -109,6 +115,19 @@ export default function SearchParking() {
 			<div className="parkingsFetched">
 				<ParkingCard
 					handleOpenBookSlotModal={handleOpenBookSlotModal}
+					parkingData={{
+						id: 12,
+						name: "manberia parking",
+						location: "location fuck",
+					}}
+				/>
+				<ParkingCard
+					handleOpenBookSlotModal={handleOpenBookSlotModal}
+					parkingData={{
+						id: 1234213,
+						name: "manberia",
+						location: "2121212 fuck",
+					}}
 				/>
 				{/* <ParkingCard />
 				<ParkingCard />
@@ -117,6 +136,7 @@ export default function SearchParking() {
 			</div>
 
 			<BookSlotModal
+				selectedParkingId={selectedParkingIdForModal}
 				openBookSlotModal={openBookSlotModal}
 				handleCloseBookSlotModal={handleCloseBookSlotModal}
 			/>

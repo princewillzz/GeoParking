@@ -13,8 +13,13 @@ import MailIcon from "@material-ui/icons/Mail";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SearchIcon from "@material-ui/icons/Search";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../logo.svg";
+
+import { checkUserAuth } from "../../api/check-user-auth";
+import { Button } from "@material-ui/core";
+import { Link, useHistory } from "react-router-dom";
+import { useAuth } from "../../authentication/ProvideAuth";
 
 const useStyles = makeStyles((theme) => ({
 	offset: theme.mixins.toolbar,
@@ -82,6 +87,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+	const auth = useAuth();
+	const history = useHistory();
+
+	const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+	useEffect(() => {
+		console.log(auth);
+		setIsUserAuthenticated(
+			() => auth.isUserLoggedIn || auth.isAdminLoggedIn
+		);
+	});
+
+	const logoutCallback = () => {
+		history.push("/");
+		setIsUserAuthenticated(false);
+	};
+
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -163,6 +185,10 @@ export default function PrimarySearchAppBar() {
 				</IconButton>
 				<p>Profile</p>
 			</MenuItem>
+			<hr style={{ width: "80%" }} />
+			<MenuItem>
+				<LogoutBtn signout={() => auth.signout(logoutCallback)} />
+			</MenuItem>
 		</Menu>
 	);
 
@@ -175,11 +201,17 @@ export default function PrimarySearchAppBar() {
 						className={classes.menuButton}
 						color="inherit"
 						aria-label="open drawer"
+						onClick={() => history.push("/")}
 					>
 						<img height="40px" src={logo} alt="Logo" />
 					</IconButton>
 					<Typography className={classes.title} variant="h6" noWrap>
-						GeoParking
+						<Link
+							to="/"
+							style={{ textDecoration: "none", color: "white" }}
+						>
+							GeoParking
+						</Link>
 					</Typography>
 					<div className={classes.search}>
 						<div className={classes.searchIcon}>
@@ -195,50 +227,75 @@ export default function PrimarySearchAppBar() {
 						/>
 					</div>
 					<div className={classes.grow} />
-					<div className={classes.sectionDesktop}>
-						<IconButton
-							aria-label="show 4 new mails"
-							color="inherit"
-						>
-							<Badge badgeContent={4} color="secondary">
-								<ReceiptOutlined />
-							</Badge>
-						</IconButton>
-						<IconButton
-							aria-label="show 17 new notifications"
-							color="inherit"
-						>
-							<Badge badgeContent={17} color="secondary">
-								<NotificationsIcon />
-							</Badge>
-						</IconButton>
-						<IconButton
-							edge="end"
-							aria-label="account of current user"
-							aria-controls={menuId}
-							aria-haspopup="true"
-							onClick={handleProfileMenuOpen}
-							color="inherit"
-						>
-							<AccountCircle />
-						</IconButton>
-					</div>
-					<div className={classes.sectionMobile}>
-						<IconButton
-							aria-label="show more"
-							aria-controls={mobileMenuId}
-							aria-haspopup="true"
-							onClick={handleMobileMenuOpen}
-							color="inherit"
-						>
-							<MoreIcon />
-						</IconButton>
-					</div>
+
+					{!isUserAuthenticated ? (
+						<Link to="/login" style={{ textDecoration: "none" }}>
+							<Button variant={"contained"}>Login</Button>
+						</Link>
+					) : (
+						<>
+							<div className={classes.sectionDesktop}>
+								<IconButton
+									aria-label="show 4 new mails"
+									color="inherit"
+								>
+									<Badge badgeContent={4} color="secondary">
+										<ReceiptOutlined />
+									</Badge>
+								</IconButton>
+								<IconButton
+									aria-label="show 17 new notifications"
+									color="inherit"
+								>
+									<Badge badgeContent={17} color="secondary">
+										<NotificationsIcon />
+									</Badge>
+								</IconButton>
+								<IconButton
+									edge="end"
+									aria-label="account of current user"
+									aria-controls={menuId}
+									aria-haspopup="true"
+									onClick={handleProfileMenuOpen}
+									color="inherit"
+								>
+									<AccountCircle />
+								</IconButton>
+								<LogoutBtn
+									signout={() => auth.signout(logoutCallback)}
+								/>
+							</div>
+							<div className={classes.sectionMobile}>
+								<IconButton
+									aria-label="show more"
+									aria-controls={mobileMenuId}
+									aria-haspopup="true"
+									onClick={handleMobileMenuOpen}
+									color="inherit"
+								>
+									<MoreIcon />
+								</IconButton>
+							</div>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 			{renderMobileMenu}
 			{renderMenu}
 			<div className={classes.offset} />
 		</div>
+	);
+}
+
+function LogoutBtn({ signout }) {
+	return (
+		<Button
+			onClick={() => signout()}
+			variant="contained"
+			color="secondary"
+			style={{ marginLeft: 20 }}
+		>
+			Logout
+		</Button>
 	);
 }

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ParkingCard({ handleOpenBookSlotModal }) {
+export default function ParkingCard({ handleOpenBookSlotModal, parkingData }) {
 	const classes = useStyles();
 
 	const [isRaised, setIsRaised] = useState(false);
@@ -52,15 +52,12 @@ export default function ParkingCard({ handleOpenBookSlotModal }) {
 				<div className={classes.details}>
 					<CardContent className={classes.content}>
 						<Typography component="h5" variant="h5">
-							Parking Name
+							{parkingData.name}
 						</Typography>
 						<Typography variant="subtitle1" color="textSecondary">
 							Asansol
 						</Typography>
-						<Typography>
-							manberia, Barakar, Kulti, Asansol, West
-							bengal-713324, India, Bangladesh lorem loremloremlo
-						</Typography>
+						<Typography>{parkingData.location}</Typography>
 
 						<Box
 							display={"flex"}
@@ -72,7 +69,9 @@ export default function ParkingCard({ handleOpenBookSlotModal }) {
 								style={{ marginInline: 10 }}
 								variant="contained"
 								color="primary"
-								onClick={handleOpenBookSlotModal}
+								onClick={() =>
+									handleOpenBookSlotModal(parkingData.id)
+								}
 							>
 								Book Spot
 							</Button>
