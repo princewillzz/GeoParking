@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { checkUserAuth } from "../api/check-user-auth";
 
 const fakeAuth = {

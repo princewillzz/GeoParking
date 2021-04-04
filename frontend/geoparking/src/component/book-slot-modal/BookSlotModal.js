@@ -1,7 +1,9 @@
 import {
+	Backdrop,
 	Box,
 	Button,
 	Container,
+	Fade,
 	makeStyles,
 	Modal,
 	TextField,
@@ -124,102 +126,111 @@ function BookSlotModal({
 			aria-labelledby="book-slot-modal-title"
 			aria-describedby="book-slot-modal-description"
 			closeAfterTransition
+			BackdropComponent={Backdrop}
+			BackdropProps={{
+				timeout: 500,
+			}}
 		>
-			<div className={classes.paper}>
-				<div className={classes.modalHeader} id="book-slot-modal-title">
-					<h5 className={classes.modalTitle}>
-						Check Availability parkingId--{selectedParkingId}
-						{isParkingAvailableForBooking && (
-							<CheckCircleOutlineRounded
-								color="primary"
-								style={{ color: "green", marginInline: 5 }}
-							/>
-						)}
-					</h5>
-					<Close
-						onClick={handleCloseBookSlotModal}
-						style={{ cursor: "pointer" }}
-					/>
-				</div>
-				<div
-					className={classes.modalContent}
-					id="book-slot-modal-description"
-				>
-					<Container fixed>
-						<Box my={2}>
-							<Button
-								className={classes.prependInputBtn}
-								disableElevation
-								variant="contained"
-								disabled
-							>
-								<span
-									style={{
-										color: "black",
-									}}
-								>
-									Arrive
-								</span>
-							</Button>
-							<TextField type="date" variant="outlined" />
-							<TextField type="time" variant="outlined" />
-						</Box>
-						<Box my={2}>
-							<Button
-								className={classes.prependInputBtn}
-								disableElevation
-								variant="contained"
-								disabled
-							>
-								<span
-									style={{
-										color: "black",
-									}}
-								>
-									Depart
-								</span>
-							</Button>
-							<TextField type="date" variant="outlined" />
-							<TextField type="time" variant="outlined" />
-						</Box>
-					</Container>
-				</div>
-				<div className={classes.modalFooter}>
-					<>
-						{isParkingAvailableForBooking &&
-							(!auth.isUserLoggedIn ? (
-								<Link
-									to="/login"
-									style={{ textDecoration: "none" }}
-								>
-									<Button
-										variant="outlined"
-										color="secondary"
-									>
-										Login To Book
-									</Button>
-								</Link>
-							) : (
-								<Button
-									className={classes.modalSuccessBtn}
-									color="primary"
-									variant="contained"
-								>
-									Pay to Book
-								</Button>
-							))}
-					</>
-
-					<Button
-						onClick={handleCheckIsParkingAvailable}
-						className={classes.modalPrimarybtn}
-						color="primary"
-						variant="contained"
+			<Fade in={openBookSlotModal}>
+				<div className={classes.paper}>
+					<div
+						className={classes.modalHeader}
+						id="book-slot-modal-title"
 					>
-						Check Availability
-					</Button>
+						<h5 className={classes.modalTitle}>
+							Check Availability parkingId--{selectedParkingId}
+							{isParkingAvailableForBooking && (
+								<CheckCircleOutlineRounded
+									color="primary"
+									style={{ color: "green", marginInline: 5 }}
+								/>
+							)}
+						</h5>
+						<Close
+							onClick={handleCloseBookSlotModal}
+							style={{ cursor: "pointer" }}
+						/>
+					</div>
+					<div
+						className={classes.modalContent}
+						id="book-slot-modal-description"
+					>
+						<Container fixed>
+							<Box my={2}>
+								<Button
+									className={classes.prependInputBtn}
+									disableElevation
+									variant="contained"
+									disabled
+								>
+									<span
+										style={{
+											color: "black",
+										}}
+									>
+										Arrive
+									</span>
+								</Button>
+								<TextField type="date" variant="outlined" />
+								<TextField type="time" variant="outlined" />
+							</Box>
+							<Box my={2}>
+								<Button
+									className={classes.prependInputBtn}
+									disableElevation
+									variant="contained"
+									disabled
+								>
+									<span
+										style={{
+											color: "black",
+										}}
+									>
+										Depart
+									</span>
+								</Button>
+								<TextField type="date" variant="outlined" />
+								<TextField type="time" variant="outlined" />
+							</Box>
+						</Container>
+					</div>
+					<div className={classes.modalFooter}>
+						<>
+							{isParkingAvailableForBooking &&
+								(!auth.isUserLoggedIn ? (
+									<Link
+										to="/login"
+										style={{ textDecoration: "none" }}
+									>
+										<Button
+											variant="outlined"
+											color="secondary"
+										>
+											Login To Book
+										</Button>
+									</Link>
+								) : (
+									<Button
+										className={classes.modalSuccessBtn}
+										color="primary"
+										variant="contained"
+									>
+										Pay to Book
+									</Button>
+								))}
+						</>
+
+						<Button
+							onClick={handleCheckIsParkingAvailable}
+							className={classes.modalPrimarybtn}
+							color="primary"
+							variant="contained"
+						>
+							Check Availability
+						</Button>
+					</div>
 				</div>
-			</div>
+			</Fade>
 		</Modal>
 	);
 }

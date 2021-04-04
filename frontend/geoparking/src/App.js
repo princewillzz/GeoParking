@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PrivateTest from "./pages/PrivateTest";
 import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
+import MyAccount from "./pages/MyAccount";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
 	return (
@@ -24,6 +26,12 @@ function App() {
 							</Route>
 							<UserPrivateRoute path="/private">
 								<PrivateTest />
+							</UserPrivateRoute>
+							<UserPrivateRoute exact path="/my-account">
+								<MyAccount />
+							</UserPrivateRoute>
+							<UserPrivateRoute exact path="/my-bookings">
+								<MyBookings />
 							</UserPrivateRoute>
 						</Switch>
 					</>

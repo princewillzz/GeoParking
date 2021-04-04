@@ -21,6 +21,7 @@ const searchBarStyle = makeStyles((theme) => ({
 	input: {
 		marginLeft: theme.spacing(1),
 		flex: 1,
+		// "&.Mui-focused": {		},
 	},
 	iconButton: {
 		padding: 10,
@@ -79,10 +80,6 @@ export default function SearchParking() {
 			</h1>
 
 			<div className="parkingSearchContainer">
-				<IconButton type="button">
-					<RestoreOutlined />
-				</IconButton>
-
 				<Paper
 					onMouseOver={() => setIsSearchElevated(true)}
 					onMouseLeave={() => setIsSearchElevated(false)}
@@ -91,6 +88,13 @@ export default function SearchParking() {
 					component="form"
 					className={searchBarClasses.root}
 				>
+					<IconButton type="button">
+						<RestoreOutlined />
+					</IconButton>
+					<Divider
+						className={searchBarClasses.divider}
+						orientation="vertical"
+					/>
 					<InputBase
 						value={searchParkingString}
 						onChange={(e) => setSearchParkingString(e.target.value)}
@@ -124,7 +128,7 @@ export default function SearchParking() {
 				<ParkingCard
 					handleOpenBookSlotModal={handleOpenBookSlotModal}
 					parkingData={{
-						id: 1234213,
+						id: 4513,
 						name: "manberia",
 						location: "2121212 fuck",
 					}}

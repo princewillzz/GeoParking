@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
@@ -7,19 +8,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { ReceiptOutlined } from "@material-ui/icons";
+import { LocalParking, ReceiptOutlined } from "@material-ui/icons";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SearchIcon from "@material-ui/icons/Search";
 import React, { useEffect, useState } from "react";
-import logo from "../../logo.svg";
-
-import { checkUserAuth } from "../../api/check-user-auth";
-import { Button } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../authentication/ProvideAuth";
+import logo from "../../logo.svg";
 
 const useStyles = makeStyles((theme) => ({
 	offset: theme.mixins.toolbar,
@@ -90,14 +87,16 @@ export default function PrimarySearchAppBar() {
 	const auth = useAuth();
 	const history = useHistory();
 
-	const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+	const [isUserAuthenticated, setIsUserAuthenticated] = useState(
+		auth.isUserLoggedIn || auth.isAdminLoggedIn
+	);
 
 	useEffect(() => {
-		console.log(auth);
+		// console.log(auth);
 		setIsUserAuthenticated(
 			() => auth.isUserLoggedIn || auth.isAdminLoggedIn
 		);
-	});
+	}, [auth]);
 
 	const logoutCallback = () => {
 		history.push("/");
@@ -139,8 +138,32 @@ export default function PrimarySearchAppBar() {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleMenuClose}>
+				<Link
+					to="/my-bookings"
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+						width: "100%",
+						height: "100%",
+					}}
+				>
+					My bookings
+				</Link>
+			</MenuItem>
+			<MenuItem onClick={handleMenuClose}>
+				<Link
+					to="/my-account"
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+						width: "100%",
+						height: "100%",
+					}}
+				>
+					Profile
+				</Link>
+			</MenuItem>
 		</Menu>
 	);
 
@@ -158,21 +181,21 @@ export default function PrimarySearchAppBar() {
 			<MenuItem>
 				<IconButton aria-label="show 4 new mails" color="inherit">
 					<Badge badgeContent={4} color="secondary">
-						<MailIcon />
+						<NotificationsIcon />
 					</Badge>
 				</IconButton>
-				<p>Messages</p>
+				<p>Notification</p>
 			</MenuItem>
 			<MenuItem>
 				<IconButton
 					aria-label="show 11 new notifications"
 					color="inherit"
 				>
-					<Badge badgeContent={11} color="secondary">
-						<NotificationsIcon />
+					<Badge badgeContent={1} color="secondary">
+						<LocalParking />
 					</Badge>
 				</IconButton>
-				<p>Notifications</p>
+				<p>My bookings</p>
 			</MenuItem>
 			<MenuItem onClick={handleProfileMenuOpen}>
 				<IconButton
@@ -261,9 +284,18 @@ export default function PrimarySearchAppBar() {
 								>
 									<AccountCircle />
 								</IconButton>
-								<LogoutBtn
-									signout={() => auth.signout(logoutCallback)}
-								/>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+								>
+									<LogoutBtn
+										signout={() =>
+											auth.signout(logoutCallback)
+										}
+									/>
+								</div>
 							</div>
 							<div className={classes.sectionMobile}>
 								<IconButton
@@ -293,7 +325,11 @@ function LogoutBtn({ signout }) {
 			onClick={() => signout()}
 			variant="contained"
 			color="secondary"
-			style={{ marginLeft: 20 }}
+			style={{
+				marginLeft: 20,
+				fontFamily: "sans-serif",
+				fontWeight: "bold",
+			}}
 		>
 			Logout
 		</Button>
