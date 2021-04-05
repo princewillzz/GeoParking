@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+    service-registry:
+        image: geoparking/service-registry
+        ports:
+            - "8761:8761"
+
+    gateway-server:
+        image: geoparking/gateway-service
+        ports:
+            - "8080:8080"
+        environment:
+            - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+        depends_on:
+            - service-registry
+        links:
+            - service-registry
+
+    common-service:
+        image: geoparking/common-service
+        ports:
+            - "8200:8200"
+        environment:
+            - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+        depends_on:
+            - service-registry
+        links:
+            - service-registry
