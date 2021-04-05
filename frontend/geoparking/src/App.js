@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import UserPrivateRoute from "./authentication/UserPrivateRoute";
 import { ProvideAuth } from "./authentication/ProvideAuth";
+import UserPrivateRoute from "./authentication/UserPrivateRoute";
+import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
+import AdminHome from "./pages/AdminHome";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import PrivateTest from "./pages/PrivateTest";
-import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
 import MyAccount from "./pages/MyAccount";
 import MyBookings from "./pages/MyBookings";
 
@@ -24,15 +24,17 @@ function App() {
 							<Route exact path="/login">
 								<Login />
 							</Route>
-							<UserPrivateRoute path="/private">
-								<PrivateTest />
-							</UserPrivateRoute>
+
 							<UserPrivateRoute exact path="/my-account">
 								<MyAccount />
 							</UserPrivateRoute>
 							<UserPrivateRoute exact path="/my-bookings">
 								<MyBookings />
 							</UserPrivateRoute>
+
+							<Route exact path="/admin">
+								<AdminHome />
+							</Route>
 						</Switch>
 					</>
 				</BrowserRouter>

@@ -48,7 +48,11 @@ export default function ParkingCard({ handleOpenBookSlotModal, parkingData }) {
 				onMouseLeave={() => setIsRaised(false)}
 				raised={isRaised}
 			>
-				<img className={classes.cover} src="/p1.jpg" alt="imag" />
+				<img
+					className={classes.cover}
+					src="/p1.jpg"
+					alt="parking's image"
+				/>
 				<div className={classes.details}>
 					<CardContent className={classes.content}>
 						<Typography component="h5" variant="h5">

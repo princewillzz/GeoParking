@@ -1,5 +1,7 @@
 import {
+	Backdrop,
 	Button,
+	Fade,
 	FormControl,
 	FormGroup,
 	makeStyles,
@@ -44,68 +46,75 @@ function ChangePasswordModal({
 	const classes = useStyles();
 
 	return (
-		<div>
+		<>
 			<Modal
 				open={isPasswordUpdateModalOpen}
 				onClose={handlePasswordUpdateModalClose}
 				aria-labelledby="password-update-modal"
 				aria-describedby="modal-for-password-update"
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
 			>
-				<div className={classes.paper}>
-					{/* <Cancel /> */}
-					<div className={classes.modalHeader}>
-						<div className={classes.title}>
-							<p>Change Password</p>
+				<Fade in={isPasswordUpdateModalOpen}>
+					<div className={classes.paper}>
+						{/* <Cancel /> */}
+						<div className={classes.modalHeader}>
+							<div className={classes.title}>
+								<p>Change Password</p>
+							</div>
+							<div>
+								<Button className={classes.resendOTP}>
+									Resend OTP
+								</Button>
+							</div>
 						</div>
-						<div>
-							<Button className={classes.resendOTP}>
-								Resend OTP
-							</Button>
-						</div>
-					</div>
 
-					<FormGroup style={{ marginTop: 10 }}>
-						<FormControl style={{ marginBottom: 15 }}>
-							<TextField
-								label={"Type Current password"}
-								variant="outlined"
-								fullWidth
-								type={"password"}
-							/>
-						</FormControl>
-						<FormControl style={{ marginBottom: 15 }}>
-							<TextField
-								label={"Type New password"}
-								variant="outlined"
-								fullWidth
-								type={"password"}
-							/>
-						</FormControl>
-						<FormControl style={{ marginBottom: 15 }}>
-							<TextField
-								label={"Retype New-password"}
-								variant="outlined"
-								fullWidth
-								type={"password"}
-							/>
-						</FormControl>
-						<FormControl style={{ marginBottom: 15 }}>
-							<TextField
-								label={"Enter OTP sent to mobile"}
-								variant="outlined"
-								fullWidth
-								autoComplete="none"
-							/>
-						</FormControl>
-						<FormControl>
-							<Button variant="contained" color="primary">
-								Submit
-							</Button>
-						</FormControl>
-					</FormGroup>
-				</div>
+						<FormGroup style={{ marginTop: 10 }}>
+							<FormControl style={{ marginBottom: 15 }}>
+								<TextField
+									label={"Type Current password"}
+									variant="outlined"
+									fullWidth
+									type={"password"}
+								/>
+							</FormControl>
+							<FormControl style={{ marginBottom: 15 }}>
+								<TextField
+									label={"Type New password"}
+									variant="outlined"
+									fullWidth
+									type={"password"}
+								/>
+							</FormControl>
+							<FormControl style={{ marginBottom: 15 }}>
+								<TextField
+									label={"Retype New-password"}
+									variant="outlined"
+									fullWidth
+									type={"password"}
+								/>
+							</FormControl>
+							<FormControl style={{ marginBottom: 15 }}>
+								<TextField
+									label={"Enter OTP sent to mobile"}
+									variant="outlined"
+									fullWidth
+									autoComplete="none"
+								/>
+							</FormControl>
+							<FormControl>
+								<Button variant="contained" color="primary">
+									Submit
+								</Button>
+							</FormControl>
+						</FormGroup>
+					</div>
+				</Fade>
 			</Modal>
-		</div>
+		</>
 	);
 }
 

@@ -133,6 +133,30 @@ export default function SearchParking() {
 						location: "2121212 fuck",
 					}}
 				/>
+				<ParkingCard
+					handleOpenBookSlotModal={handleOpenBookSlotModal}
+					parkingData={{
+						id: 4513,
+						name: "manberia",
+						location: "2121212 fuck",
+					}}
+				/>
+				<ParkingCard
+					handleOpenBookSlotModal={handleOpenBookSlotModal}
+					parkingData={{
+						id: 4513,
+						name: "manberia",
+						location: "2121212 fuck",
+					}}
+				/>
+				<ParkingCard
+					handleOpenBookSlotModal={handleOpenBookSlotModal}
+					parkingData={{
+						id: 4513,
+						name: "manberia",
+						location: "2121212 fuck",
+					}}
+				/>
 				{/* <ParkingCard />
 				<ParkingCard />
 				<ParkingCard />

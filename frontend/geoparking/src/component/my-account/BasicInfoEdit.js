@@ -1,6 +1,7 @@
 import {
 	Button,
 	Checkbox,
+	Divider,
 	FormControlLabel,
 	FormGroup,
 	Grid,
@@ -21,6 +22,12 @@ function BasicInfoEdit() {
 
 	const [firstName, setFirstName] = useState();
 	const [lastName, setLastName] = useState();
+
+	const [genderCheckBox, setGenderCheckbox] = useState({
+		male: false,
+		female: false,
+		other: false,
+	});
 
 	return (
 		<>
@@ -60,15 +67,48 @@ function BasicInfoEdit() {
 				>
 					<Grid>
 						<FormControlLabel
-							control={<Checkbox checked={true} />}
+							control={
+								<Checkbox
+									checked={genderCheckBox.male}
+									onClick={() =>
+										setGenderCheckbox({
+											male: true,
+											female: false,
+											other: false,
+										})
+									}
+								/>
+							}
 							label="male"
 						/>
 						<FormControlLabel
-							control={<Checkbox checked={false} />}
+							control={
+								<Checkbox
+									checked={genderCheckBox.female}
+									onClick={() =>
+										setGenderCheckbox({
+											male: false,
+											female: true,
+											other: false,
+										})
+									}
+								/>
+							}
 							label="female"
 						/>
 						<FormControlLabel
-							control={<Checkbox checked={false} />}
+							control={
+								<Checkbox
+									checked={genderCheckBox.other}
+									onClick={() =>
+										setGenderCheckbox({
+											male: false,
+											female: false,
+											other: true,
+										})
+									}
+								/>
+							}
 							label="other"
 						/>
 					</Grid>
@@ -80,7 +120,10 @@ function BasicInfoEdit() {
 					</Grid>
 				</Grid>
 			</FormGroup>
-			<hr style={{ marginTop: 40, width: "80%" }} />
+			<Divider
+				style={{ marginInline: "auto", marginTop: 40, width: "80%" }}
+			/>
+			{/* <hr style={{ marginTop: 40, width: "80%" }} /> */}
 		</>
 	);
 }

@@ -1,4 +1,10 @@
-import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
+import {
+	Button,
+	Divider,
+	Grid,
+	makeStyles,
+	TextField,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import EmailUpdateModal from "./EmailUpdateModal";
 
@@ -71,7 +77,9 @@ function EmailAddressEdit() {
 					)}
 				</Grid>
 			</Grid>
-			<hr style={{ marginTop: 30, width: "80%" }} />
+			<Divider
+				style={{ marginInline: "auto", marginTop: 40, width: "80%" }}
+			/>
 			<EmailUpdateModal
 				isEmailUpdateModalOpen={isEmailUpdateModalOpen}
 				handleEmailUpdateModalClose={handleEmailUpdateModalClose}

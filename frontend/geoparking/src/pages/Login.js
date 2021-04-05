@@ -1,46 +1,124 @@
-import { Container } from "@material-ui/core";
+import {
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	CardHeader,
+	Container,
+	makeStyles,
+} from "@material-ui/core";
 import React, { useState } from "react";
-import { useHistory, useLocation } from "react-router";
-import { useAuth } from "../authentication/ProvideAuth";
+import LoginBody from "../component/login/LoginBody";
+import RegisterBody from "../component/login/RegisterBody";
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		width: "min(600px, 80vw)",
+	},
+	loginRegisterSwitchBtn: {
+		textTransform: "none",
+		color: "blueviolet",
+	},
+}));
 
 function Login() {
-	let auth = useAuth();
-	let history = useHistory();
+	const classes = useStyles();
 
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	const [openLoginForm, setOpenLoginForm] = useState(true);
+	const [openRegsiterForm, setOpenRegisterForm] = useState(false);
 
-	let location = useLocation();
+	const handleLoginRegisterFormChange = () => {
+		setOpenLoginForm((openLoginForm) => !openLoginForm);
+		setOpenRegisterForm((openRegsiterForm) => !openRegsiterForm);
+	};
 
-	let { from } = location.state || { from: { pathname: "/" } };
+	const getCardTitle = () => {
+		if (openLoginForm && !openRegsiterForm) {
+			return "Login";
+		} else if (openRegsiterForm && !openLoginForm) {
+			return "Register";
+		} else {
+			return "Forgot Password";
+		}
+	};
 
-	const handleLogin = () => {
-		auth.signin(() => {
-			history.replace(from);
-		});
+	const getBody = () => {
+		if (openLoginForm && !openRegsiterForm) {
+			return <LoginBody />;
+		} else if (openRegsiterForm && !openLoginForm) {
+			return <RegisterBody />;
+		} else {
+			return "Forgot Password";
+		}
 	};
 
 	return (
 		<>
-			<Container style={{ marginTop: "10vh" }}>
-				<div>
-					<input
-						onChange={(e) => setUsername(e.target.value)}
-						value={username}
-						type="text"
-					/>
-				</div>
-				<div>
-					<input
-						onChange={(e) => setPassword(e.target.value)}
-						value={password}
-						type="text"
-					/>
-				</div>
-				<button onClick={() => handleLogin()} type="submit">
-					login
-				</button>
-			</Container>
+			<center>
+				<Container style={{ marginTop: "10vh" }}>
+					<Card className={classes.root}>
+						<CardHeader title={getCardTitle()} />
+
+						{/* Main content of the card */}
+						<CardContent
+							style={{
+								width: "min(400px, 80vw)",
+							}}
+						>
+							{getBody()}
+						</CardContent>
+
+						{/* Footer */}
+						<CardActions
+							style={{
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+						>
+							{openLoginForm && !openRegsiterForm && (
+								<>
+									<p>
+										<small>Dont have an account yet?</small>
+									</p>
+									<Button
+										onClick={() =>
+											handleLoginRegisterFormChange()
+										}
+										className={
+											classes.loginRegisterSwitchBtn
+										}
+										style={{
+											margin: 0,
+										}}
+									>
+										Register
+									</Button>
+								</>
+							)}
+							{openRegsiterForm && !openLoginForm && (
+								<>
+									<p>
+										<small>Already have an account?</small>
+									</p>
+									<Button
+										onClick={() =>
+											handleLoginRegisterFormChange()
+										}
+										className={
+											classes.loginRegisterSwitchBtn
+										}
+										style={{
+											margin: 0,
+										}}
+									>
+										Login
+									</Button>
+								</>
+							)}
+						</CardActions>
+					</Card>
+				</Container>
+			</center>
 		</>
 	);
 }

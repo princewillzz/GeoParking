@@ -1,5 +1,7 @@
 import {
+	Backdrop,
 	Button,
+	Fade,
 	FormControl,
 	FormGroup,
 	makeStyles,
@@ -49,52 +51,59 @@ function MobileUpdateModal({
 			onClose={handleMobileUpdateModalClose}
 			aria-labelledby="email-update-modal"
 			aria-describedby="modal-for-email-update"
+			closeAfterTransition
+			BackdropComponent={Backdrop}
+			BackdropProps={{
+				timeout: 500,
+			}}
 		>
-			<div className={classes.paper}>
-				{/* <Cancel /> */}
-				<div className={classes.modalHeader}>
-					<div className={classes.title}>
-						<p>Verify OTP</p>
+			<Fade in={isMobileUpdateModalOpen}>
+				<div className={classes.paper}>
+					{/* <Cancel /> */}
+					<div className={classes.modalHeader}>
+						<div className={classes.title}>
+							<p>Verify OTP</p>
+						</div>
+						<div>
+							<Button className={classes.resendOTP}>
+								Resend OTP
+							</Button>
+						</div>
 					</div>
-					<div>
-						<Button className={classes.resendOTP}>
-							Resend OTP
-						</Button>
-					</div>
-				</div>
 
-				<FormGroup style={{ marginTop: 10 }}>
-					<FormControl style={{ marginBottom: 15 }}>
-						<TextField
-							label={"Enter OTP sent to mobile"}
-							variant="outlined"
-							fullWidth
-							autoComplete={"none"}
-						/>
-					</FormControl>
-					<FormControl style={{ marginBottom: 15 }}>
-						<TextField
-							label={"Enter OTP sent to mobile"}
-							variant="outlined"
-							fullWidth
-							autoComplete={"none"}
-						/>
-					</FormControl>
-					<FormControl style={{ marginBottom: 15 }}>
-						<TextField
-							label={"Enter password"}
-							variant="outlined"
-							fullWidth
-							type={"password"}
-						/>
-					</FormControl>
-					<FormControl>
-						<Button variant="contained" color="primary">
-							Submit
-						</Button>
-					</FormControl>
-				</FormGroup>
-			</div>
+					<FormGroup style={{ marginTop: 10 }}>
+						<FormControl style={{ marginBottom: 15 }}>
+							<TextField
+								label={"Enter OTP sent to mobile"}
+								variant="outlined"
+								fullWidth
+								autoComplete={"none"}
+							/>
+						</FormControl>
+						<FormControl style={{ marginBottom: 15 }}>
+							<TextField
+								label={"Enter OTP sent to mobile"}
+								variant="outlined"
+								fullWidth
+								autoComplete={"none"}
+							/>
+						</FormControl>
+						<FormControl style={{ marginBottom: 15 }}>
+							<TextField
+								label={"Enter password"}
+								variant="outlined"
+								fullWidth
+								type={"password"}
+							/>
+						</FormControl>
+						<FormControl>
+							<Button variant="contained" color="primary">
+								Submit
+							</Button>
+						</FormControl>
+					</FormGroup>
+				</div>
+			</Fade>
 		</Modal>
 	);
 }
