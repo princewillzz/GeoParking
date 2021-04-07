@@ -4,6 +4,7 @@ import "./App.css";
 import { ProvideAuth } from "./authentication/ProvideAuth";
 import UserPrivateRoute from "./authentication/UserPrivateRoute";
 import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
+import AdminBookings from "./pages/AdminBookings";
 import AdminHome from "./pages/AdminHome";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -34,6 +35,9 @@ function App() {
 
 							<Route exact path="/admin">
 								<AdminHome />
+							</Route>
+							<Route exact path="/admin/bookings">
+								<AdminBookings />
 							</Route>
 						</Switch>
 					</>

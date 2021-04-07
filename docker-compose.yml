@@ -2,27 +2,55 @@ version: "3.9"
 services:
     service-registry:
         image: geoparking/service-registry
+        build: ./service-registry
         ports:
             - "8761:8761"
 
     gateway-server:
         image: geoparking/gateway-service
+        build: ./gateway-server
         ports:
             - "8080:8080"
         environment:
             - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
         depends_on:
             - service-registry
-        links:
-            - service-registry
+        # links:
+        #     - service-registry
 
     common-service:
         image: geoparking/common-service
+        build: ./common-service
         ports:
             - "8200:8200"
         environment:
             - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
         depends_on:
             - service-registry
-        links:
+        # links:
+        #     - service-registry
+
+    profile:
+        image: geoparking/profile-service
+        build: ./profile-service
+        # restart: on-failure
+        ports:
+            - 8201:8201
+        environment:
+            - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+        depends_on:
+            - profile-mysql
             - service-registry
+
+    profile-mysql:
+        image: mysql:8.0.23
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=geoparking_profile
+            - MYSQL_USER=sa
+            - MYSQL_PASSWORD=password
+        # networks:
+        #     - mysql-docker-network
+        container_name: profile-mysql

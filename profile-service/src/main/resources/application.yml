@@ -5,24 +5,22 @@ eureka:
     client:
         register-with-eureka: true
         fetch-registry: true
-        service-url:
-            default-zone: http://localhost:8761/eureka
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
 
-    instance:
-        hostname: localhost
+    # instance:
+    #     hostname: localhost
 
 spring:
     application:
         name: profile-service
     jpa:
-        properties:
-            hibernate:
-                dialect: org.hibernate.dialect.MySQL8Dialect
+        database-platform: org.hibernate.dialect.MySQL8Dialect
         show-sql: true
         hibernate:
             ddl-auto: update
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: "jdbc:mysql://localhost:3306/geoparking_profile"
-        username: root
+        url: jdbc:mysql://profile-mysql:3306/geoparking_profile?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=3
+        username: sa
         password: password

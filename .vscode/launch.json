@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProfileServiceApplication<profile-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.geoparking.profileservice.ProfileServiceApplication",
+            "projectName": "profile-service",
+            "args": ""
+        }
+    ]
+}
