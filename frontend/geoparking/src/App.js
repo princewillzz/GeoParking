@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
+import AdminPrivateRoute from "./authentication/AdminPrivateRoute";
 import { ProvideAuth } from "./authentication/ProvideAuth";
 import UserPrivateRoute from "./authentication/UserPrivateRoute";
 import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
@@ -33,12 +34,17 @@ function App() {
 								<MyBookings />
 							</UserPrivateRoute>
 
-							<Route exact path="/admin">
+							<AdminPrivateRoute exact path="/admin">
 								<AdminHome />
-							</Route>
-							<Route exact path="/admin/bookings">
+							</AdminPrivateRoute>
+
+							<AdminPrivateRoute exact path="/admin/bookings">
 								<AdminBookings />
-							</Route>
+							</AdminPrivateRoute>
+
+							<AdminPrivateRoute exact path="/admin/my-account">
+								<MyAccount />
+							</AdminPrivateRoute>
 						</Switch>
 					</>
 				</BrowserRouter>

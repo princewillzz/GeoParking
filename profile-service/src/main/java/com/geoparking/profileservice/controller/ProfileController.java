@@ -1,6 +1,5 @@
 package com.geoparking.profileservice.controller;
 
-
 import com.geoparking.profileservice.models.AuthenticationRequest;
 import com.geoparking.profileservice.models.AuthenticationResponse;
 import com.geoparking.profileservice.service.JwtUtilService;
@@ -29,8 +28,8 @@ public class ProfileController {
     private JwtUtilService jwtUtilService;
 
     @GetMapping("/auth/hello")
-    public String hello() {
-        return "Hello world";
+    public ResponseEntity<?> hello() {
+        return ResponseEntity.ok("Hello world");
     }
 
     @GetMapping("/auth/user")
@@ -42,7 +41,6 @@ public class ProfileController {
     public String admin() {
         return "admin profile in profile service";
     }
-
 
     @PostMapping("/auth/authenticate")
     public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {

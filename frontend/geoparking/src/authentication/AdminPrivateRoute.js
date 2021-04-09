@@ -2,13 +2,13 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 import { useAuth } from "./ProvideAuth";
 
-function UserPrivateRoute({ children }) {
-	const auth = useAuth();
+function AdminPrivateRoute({ children }) {
+	let auth = useAuth();
 
 	return (
 		<Route
 			render={({ location }) =>
-				auth.verifyUserLogged() ? (
+				auth.verifyAdminLogged() ? (
 					children
 				) : (
 					<Redirect
@@ -23,4 +23,4 @@ function UserPrivateRoute({ children }) {
 	);
 }
 
-export default UserPrivateRoute;
+export default AdminPrivateRoute;

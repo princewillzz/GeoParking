@@ -32,23 +32,28 @@ function LoginBody() {
 
 	let { from } = location.state || { from: { pathname: "/" } };
 
-	const [formInputState, setFormInputState] = useState({
+	const [credentials, setCredentials] = useState({
 		username: "",
 		password: "",
 	});
 
-	const handleFormInputChange = (event) => {
-		setFormInputState({
-			...formInputState,
+	const handleCredentialsChange = (event) => {
+		setCredentials({
+			...credentials,
 			[event.target.name]: event.target.value,
 		});
 	};
 
 	const handleLogin = (event) => {
 		event.preventDefault();
-		auth.signin(() => {
-			history.replace(from);
-		});
+
+		try {
+			auth.signin(credentials, () => {
+				history.replace(from);
+			});
+		} catch (error) {
+			alert("login failed...!");
+		}
 	};
 
 	return (
@@ -62,8 +67,8 @@ function LoginBody() {
 					<TextField
 						variant="outlined"
 						name="username"
-						onChange={handleFormInputChange}
-						value={formInputState.username}
+						onChange={handleCredentialsChange}
+						value={credentials.username}
 						className={classes.input}
 						label="Email"
 						fullWidth
@@ -78,8 +83,8 @@ function LoginBody() {
 					<TextField
 						variant="outlined"
 						name="password"
-						onChange={handleFormInputChange}
-						value={formInputState.password}
+						onChange={handleCredentialsChange}
+						value={credentials.password}
 						className={classes.input}
 						label="Password"
 						fullWidth

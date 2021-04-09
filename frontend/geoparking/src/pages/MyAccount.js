@@ -2,6 +2,7 @@ import { makeStyles, Paper } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../authentication/ProvideAuth";
 import BasicInfoEdit from "../component/my-account/BasicInfoEdit";
 import EmailAddressEdit from "../component/my-account/EmailAddressEdit";
 import MobileInfoEdit from "../component/my-account/MobileInfoEdit";
@@ -80,6 +81,8 @@ const useStyles = makeStyles((theme) => ({
 function MyAccount() {
 	const styles = useStyles();
 
+	const auth = useAuth();
+
 	return (
 		<main className={styles.root}>
 			{/* backcontainer to show a elevated effect */}
@@ -112,7 +115,7 @@ function MyAccount() {
 						<p style={{ fontWeight: 300, marginBottom: 10 }}>
 							Hello,
 						</p>
-						<div style={{ fontWeight: 600 }}>Harsh Tiwari</div>
+						<div style={{ fontWeight: 600 }}> {auth.username} </div>
 					</Paper>
 
 					<BasicInfoEdit />

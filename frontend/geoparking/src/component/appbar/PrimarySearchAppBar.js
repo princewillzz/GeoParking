@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { LocalParking, ReceiptOutlined } from "@material-ui/icons";
+import { Home, LocalParking } from "@material-ui/icons";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -81,6 +81,12 @@ const useStyles = makeStyles((theme) => ({
 			display: "none",
 		},
 	},
+	link: {
+		textDecoration: "none",
+		color: "inherit",
+		width: "100%",
+		height: "100%",
+	},
 }));
 
 export default function PrimarySearchAppBar() {
@@ -127,6 +133,16 @@ export default function PrimarySearchAppBar() {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
+	const isUserLogged = () => {
+		if (auth.isUserLoggedIn && !auth.isAdminLoggedIn) return true;
+		return false;
+	};
+
+	const isAdminLogged = () => {
+		if (!auth.isUserLoggedIn && auth.isAdminLoggedIn) return true;
+		return false;
+	};
+
 	const menuId = "primary-search-account-menu";
 	const renderMenu = (
 		<Menu
@@ -138,32 +154,13 @@ export default function PrimarySearchAppBar() {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>
-				<Link
-					to="/my-bookings"
-					style={{
-						textDecoration: "none",
-						color: "inherit",
-						width: "100%",
-						height: "100%",
-					}}
-				>
-					My bookings
-				</Link>
-			</MenuItem>
-			<MenuItem onClick={handleMenuClose}>
-				<Link
-					to="/my-account"
-					style={{
-						textDecoration: "none",
-						color: "inherit",
-						width: "100%",
-						height: "100%",
-					}}
-				>
-					Profile
-				</Link>
-			</MenuItem>
+			<Link to="/my-bookings" className={classes.link}>
+				<MenuItem onClick={handleMenuClose}>My bookings</MenuItem>
+			</Link>
+
+			<Link to="/my-account" className={classes.link}>
+				<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+			</Link>
 		</Menu>
 	);
 
@@ -186,28 +183,71 @@ export default function PrimarySearchAppBar() {
 				</IconButton>
 				<p>Notification</p>
 			</MenuItem>
-			<MenuItem>
-				<IconButton
-					aria-label="show 11 new notifications"
-					color="inherit"
-				>
-					<Badge badgeContent={1} color="secondary">
-						<LocalParking />
-					</Badge>
-				</IconButton>
-				<p>My bookings</p>
-			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
-				<IconButton
-					aria-label="account of current user"
-					aria-controls="primary-search-account-menu"
-					aria-haspopup="true"
-					color="inherit"
-				>
-					<AccountCircle />
-				</IconButton>
-				<p>Profile</p>
-			</MenuItem>
+
+			{isUserLogged() && (
+				<div>
+					<Link to="/my-bookings" className={classes.link}>
+						<MenuItem>
+							<IconButton
+								aria-label="show 11 new notifications"
+								color="inherit"
+							>
+								<Badge badgeContent={1} color="secondary">
+									<LocalParking />
+								</Badge>
+							</IconButton>
+							<p>My bookings</p>
+						</MenuItem>
+					</Link>
+
+					<Link to="/my-account" className={classes.link}>
+						<MenuItem>
+							<IconButton
+								aria-label="account of current user"
+								aria-controls="primary-search-account-menu"
+								aria-haspopup="true"
+								color="inherit"
+							>
+								<AccountCircle />
+							</IconButton>
+							<p>Profile</p>
+						</MenuItem>
+					</Link>
+				</div>
+			)}
+
+			{isAdminLogged() && (
+				<div>
+					<Link to="/admin/my-account" className={classes.link}>
+						<MenuItem>
+							<IconButton
+								aria-label="account of current user"
+								aria-controls="primary-search-account-menu"
+								aria-haspopup="true"
+								color="inherit"
+							>
+								<Home />
+							</IconButton>
+							<p>Dashboard</p>
+						</MenuItem>
+					</Link>
+
+					<Link to="/admin/my-account" className={classes.link}>
+						<MenuItem>
+							<IconButton
+								aria-label="account of current user"
+								aria-controls="primary-search-account-menu"
+								aria-haspopup="true"
+								color="inherit"
+							>
+								<AccountCircle />
+							</IconButton>
+							<p>Profile</p>
+						</MenuItem>
+					</Link>
+				</div>
+			)}
+
 			<hr style={{ width: "80%" }} />
 			<MenuItem>
 				<LogoutBtn signout={() => auth.signout(logoutCallback)} />
@@ -229,10 +269,7 @@ export default function PrimarySearchAppBar() {
 						<img height="40px" src={logo} alt="Logo" />
 					</IconButton>
 					<Typography className={classes.title} variant="h6" noWrap>
-						<Link
-							to="/"
-							style={{ textDecoration: "none", color: "white" }}
-						>
+						<Link to="/" className={classes.link}>
 							GeoParking
 						</Link>
 					</Typography>
@@ -258,14 +295,71 @@ export default function PrimarySearchAppBar() {
 					) : (
 						<>
 							<div className={classes.sectionDesktop}>
-								<IconButton
+								{/* <IconButton
 									aria-label="show 4 new mails"
 									color="inherit"
 								>
 									<Badge badgeContent={4} color="secondary">
 										<ReceiptOutlined />
 									</Badge>
-								</IconButton>
+								</IconButton> */}
+
+								{isUserLogged() && (
+									<>
+										<Link to="/" className={classes.link}>
+											<IconButton
+												edge="end"
+												aria-label="home of admin"
+												aria-haspopup="false"
+												color="inherit"
+											>
+												<Home />
+											</IconButton>
+										</Link>
+										<IconButton
+											edge="end"
+											aria-label="account of current user"
+											aria-controls={menuId}
+											aria-haspopup="true"
+											onClick={handleProfileMenuOpen}
+											color="inherit"
+										>
+											<AccountCircle />
+										</IconButton>
+									</>
+								)}
+
+								{isAdminLogged() && (
+									<>
+										<Link
+											to="/admin"
+											className={classes.link}
+										>
+											<IconButton
+												edge="end"
+												aria-label="home of admin"
+												aria-haspopup="false"
+												color="inherit"
+											>
+												<Home />
+											</IconButton>
+										</Link>
+										<Link
+											to="/admin/my-account"
+											className={classes.link}
+										>
+											<IconButton
+												edge="end"
+												aria-label="account of current user"
+												aria-haspopup="false"
+												color="inherit"
+											>
+												<AccountCircle />
+											</IconButton>
+										</Link>
+									</>
+								)}
+
 								<IconButton
 									aria-label="show 17 new notifications"
 									color="inherit"
@@ -274,16 +368,7 @@ export default function PrimarySearchAppBar() {
 										<NotificationsIcon />
 									</Badge>
 								</IconButton>
-								<IconButton
-									edge="end"
-									aria-label="account of current user"
-									aria-controls={menuId}
-									aria-haspopup="true"
-									onClick={handleProfileMenuOpen}
-									color="inherit"
-								>
-									<AccountCircle />
-								</IconButton>
+
 								<div
 									style={{
 										display: "flex",
@@ -312,8 +397,11 @@ export default function PrimarySearchAppBar() {
 					)}
 				</Toolbar>
 			</AppBar>
-			{renderMobileMenu}
-			{renderMenu}
+			{isUserAuthenticated && (
+				<>
+					{renderMobileMenu} {renderMenu}
+				</>
+			)}
 			<div className={classes.offset} />
 		</div>
 	);

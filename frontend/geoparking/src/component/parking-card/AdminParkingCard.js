@@ -11,7 +11,7 @@ import {
 	Typography,
 } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialState = {
-	parkingName: "",
-	parkingLocation: "",
+	parkingName: "default name",
+	parkingLocation: "default location",
 };
 
 function AdminParkingCard() {
@@ -54,14 +54,6 @@ function AdminParkingCard() {
 	const [isEditable, setIsEditable] = useState(false);
 
 	const [parkingEditInfo, setParkingEditInfo] = useState(initialState);
-
-	useEffect(() => {
-		setParkingEditInfo({
-			...parkingEditInfo,
-			parkingName: "man park",
-			parkingLocation: "manberia address",
-		});
-	}, []);
 
 	const handleChangeParkingData = (e) => {
 		setParkingEditInfo({

@@ -1,19 +1,5 @@
 import { useEffect, useState } from "react";
-import { checkUserAuth } from "../api/check-user-auth";
-
-const fakeAuth = {
-	// isAuthenticated: false,
-	signin(cb) {
-		// fakeAuth.isAuthenticated = true;
-		localStorage.setItem("token", "tokeeke");
-		setTimeout(cb, 0); // fake async
-	},
-	signout(cb) {
-		// fakeAuth.isAuthenticated = false;
-		localStorage.removeItem("token");
-		setTimeout(cb, 0);
-	},
-};
+import { checkAuth, signinUser } from "../api/auth-api";
 
 function useProvideAuth() {
 	const [username, setUsername] = useState(null);
@@ -21,35 +7,70 @@ function useProvideAuth() {
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
+	const _initializeAuthState = () => {
+		const { username, role } = checkAuth();
+
+		if (role === "USER" || role === "ADMIN") {
+			setUsername(username);
+
+			if (role === "USER") setIsUserLoggedIn(true);
+			else if (role === "ADMIN") setIsAdminLoggedIn(true);
+		}
+	};
+
 	useEffect(() => {
-		const { username, role } = checkUserAuth();
+		try {
+			_initializeAuthState();
+		} catch (error) {}
+	}, []);
 
-		if (role) setUsername(username);
+	const signin = (credentials, cb) => {
+		return signinUser(credentials, () => {
+			try {
+				_initializeAuthState();
 
-		if (role === "USER") setIsUserLoggedIn(true);
-		else if (role === "ADMIN") setIsAdminLoggedIn(true);
-	}, [username]);
-
-	const signin = (cb) => {
-		return fakeAuth.signin(() => {
-			setUsername("harsh");
-			cb();
+				cb();
+			} catch (error) {
+				console.log(error);
+			}
 		});
 	};
 
 	const signout = (cb) => {
-		return fakeAuth.signout(() => {
+		localStorage.removeItem("token");
+		setTimeout(() => {
 			setUsername(null);
+
 			setIsAdminLoggedIn(false);
 			setIsUserLoggedIn(false);
 			cb();
-		});
+		}, 0);
+	};
+
+	const verifyUserLogged = () => {
+		try {
+			const { role } = checkAuth();
+			if (role === "USER") return true;
+		} catch (e) {}
+
+		return false;
+	};
+
+	const verifyAdminLogged = () => {
+		try {
+			const { role } = checkAuth();
+			if (role === "ADMIN") return true;
+		} catch (error) {}
+
+		return false;
 	};
 
 	return {
 		username,
 		isAdminLoggedIn,
+		verifyUserLogged,
 		isUserLoggedIn,
+		verifyAdminLogged,
 		signin,
 		signout,
 	};
