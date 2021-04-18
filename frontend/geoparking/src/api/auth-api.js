@@ -1,17 +1,15 @@
-import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { axiosInstance } from "./axios-config";
 
 export const signinUser = (credentials, cb) => {
-	axios
-		.post("http://localhost:8080/auth/authenticate", credentials)
-		.then((res) => {
-			const token = res.data.jwt;
+	axiosInstance.post("/auth/authenticate", credentials).then((res) => {
+		const token = res.data.jwt;
 
-			localStorage.setItem("token", token);
-			console.log(token);
+		localStorage.setItem("token", token);
+		console.log(token);
 
-			cb();
-		});
+		cb();
+	});
 };
 
 export const checkAuth = () => {

@@ -8,6 +8,7 @@ import com.geoparking.parkingservice.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,14 +37,19 @@ public class ParkingController {
         return ResponseEntity.ok(parkingsList);
     }
 
-    @GetMapping(value = "/search/parking")
+    @GetMapping(value = "/parking/search")
     public ResponseEntity<?> searchParkingWithAddress(@RequestParam("address") final String address) {
         return ResponseEntity.ok(parkingService.fetchParkingsWithAddress(address));
     }
 
-    @GetMapping(value = "/parking")
-    public ResponseEntity<?> getparkingWithId(@RequestParam("id") final String parkingId) {
+    @GetMapping(value = "/parking/{id}")
+    public ResponseEntity<?> getparkingWithId(@PathVariable("id") final String parkingId) {
         return ResponseEntity.ok(parkingService.getParking(parkingId));
+    }
+
+    @GetMapping(value = "/parking/featured")
+    public ResponseEntity<?> getFeaturedParkingList() {
+        return ResponseEntity.ok().body(parkingService.getFeaturedParkings());
     }
 
 }

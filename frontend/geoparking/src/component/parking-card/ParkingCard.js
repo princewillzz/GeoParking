@@ -36,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ParkingCard({ handleOpenBookSlotModal, parkingData }) {
+	console.log(parkingData);
+
 	const classes = useStyles();
 
 	const [isRaised, setIsRaised] = useState(false);
@@ -57,7 +59,7 @@ export default function ParkingCard({ handleOpenBookSlotModal, parkingData }) {
 						<Typography variant="subtitle1" color="textSecondary">
 							Asansol
 						</Typography>
-						<Typography>{parkingData.location}</Typography>
+						<Typography>{parkingData.address}</Typography>
 
 						<Box
 							display={"flex"}

@@ -30,4 +30,6 @@ public class Parking {
 
     private boolean active = true;
 
+    private long timeBooked;
+
 }

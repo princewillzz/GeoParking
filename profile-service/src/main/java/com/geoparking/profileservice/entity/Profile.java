@@ -1,6 +1,5 @@
 package com.geoparking.profileservice.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -36,6 +35,8 @@ public class Profile {
     @Column(nullable = false)
     private String firstName;
     private String lastName;
+
+    private String gender;
 
     private String profilePicture;
 

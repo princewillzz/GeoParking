@@ -1,0 +1,17 @@
+spring:
+    application:
+        name: parking-service
+    data:
+        mongodb:
+            database: geoparking
+server:
+    port: 8300
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            default-zone: http://localhost:8761/eureka
+    instance:
+        hostname: localhost

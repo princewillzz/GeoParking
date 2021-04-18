@@ -33,7 +33,7 @@ public class CustomClientHttpResponse implements ClientHttpResponse {
 
     @Override
     public InputStream getBody() throws IOException {
-        return new ByteArrayInputStream("Service unavailable".getBytes());
+        return new ByteArrayInputStream(getStatusText().getBytes());
     }
 
     @Override

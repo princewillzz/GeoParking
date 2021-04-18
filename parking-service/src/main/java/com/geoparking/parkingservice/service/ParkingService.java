@@ -17,8 +17,10 @@ import com.geoparking.parkingservice.repository.ParkingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,6 +160,19 @@ public class ParkingService {
 
         saveParkingToDatabase(parking);
 
+    }
+
+    /**
+     * @return a list of parking DTO containing featured parkings currently the most
+     *         booked parkings
+     */
+    public Set<ParkingDTO> getFeaturedParkings() {
+        return getMostPopularParkingsFromDatabase().stream().map(parkingMapper::toDTO).collect(Collectors.toSet());
+    }
+
+    private Page<Parking> getMostPopularParkingsFromDatabase() {
+
+        return parkingRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "timeBooked")));
     }
 
 }

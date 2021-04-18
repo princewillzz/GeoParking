@@ -11,6 +11,8 @@ import BookSlotModal from "../book-slot-modal/BookSlotModal";
 import ParkingCard from "../parking-card/ParkingCard";
 import "./SearchParking.css";
 
+import { fetchParkingsWithAddress } from "../../api/parking-public-api";
+
 const searchBarStyle = makeStyles((theme) => ({
 	root: {
 		padding: "2px 4px",
@@ -44,7 +46,7 @@ const searchBarStyle = makeStyles((theme) => ({
 // 	},
 // }));
 
-export default function SearchParking() {
+export default function SearchParking({ featuredParkings }) {
 	const searchBarClasses = searchBarStyle();
 	// const parkingCardContainerClasses = parkingCardContainerStyle();
 
@@ -58,9 +60,14 @@ export default function SearchParking() {
 
 	// State values
 	const [searchParkingString, setSearchParkingString] = useState("");
+	const [searchedParkingList, setSearchedParkingList] = useState([]);
 
-	const handleSearchParking = () => {
-		console.log(searchParkingString);
+	const handleSearchParking = (e) => {
+		e.preventDefault();
+
+		fetchParkingsWithAddress(searchParkingString).then((parkingList) => {
+			setSearchedParkingList(parkingList);
+		});
 	};
 
 	const [openBookSlotModal, setOpenBookSlotModal] = useState(false);
@@ -116,60 +123,42 @@ export default function SearchParking() {
 					/>
 				</Paper>
 			</div>
+
 			<div className="parkingsFetched">
-				<ParkingCard
-					handleOpenBookSlotModal={handleOpenBookSlotModal}
-					parkingData={{
-						id: 12,
-						name: "manberia parking",
-						location: "location fuck",
-					}}
-				/>
-				<ParkingCard
-					handleOpenBookSlotModal={handleOpenBookSlotModal}
-					parkingData={{
-						id: 4513,
-						name: "manberia",
-						location: "2121212 fuck",
-					}}
-				/>
-				<ParkingCard
-					handleOpenBookSlotModal={handleOpenBookSlotModal}
-					parkingData={{
-						id: 4513,
-						name: "manberia",
-						location: "2121212 fuck",
-					}}
-				/>
-				<ParkingCard
-					handleOpenBookSlotModal={handleOpenBookSlotModal}
-					parkingData={{
-						id: 4513,
-						name: "manberia",
-						location: "2121212 fuck",
-					}}
-				/>
-				<ParkingCard
-					handleOpenBookSlotModal={handleOpenBookSlotModal}
-					parkingData={{
-						id: 4513,
-						name: "manberia",
-						location: "2121212 fuck",
-					}}
-				/>
-				{/* <ParkingCard />
-				<ParkingCard />
-				<ParkingCard />
-				<ParkingCard /> */}
+				{searchedParkingList.map((eachParking) => (
+					<ParkingCard
+						key={eachParking.id}
+						handleOpenBookSlotModal={handleOpenBookSlotModal}
+						parkingData={eachParking}
+					/>
+				))}
 			</div>
+
+			<Divider style={{ width: "80%", marginInline: "auto" }} />
+
+			<>
+				<h1 style={{ textAlign: "center", fontWeight: 400 }}>
+					<u>Featured Parkings</u>
+				</h1>
+
+				<div id="featuredParkingsContainer" className="parkingsFetched">
+					{featuredParkings.map((parking) => (
+						<ParkingCard
+							key={parking.id}
+							handleOpenBookSlotModal={handleOpenBookSlotModal}
+							parkingData={parking}
+						/>
+					))}
+				</div>
+			</>
+
+			<hr style={{ width: "80%" }} />
 
 			<BookSlotModal
 				selectedParkingId={selectedParkingIdForModal}
 				openBookSlotModal={openBookSlotModal}
 				handleCloseBookSlotModal={handleCloseBookSlotModal}
 			/>
-
-			<hr style={{ width: "80%" }} />
 		</>
 	);
 }
