@@ -138,7 +138,7 @@ function BookSlotModal({
 						id="book-slot-modal-title"
 					>
 						<h5 className={classes.modalTitle}>
-							Check Availability parkingId--{selectedParkingId}
+							Check Availability
 							{isParkingAvailableForBooking && (
 								<CheckCircleOutlineRounded
 									color="primary"

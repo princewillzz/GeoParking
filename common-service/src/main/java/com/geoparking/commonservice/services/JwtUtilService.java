@@ -1,12 +1,10 @@
-package com.geoparking.profileservice.service;
+package com.geoparking.commonservice.services;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.geoparking.profileservice.principal.ProfilePrincipal;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,13 +43,10 @@ public class JwtUtilService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-
-        claims.put("username", userDetails.getUsername());
         claims.put("authorities",
                 userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-        final ProfilePrincipal profilePrincipal = (ProfilePrincipal) userDetails;
-        return createToken(claims, profilePrincipal.getProfileId());
+        return createToken(claims, userDetails.getUsername());
 
     }
 

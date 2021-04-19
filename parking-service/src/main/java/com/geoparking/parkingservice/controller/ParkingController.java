@@ -2,10 +2,13 @@ package com.geoparking.parkingservice.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.service.ParkingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +21,7 @@ public class ParkingController {
     private ParkingService parkingService;
 
     @Autowired
-    public ParkingController(final ParkingService parkingService) {
+    public ParkingController(@Qualifier("parkingService") final ParkingService parkingService) {
         this.parkingService = parkingService;
     }
 
@@ -48,7 +51,10 @@ public class ParkingController {
     }
 
     @GetMapping(value = "/parking/featured")
-    public ResponseEntity<?> getFeaturedParkingList() {
+    public ResponseEntity<?> getFeaturedParkingList(HttpServletRequest request) {
+
+        System.err.println(request.getHeader("Authorization"));
+
         return ResponseEntity.ok().body(parkingService.getFeaturedParkings());
     }
 

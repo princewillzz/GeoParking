@@ -15,4 +15,6 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
 
     List<Parking> findByActive(boolean active);
 
+    List<Parking> findAllByOwnerId(String ownerId);
+
 }

@@ -12,6 +12,7 @@ import javax.validation.Validation;
 import com.geoparking.parkingservice.Exception.InvalidParkingAddressException;
 import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.mapper.ParkingMapper;
+import com.geoparking.parkingservice.model.DecodedUserInfo;
 import com.geoparking.parkingservice.model.Parking;
 import com.geoparking.parkingservice.repository.ParkingRepository;
 
@@ -31,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ParkingService {
 
-    private final ParkingRepository parkingRepository;
-    private final ParkingMapper parkingMapper;
+    protected final ParkingRepository parkingRepository;
+    protected final ParkingMapper parkingMapper;
 
     @Autowired
     public ParkingService(final ParkingRepository parkingRepository, final ParkingMapper parkingMapper) {
@@ -70,21 +71,24 @@ public class ParkingService {
 
     // Get a parking
     public ParkingDTO getParking(final String parkingId) throws NoSuchElementException {
-        return parkingMapper.toDTO(fetchPakringWithIdFromDatabase(parkingId));
+        return parkingMapper.toDTO(fetchParkingWithIdFromDatabase(parkingId));
     }
 
     // get the parking Entity from the database
     @Transactional(readOnly = true)
-    private Parking fetchPakringWithIdFromDatabase(final String parkingId) throws NoSuchElementException {
+    private Parking fetchParkingWithIdFromDatabase(final String parkingId) throws NoSuchElementException {
         return parkingRepository.findById(parkingId).orElseThrow();
     }
 
     // Add a parking to the database then return its dto
-    public ParkingDTO createParking(final ParkingDTO parkingDTO) throws ConstraintViolationException {
+    public ParkingDTO createParking(final ParkingDTO parkingDTO, final DecodedUserInfo adminInfo)
+            throws ConstraintViolationException {
 
         log.info("Saving a new parking info in the database");
 
         final Parking parking = parkingMapper.toEntity(parkingDTO);
+        parking.setActive(true);
+        parking.setOwnerId(adminInfo.getUserId());
 
         return parkingMapper.toDTO(saveParkingToDatabase(parking));
     }
@@ -116,13 +120,17 @@ public class ParkingService {
     }
 
     @Transactional
-    public ParkingDTO updateParkingInfo(ParkingDTO parkingDTO)
-            throws ConstraintViolationException, IllegalStateException {
+    public ParkingDTO updateParkingInfo(final ParkingDTO parkingDTO, final DecodedUserInfo adminInfo)
+            throws ConstraintViolationException, IllegalStateException, IllegalAccessError {
 
         if (parkingDTO.getId() == null)
             throw new IllegalStateException("Insufficient data...");
 
-        final Parking parkingToUpdate = fetchPakringWithIdFromDatabase(parkingDTO.getId());
+        final Parking parkingToUpdate = fetchParkingWithIdFromDatabase(parkingDTO.getId());
+
+        if (!parkingToUpdate.getOwnerId().equals(adminInfo.getUserId())) {
+            throw new IllegalAccessError("trying Forbidden access");
+        }
 
         setFieldsToUpdate(parkingToUpdate, parkingDTO);
 
@@ -153,9 +161,13 @@ public class ParkingService {
 
     // Delete a parking
     @Transactional
-    public void deleteParkingWithId(final String parkingId) {
+    public void deleteParkingWithId(final String parkingId, final DecodedUserInfo adminInfo) throws IllegalAccessError {
 
-        final Parking parking = fetchPakringWithIdFromDatabase(parkingId);
+        final Parking parking = fetchParkingWithIdFromDatabase(parkingId);
+        if (!parking.getOwnerId().equals(adminInfo.getUserId())) {
+            throw new IllegalAccessError("Forbidden Access");
+        }
+
         parking.setActive(false);
 
         saveParkingToDatabase(parking);
@@ -173,6 +185,42 @@ public class ParkingService {
     private Page<Parking> getMostPopularParkingsFromDatabase() {
 
         return parkingRepository.findAll(PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "timeBooked")));
+    }
+
+    /**
+     * 
+     * @param userInfo DecodedUserinfo from the JWT
+     * @return a list of parkingDTO owned by userinfo
+     */
+
+    public List<ParkingDTO> getListOfMyParkings(final DecodedUserInfo userInfo) {
+
+        return getParkingsOfAdminFromDatabase(userInfo).parallelStream().map(parkingMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 
+     * @param userInfo DecodedUserinfo from the JWT
+     * @param status   active status of parkings
+     * @return a list of parkingDTO owned by userinfo
+     */
+
+    public List<ParkingDTO> getListOfMyParkingsWithStatus(final DecodedUserInfo userInfo, final boolean status) {
+
+        return getParkingsOfAdminFromDatabase(userInfo).parallelStream().filter(parking -> parking.isActive() == status)
+                .map(parkingMapper::toDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * fetch parkings from database
+     * 
+     * @param userInfo admin details whose parkings needs to be fetched
+     * @return list of parking data from the database
+     */
+    @Transactional(readOnly = true)
+    private List<Parking> getParkingsOfAdminFromDatabase(final DecodedUserInfo userInfo) {
+        return parkingRepository.findAllByOwnerId(userInfo.getUserId());
     }
 
 }

@@ -1,5 +1,6 @@
 import { Button, Divider, makeStyles } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { fetchAdminParkings } from "../api/parking-admin-api";
 import AddParkingModal from "../component/add-parking/AddParkingModal";
 import AdminParkingCard from "../component/parking-card/AdminParkingCard";
 
@@ -27,6 +28,11 @@ function AdminHome() {
 	const classes = useStyles();
 
 	const [isAddParkingModalOpen, setIsAddParkingModalOpen] = useState(false);
+	const [myParkings, setMyParkings] = useState([]);
+
+	useEffect(() => {
+		fetchAdminParkings();
+	}, [myParkings]);
 
 	const handleCloseAddParkingModal = () => {
 		setIsAddParkingModalOpen(false);

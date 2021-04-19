@@ -3,7 +3,7 @@ spring:
         name: common-service
 
 server:
-    port: 8200
+    port: 9200
 
 eureka:
     client:

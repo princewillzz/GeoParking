@@ -17,6 +17,10 @@ public class ProfilePrincipal implements UserDetails {
         this.profile = profile;
     }
 
+    public String getProfileId() {
+        return profile.getId().toString();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(profile.getRole()));

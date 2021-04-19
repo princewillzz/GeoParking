@@ -28,8 +28,12 @@ public class Parking {
     @NotNull(message = "cannot be null")
     private Double hourlyRent;
 
-    private boolean active = true;
+    private boolean active;
 
     private long timeBooked;
+
+    @NotNull
+    @NotBlank
+    private String ownerId;
 
 }

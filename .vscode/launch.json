@@ -29,6 +29,16 @@
             "mainClass": "com.geoparking.gatewayserver.GatewayServerApplication",
             "projectName": "gateway-server",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ParkingServiceApplication<parking-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.geoparking.parkingservice.ParkingServiceApplication",
+            "projectName": "parking-service",
+            "args": ""
         }
     ]
 }

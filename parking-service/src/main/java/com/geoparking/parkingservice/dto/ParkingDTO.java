@@ -30,4 +30,6 @@ public class ParkingDTO {
 
     private long timeBooked;
 
+    private String ownerId;
+
 }

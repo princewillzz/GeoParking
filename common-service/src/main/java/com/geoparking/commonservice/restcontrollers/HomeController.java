@@ -9,17 +9,7 @@ public class HomeController {
 
     @GetMapping
     public String test() {
-        return "public: user: admin";
-    }
-
-    @GetMapping(value = "user")
-    public String usertest() {
-        return "user";
-    }
-
-    @GetMapping(value = "admin")
-    public String admintest() {
-        return "admin";
+        return "slow";
     }
 
     @GetMapping("slow")

@@ -23,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint((req, res, e) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED)).and()
                 .authorizeRequests().antMatchers("/auth/authenticate/**").permitAll().antMatchers("/api/user/**")
-                .hasRole("USER").antMatchers("/api/admin/**").hasRole("ADMIN").anyRequest().permitAll();
+                .hasRole("USER").antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/parking-service/admin/**").hasRole("ADMIN").anyRequest().permitAll();
 
         http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
