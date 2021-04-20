@@ -26,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole("USER").antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/parking-service/admin/**").hasRole("ADMIN").anyRequest().permitAll();
 
+        http.cors();
+
         http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }

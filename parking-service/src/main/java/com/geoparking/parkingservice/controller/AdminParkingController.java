@@ -31,8 +31,8 @@ public class AdminParkingController {
     }
 
     @GetMapping
-    public String hello(HttpServletRequest request, @WithUser final DecodedUserInfo principal) {
-        System.err.println(principal);
+    public String hello(HttpServletRequest request) {
+        // System.err.println(principal);
         System.err.println(request.getHeader("Authorization"));
         return "Hello parking addmin";
     }
@@ -68,7 +68,7 @@ public class AdminParkingController {
             @WithUser final DecodedUserInfo adminInfo) {
 
         parkingService.deleteParkingWithId(parkingId, adminInfo);
-        
+
         return ResponseEntity.ok().build();
     }
 

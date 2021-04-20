@@ -31,11 +31,18 @@ function AdminHome() {
 	const [myParkings, setMyParkings] = useState([]);
 
 	useEffect(() => {
-		fetchAdminParkings();
-	}, [myParkings]);
+		fetchAdminParkings(true).then((parkings) => setMyParkings(parkings));
+	}, []);
 
 	const handleCloseAddParkingModal = () => {
 		setIsAddParkingModalOpen(false);
+	};
+
+	const handleNewParkingAdded = (parking) => {
+		setMyParkings((myParkings) => {
+			myParkings.push(parking);
+			return myParkings;
+		});
 	};
 
 	return (
@@ -51,12 +58,12 @@ function AdminHome() {
 				New Parking
 			</Button>
 			<main className={classes.root}>
-				<AdminParkingCard />
-				<AdminParkingCard />
-				<AdminParkingCard />
-				<AdminParkingCard />
+				{myParkings.map((parking) => (
+					<AdminParkingCard key={parking.id} parkingData={parking} />
+				))}
 			</main>
 			<AddParkingModal
+				handleNewParkingAdded={handleNewParkingAdded}
 				isAddParkingModalOpen={isAddParkingModalOpen}
 				handleCloseAddParkingModal={handleCloseAddParkingModal}
 			/>

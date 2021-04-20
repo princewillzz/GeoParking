@@ -13,7 +13,8 @@ import {
 	TextField,
 } from "@material-ui/core";
 import { Close, PhotoCamera } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
+import { createParking } from "../../api/parking-admin-api";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -45,11 +46,37 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const initialState = {
+	name: "",
+	address: "",
+	hourlyRent: 0,
+};
+
 function AddParkingModal({
 	isAddParkingModalOpen,
 	handleCloseAddParkingModal,
+	handleNewParkingAdded,
 }) {
 	const classes = useStyles();
+
+	const [parkingData, setParkingData] = useState(initialState);
+
+	const handleFormDataChange = (e) => {
+		setParkingData({ ...parkingData, [e.target.name]: e.target.value });
+	};
+
+	const handleFormSubmit = (e) => {
+		e.preventDefault();
+		console.log(parkingData);
+
+		createParking(parkingData)
+			.then((parking) => {
+				handleNewParkingAdded(parking);
+				setParkingData(initialState);
+				handleCloseAddParkingModal();
+			})
+			.catch((error) => console.log(error));
+	};
 
 	return (
 		<>
@@ -64,14 +91,8 @@ function AddParkingModal({
 					timeout: 500,
 				}}
 			>
-				<Fade
-					in={isAddParkingModalOpen}
-					onSubmit={(e) => {
-						e.preventDefault();
-						console.log("hii");
-					}}
-				>
-					<form className={classes.paper}>
+				<Fade in={isAddParkingModalOpen}>
+					<form className={classes.paper} onSubmit={handleFormSubmit}>
 						<div className={classes.modalHeader}>
 							<div className={classes.title}>
 								<p>Add Parking</p>
@@ -89,6 +110,9 @@ function AddParkingModal({
 									label={"Parking Name"}
 									variant="outlined"
 									fullWidth
+									name={"name"}
+									value={parkingData.name}
+									onChange={handleFormDataChange}
 								/>
 							</FormControl>
 							<FormControl style={{ marginBottom: 15 }}>
@@ -97,6 +121,9 @@ function AddParkingModal({
 									variant="outlined"
 									fullWidth
 									multiline
+									name={"address"}
+									value={parkingData.address}
+									onChange={handleFormDataChange}
 								/>
 							</FormControl>
 
@@ -117,6 +144,9 @@ function AddParkingModal({
 									}
 									labelWidth={90}
 									type="number"
+									name={"hourlyRent"}
+									value={parkingData.hourlyRent}
+									onChange={handleFormDataChange}
 								/>
 							</FormControl>
 

@@ -41,19 +41,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const initialState = {
-	parkingName: "default name",
-	parkingLocation: "default location",
-};
+function AdminParkingCard({ parkingData }) {
+	console.log(parkingData);
 
-function AdminParkingCard() {
 	const classes = useStyles();
 
 	const [isRaised, setIsRaised] = useState(false);
 
 	const [isEditable, setIsEditable] = useState(false);
 
-	const [parkingEditInfo, setParkingEditInfo] = useState(initialState);
+	const [parkingEditInfo, setParkingEditInfo] = useState({
+		parkingName: parkingData.name,
+		parkingLocation: parkingData.address,
+	});
 
 	const handleChangeParkingData = (e) => {
 		setParkingEditInfo({
@@ -134,7 +134,7 @@ function AdminParkingCard() {
 					component="center"
 				>
 					<p>
-						Times Booked: <b>100</b>
+						Times Booked: <b>{parkingData.timeBooked}</b>
 						<Link
 							to="/admin/bookings?parking-id=123213"
 							style={{ textDecoration: "none" }}
