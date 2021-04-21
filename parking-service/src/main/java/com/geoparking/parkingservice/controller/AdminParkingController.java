@@ -59,6 +59,7 @@ public class AdminParkingController {
     public ResponseEntity<?> handleUpdateParking(@RequestBody final ParkingDTO parkingDTO,
             @WithUser final DecodedUserInfo adminInfo) {
 
+        System.err.println("Updated parking" + parkingDTO);
         return ResponseEntity.ok().body(parkingService.updateParkingInfo(parkingDTO, adminInfo));
 
     }

@@ -1,6 +1,5 @@
 package com.geoparking.profileservice.config;
 
-
 import com.geoparking.profileservice.filter.JwtRequestFilter;
 import com.geoparking.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/auth/authenticate").permitAll()
-                .antMatchers("/auth/user/**").hasRole("USER")
-                .antMatchers("/auth/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable().authorizeRequests().antMatchers("/auth/authenticate").permitAll()
+                .antMatchers("/auth/user/**").hasRole("USER").antMatchers("/auth/admin/**").hasRole("ADMIN")
+                .anyRequest().permitAll().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
 
     }
 

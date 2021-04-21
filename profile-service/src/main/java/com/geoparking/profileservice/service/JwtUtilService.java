@@ -21,6 +21,10 @@ public class JwtUtilService {
 
     private String SECRET_KEY = "secret";
 
+    public String extractSubject(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -61,9 +65,9 @@ public class JwtUtilService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, ProfilePrincipal userDetails) {
+        final String subject = extractSubject(token);
+        return (subject.equals(userDetails.getProfileId()) && !isTokenExpired(token));
     }
 
 }

@@ -7,12 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.geoparking.profileservice.principal.ProfilePrincipal;
 import com.geoparking.profileservice.service.JwtUtilService;
 import com.geoparking.profileservice.service.ProfileService;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,14 +33,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        String username = null;
+
         String jwt;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            username = jwtUtilService.extractUsername(jwt);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                final UserDetails userDetails = this.profileService.loadUserByUsername(username);
+            final String subject = jwtUtilService.extractSubject(jwt);
+            if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                final ProfilePrincipal userDetails = this.profileService.loadUserBySubject(subject);
 
                 if (jwtUtilService.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

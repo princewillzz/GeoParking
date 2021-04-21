@@ -3,12 +3,12 @@ import {
 	Checkbox,
 	Divider,
 	FormControlLabel,
-	FormGroup,
 	Grid,
 	makeStyles,
 	TextField,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { updateBasicProfileInfo } from "../../api/profile-api";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -17,21 +17,43 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function BasicInfoEdit() {
+function BasicProfileInfoEdit({ profile }) {
 	const style = useStyles();
 
-	const [firstName, setFirstName] = useState();
-	const [lastName, setLastName] = useState();
-
-	const [genderCheckBox, setGenderCheckbox] = useState({
-		male: false,
-		female: false,
-		other: false,
+	const [basicProfileInfo, setBasicProfileInfo] = useState({
+		firstname: "",
+		lastname: "",
+		gender: null,
 	});
+
+	useEffect(() => {
+		setBasicProfileInfo({
+			firstname: profile.firstName || "",
+			lastname: profile.lastName || "",
+			gender: profile.gender,
+		});
+	}, [profile]);
+
+	console.log(profile, basicProfileInfo);
+
+	const handleChange = (e) => {
+		setBasicProfileInfo({
+			...basicProfileInfo,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleFormSubmit = (e) => {
+		e.preventDefault();
+
+		updateBasicProfileInfo(basicProfileInfo).then((profile) =>
+			console.log(profile)
+		);
+	};
 
 	return (
 		<>
-			<FormGroup className={style.root}>
+			<form onSubmit={handleFormSubmit} className={style.root}>
 				{/* <p style={{ fontSize: "1.5rem" }}>Basic Info</p> */}
 				<Grid
 					style={{ paddingInline: 10 }}
@@ -44,19 +66,25 @@ function BasicInfoEdit() {
 					<Grid item xs={6}>
 						<TextField
 							label="firstname"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							name="firstname"
+							value={basicProfileInfo.firstname}
+							onChange={handleChange}
 							variant="outlined"
-							fullWidth={true}
+							aria-label="first name"
+							aria-labelledby="first name of user"
+							fullWidth
 						/>
 					</Grid>
 					<Grid item xs={6}>
 						<TextField
 							label="lastname"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							name="lastname"
+							value={basicProfileInfo.lastname}
+							onChange={handleChange}
+							aria-label="last name"
+							aria-labelledby="last name of user"
 							variant="outlined"
-							fullWidth={true}
+							fullWidth
 						/>
 					</Grid>
 				</Grid>
@@ -69,14 +97,14 @@ function BasicInfoEdit() {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={genderCheckBox.male}
-									onClick={() =>
-										setGenderCheckbox({
-											male: true,
-											female: false,
-											other: false,
-										})
+									checked={
+										basicProfileInfo.gender
+											? basicProfileInfo.gender === "male"
+											: false
 									}
+									name="gender"
+									value="male"
+									onClick={handleChange}
 								/>
 							}
 							label="male"
@@ -84,14 +112,15 @@ function BasicInfoEdit() {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={genderCheckBox.female}
-									onClick={() =>
-										setGenderCheckbox({
-											male: false,
-											female: true,
-											other: false,
-										})
+									checked={
+										basicProfileInfo.gender
+											? basicProfileInfo.gender ===
+											  "female"
+											: false
 									}
+									name="gender"
+									value="female"
+									onClick={handleChange}
 								/>
 							}
 							label="female"
@@ -99,14 +128,15 @@ function BasicInfoEdit() {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={genderCheckBox.other}
-									onClick={() =>
-										setGenderCheckbox({
-											male: false,
-											female: false,
-											other: true,
-										})
+									checked={
+										basicProfileInfo.gender
+											? basicProfileInfo.gender ===
+											  "other"
+											: false
 									}
+									name="gender"
+									value="other"
+									onClick={handleChange}
 								/>
 							}
 							label="other"
@@ -114,12 +144,16 @@ function BasicInfoEdit() {
 					</Grid>
 					<Grid></Grid>
 					<Grid style={{ marginLeft: "auto", paddingRight: 30 }}>
-						<Button color="primary" variant="contained">
+						<Button
+							type="submit"
+							color="primary"
+							variant="contained"
+						>
 							Save
 						</Button>
 					</Grid>
 				</Grid>
-			</FormGroup>
+			</form>
 			<Divider
 				style={{ marginInline: "auto", marginTop: 40, width: "80%" }}
 			/>
@@ -128,4 +162,4 @@ function BasicInfoEdit() {
 	);
 }
 
-export default BasicInfoEdit;
+export default BasicProfileInfoEdit;

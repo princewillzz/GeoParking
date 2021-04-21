@@ -45,6 +45,12 @@ function AdminHome() {
 		});
 	};
 
+	const handleRemoveParkingCard = (parkingId) => {
+		setMyParkings((parkings) =>
+			parkings.filter((parking) => parking.id !== parkingId)
+		);
+	};
+
 	return (
 		<>
 			<h1 className={classes.heading}>Your Parkings</h1>
@@ -59,7 +65,11 @@ function AdminHome() {
 			</Button>
 			<main className={classes.root}>
 				{myParkings.map((parking) => (
-					<AdminParkingCard key={parking.id} parkingData={parking} />
+					<AdminParkingCard
+						key={parking.id}
+						parkingData={parking}
+						handleRemoveParkingCard={handleRemoveParkingCard}
+					/>
 				))}
 			</main>
 			<AddParkingModal

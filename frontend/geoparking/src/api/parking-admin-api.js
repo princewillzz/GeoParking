@@ -1,4 +1,3 @@
-import axios from "axios";
 import { axiosInstance } from "./axios-config";
 
 export const fetchAdminParkings = async (active) => {
@@ -31,4 +30,26 @@ export const createParking = async (parkingData) => {
 			},
 		})
 		.then((response) => response.data);
+};
+
+export const updateParking = async (parkingData) => {
+	const token = localStorage.getItem("token");
+
+	return axiosInstance
+		.put("/api/parking-service/admin/parking", parkingData, {
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		})
+		.then((response) => response.data);
+};
+
+export const deleteParking = async (parkingId) => {
+	const token = localStorage.getItem("token");
+
+	axiosInstance.delete("/api/parking-service/admin/parking/" + parkingId, {
+		headers: {
+			Authorization: "Bearer " + token,
+		},
+	});
 };

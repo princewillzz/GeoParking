@@ -13,6 +13,7 @@ import {
 import { LocationOn } from "@material-ui/icons";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { deleteParking, updateParking } from "../../api/parking-admin-api";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -41,9 +42,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function AdminParkingCard({ parkingData }) {
-	console.log(parkingData);
-
+function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 	const classes = useStyles();
 
 	const [isRaised, setIsRaised] = useState(false);
@@ -51,8 +50,10 @@ function AdminParkingCard({ parkingData }) {
 	const [isEditable, setIsEditable] = useState(false);
 
 	const [parkingEditInfo, setParkingEditInfo] = useState({
-		parkingName: parkingData.name,
-		parkingLocation: parkingData.address,
+		id: parkingData.id,
+		name: parkingData.name,
+		address: parkingData.address,
+		hourlyRent: parkingData.hourlyRent,
 	});
 
 	const handleChangeParkingData = (e) => {
@@ -65,8 +66,14 @@ function AdminParkingCard({ parkingData }) {
 	const handleParkingUpdate = (e) => {
 		e.preventDefault();
 		console.log(parkingEditInfo);
+		updateParking(parkingEditInfo).then(() => setIsEditable(false));
+	};
 
-		setIsEditable(false);
+	const handleDeleteParking = () => {
+		console.log(parkingData.id);
+		deleteParking(parkingData.id).then(() => {
+			handleRemoveParkingCard(parkingData.id);
+		});
 	};
 
 	return (
@@ -91,38 +98,61 @@ function AdminParkingCard({ parkingData }) {
 							component="h2"
 							className={classes.heading}
 						>
-							{parkingEditInfo.parkingName}
+							{parkingEditInfo.name}
 						</Typography>
 						<Typography
 							variant="body2"
 							color="textSecondary"
 							component="p"
 						>
-							{parkingEditInfo.parkingLocation}
+							{parkingEditInfo.address}
+						</Typography>
+						<Typography
+							style={{
+								textAlign: "center",
+								marginTop: 10,
+							}}
+							gutterBottom
+						>
+							Rs {parkingEditInfo.hourlyRent} /- per hour
 						</Typography>
 					</>
 				) : (
 					<>
 						<form onSubmit={handleParkingUpdate}>
 							<TextField
-								name="parkingName"
-								value={parkingEditInfo.parkingName}
+								name="name"
+								value={parkingEditInfo.name}
 								onChange={handleChangeParkingData}
 								label="Parking Name"
-								aria-label="parking name "
+								aria-label="parking name"
 								aria-labelledby="Parking name"
 								fullWidth
+								type="text"
 							/>
 							<TextField
-								name="parkingLocation"
-								value={parkingEditInfo.parkingLocation}
+								name="address"
+								value={parkingEditInfo.address}
 								onChange={handleChangeParkingData}
 								multiline
 								fullWidth
 								label="Address"
-								aria-label="parking location "
+								aria-label="parking location"
 								aria-labelledby="location"
 							/>
+							<TextField
+								name="hourlyRent"
+								value={parkingEditInfo.hourlyRent}
+								onChange={handleChangeParkingData}
+								label="Parking Hourly Rent"
+								aria-label="Parking hourly Rent"
+								aria-labelledby="Parking rent per hour"
+								fullWidth
+								type="number"
+							/>
+							<button type="submit" hidden>
+								submit
+							</button>
 						</form>
 					</>
 				)}
@@ -170,7 +200,11 @@ function AdminParkingCard({ parkingData }) {
 							Update
 						</Button>
 					)}
-					<Button variant="outlined" color="secondary">
+					<Button
+						onClick={handleDeleteParking}
+						variant="outlined"
+						color="secondary"
+					>
 						Delete
 					</Button>
 					<IconButton style={{ margin: 0, padding: 0 }}>

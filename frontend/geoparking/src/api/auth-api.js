@@ -23,7 +23,7 @@ export const checkAuth = () => {
 
 		if (decoded.exp > new Date().getTime() / 1000) {
 			return {
-				username: decoded.sub,
+				username: decoded.username,
 				role: decoded.authorities[0].split("_")[1],
 			};
 		}

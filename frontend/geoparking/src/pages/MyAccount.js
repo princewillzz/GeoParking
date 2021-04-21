@@ -1,7 +1,8 @@
 import { makeStyles, Paper } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchProfileInfo } from "../api/profile-api";
 import { useAuth } from "../authentication/ProvideAuth";
 import BasicInfoEdit from "../component/my-account/BasicInfoEdit";
 import EmailAddressEdit from "../component/my-account/EmailAddressEdit";
@@ -11,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		minHeight: "100vh",
 		height: "100%",
-		backgroundColor: "#2f2f2f",
+		backgroundColor: "grey",
+		// backgroundColor: "#2f2f2f",
 		// fontFamily: '"Roboto", sans-serif',
 		// display: "flex",
 		overflow: "hidden",
@@ -83,6 +85,12 @@ function MyAccount() {
 
 	const auth = useAuth();
 
+	const [profile, setProfile] = useState({});
+
+	useEffect(() => {
+		fetchProfileInfo().then((profile) => setProfile(profile));
+	}, []);
+
 	return (
 		<main className={styles.root}>
 			{/* backcontainer to show a elevated effect */}
@@ -118,7 +126,7 @@ function MyAccount() {
 						<div style={{ fontWeight: 600 }}> {auth.username} </div>
 					</Paper>
 
-					<BasicInfoEdit />
+					<BasicInfoEdit profile={profile} />
 					<EmailAddressEdit />
 					<MobileInfoEdit />
 				</div>
