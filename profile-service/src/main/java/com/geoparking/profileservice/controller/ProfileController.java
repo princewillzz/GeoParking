@@ -6,7 +6,9 @@ import com.geoparking.profileservice.models.AuthenticationResponse;
 import com.geoparking.profileservice.principal.ProfilePrincipal;
 import com.geoparking.profileservice.service.JwtUtilService;
 import com.geoparking.profileservice.service.ProfileService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -77,6 +79,21 @@ public class ProfileController {
                 .getPrincipal();
 
         return ResponseEntity.ok().body(profileService.updateProfileBasicInfo(profileDTO, principal));
+    }
+
+    /**
+     * Register new user
+     */
+    @PostMapping("/register")
+    public ResponseEntity<?> registerProfile(@RequestBody final ProfileDTO profileDTO) {
+
+        try {
+            return ResponseEntity.ok(profileService.createNewProfile(profileDTO));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @GetMapping("/hello")

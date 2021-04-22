@@ -1,11 +1,8 @@
 package com.geoparking.profileservice.service;
 
-import java.util.Set;
 import java.util.UUID;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
 
 import com.geoparking.profileservice.dto.ProfileDTO;
 import com.geoparking.profileservice.entity.Profile;
@@ -22,16 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProfileService implements UserDetailsService {
     private final ProfileRepository profileRepository;
 
+    private final UtilityService utilityService;
+
     @Autowired
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(final ProfileRepository profileRepository, final UtilityService utilityService) {
         this.profileRepository = profileRepository;
+        this.utilityService = utilityService;
     }
 
+    /**
+     * Load profiles by id (surrogate key of the profile)
+     * 
+     * @param profileId
+     * @return profile entitity
+     * @throws UsernameNotFoundException
+     */
     public Profile loadProfileById(final String profileId) throws UsernameNotFoundException {
 
         return profileRepository.findById(UUID.fromString(profileId))
                 .orElseThrow(() -> new UsernameNotFoundException("Unable To find User"));
 
+    }
+
+    @Transactional
+    public ProfileDTO createNewProfile(final ProfileDTO profileDTO)
+            throws ConstraintViolationException, IllegalArgumentException {
+
+        // Copy profile data fron profile DTO to profile entity
+        final Profile profile = utilityService.copyDetailsRequiredToRegisterAndValidateProfile(profileDTO);
+
+        profileRepository.save(profile);
+
+        return profileDTO;
     }
 
     @Override
@@ -55,36 +74,10 @@ public class ProfileService implements UserDetailsService {
         final Profile profile = this.loadProfileById(principal.getProfileId());
 
         // change data in the modal
-        this.copyBasicDetailsAndValidate(profileDTO, profile);
+
+        utilityService.copyBasicDetailsAndValidate(profileDTO, profile);
 
         return profile;
     }
 
-    /**
-     * Copy basic information from DTO to profile to be converted
-     * 
-     * @param profileDTO data to be copied from
-     * @param profile    data to be copied to
-     */
-    private void copyBasicDetailsAndValidate(final ProfileDTO profileDTO, final Profile profile) {
-        profile.setFirstName(profileDTO.getFirstName());
-        profile.setLastName(profileDTO.getLastName());
-        profile.setGender(profileDTO.getGender());
-
-        validateProfileModel(profile);
-    }
-
-    /**
-     * Validate the profile modal according to the contrainsts provided
-     * 
-     * @param profile the entity to be checked validations of
-     * @throws ConstraintViolationException
-     */
-    private void validateProfileModel(final Profile profile) throws ConstraintViolationException {
-        Set<ConstraintViolation<Profile>> violations = Validation.buildDefaultValidatorFactory().getValidator()
-                .validate(profile);
-
-        if (!violations.isEmpty())
-            throw new ConstraintViolationException(violations);
-    }
 }

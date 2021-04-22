@@ -1,5 +1,15 @@
-import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
+import {
+	Button,
+	FormControlLabel,
+	Grid,
+	makeStyles,
+	Switch,
+	TextField,
+} from "@material-ui/core";
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+import { registerProfile } from "../../api/profile-api";
+import { useAuth } from "../../authentication/ProvideAuth";
 
 const useStyles = makeStyles((theme) => ({
 	inputContainer: {},
@@ -20,18 +30,58 @@ const initialState = {
 	email: "",
 	mobile: "",
 	password: "",
+	role: "user",
 };
 
 function RegisterBody() {
 	const classes = useStyles();
 
+	const history = useHistory();
+	const auth = useAuth();
+
 	const [formInputState, setFormInputState] = useState(initialState);
+	const [adminChecked, setAdminChecked] = useState(false);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(formInputState);
+
+		let replaceURLTo = "/";
+		if (adminChecked) {
+			replaceURLTo = "/admin";
+		}
+
+		const callback = () => {
+			auth.signin(
+				{
+					username: formInputState.email,
+					password: formInputState.password,
+				},
+				() => {
+					history.replace(replaceURLTo);
+				}
+			);
+		};
+
+		registerProfile(formInputState, callback);
 	};
 
+	// change role change
+	const handleRoleInputChange = () => {
+		if (!adminChecked) {
+			setFormInputState({
+				...formInputState,
+				role: "admin",
+			});
+		} else {
+			setFormInputState({
+				...formInputState,
+				role: "user",
+			});
+		}
+		setAdminChecked(!adminChecked);
+	};
+
+	// handle form state change
 	const handleFormChange = (event) => {
 		setFormInputState({
 			...formInputState,
@@ -100,6 +150,20 @@ function RegisterBody() {
 						className={classes.input}
 						label="Password"
 						fullWidth
+					/>
+				</Grid>
+
+				<Grid item>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={adminChecked}
+								name="role"
+								onChange={handleRoleInputChange}
+							/>
+						}
+						label="Rent Parkings"
+						style={{ marginTop: 10 }}
 					/>
 				</Grid>
 

@@ -1,5 +1,5 @@
 server:
-    port: 8201
+    port: 8301
 
 eureka:
     client:
@@ -13,7 +13,7 @@ eureka:
 
 spring:
     application:
-        name: profile-service
+        name: booking-service
     jpa:
         database-platform: org.hibernate.dialect.MySQL8Dialect
         show-sql: true
@@ -21,6 +21,6 @@ spring:
             ddl-auto: update
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/geoparking_profile
+        url: jdbc:mysql://localhost:3306/geoparking_booking
         username: root
         password: password

@@ -290,7 +290,7 @@ export default function PrimarySearchAppBar() {
 
 					{!isUserAuthenticated ? (
 						<Link to="/login" style={{ textDecoration: "none" }}>
-							<Button variant={"contained"}>Login</Button>
+							<Button variant={"contained"}>Sign in/up</Button>
 						</Link>
 					) : (
 						<>
