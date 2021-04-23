@@ -46,7 +46,8 @@ public class ParkingController {
     }
 
     @GetMapping(value = "/parking/{id}")
-    public ResponseEntity<?> getparkingWithId(@PathVariable("id") final String parkingId) {
+    public ResponseEntity<?> getparkingWithId(@PathVariable("id") final String parkingId) throws InterruptedException {
+        Thread.sleep(2000);
         return ResponseEntity.ok(parkingService.getParking(parkingId));
     }
 

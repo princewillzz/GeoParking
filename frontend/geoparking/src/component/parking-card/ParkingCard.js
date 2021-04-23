@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ParkingCard({ handleOpenBookSlotModal, parkingData }) {
-	console.log(parkingData);
+	// console.log(parkingData);
 
 	const classes = useStyles();
 

@@ -1,38 +1,31 @@
-import {
-	Divider,
-	IconButton,
-	InputBase,
-	makeStyles,
-	Paper,
-} from "@material-ui/core";
-import { RestoreOutlined, SearchOutlined } from "@material-ui/icons";
+import { Divider } from "@material-ui/core";
 import React, { useState } from "react";
+import { fetchParkingsWithAddress } from "../../api/parking-public-api";
 import BookSlotModal from "../book-slot-modal/BookSlotModal";
 import ParkingCard from "../parking-card/ParkingCard";
+import ParkingSearchBar from "./ParkingSearchBar";
 import "./SearchParking.css";
 
-import { fetchParkingsWithAddress } from "../../api/parking-public-api";
-
-const searchBarStyle = makeStyles((theme) => ({
-	root: {
-		padding: "2px 4px",
-		display: "flex",
-		alignItems: "center",
-		width: "min(400px, 80vw)",
-	},
-	input: {
-		marginLeft: theme.spacing(1),
-		flex: 1,
-		// "&.Mui-focused": {		},
-	},
-	iconButton: {
-		padding: 10,
-	},
-	divider: {
-		height: 28,
-		margin: 4,
-	},
-}));
+// const searchBarStyle = makeStyles((theme) => ({
+// 	root: {
+// 		padding: "2px 4px",
+// 		display: "flex",
+// 		alignItems: "center",
+// 		width: "min(400px, 80vw)",
+// 	},
+// 	input: {
+// 		marginLeft: theme.spacing(1),
+// 		flex: 1,
+// 		// "&.Mui-focused": {		},
+// 	},
+// 	iconButton: {
+// 		padding: 10,
+// 	},
+// 	divider: {
+// 		height: 28,
+// 		margin: 4,
+// 	},
+// }));
 
 // const parkingCardContainerStyle = makeStyles((theme) => ({
 // 	root: {
@@ -47,7 +40,7 @@ const searchBarStyle = makeStyles((theme) => ({
 // }));
 
 export default function SearchParking({ featuredParkings }) {
-	const searchBarClasses = searchBarStyle();
+	// const searchBarClasses = searchBarStyle();
 	// const parkingCardContainerClasses = parkingCardContainerStyle();
 
 	// Selected parking's id for modal
@@ -56,14 +49,14 @@ export default function SearchParking({ featuredParkings }) {
 	);
 
 	// styling state values
-	const [isSearchElevated, setIsSearchElevated] = useState(false);
+	// const [isSearchElevated, setIsSearchElevated] = useState(false);
 
 	// State values
-	const [searchParkingString, setSearchParkingString] = useState("");
+	// const [searchParkingString, setSearchParkingString] = useState("");
 	const [searchedParkingList, setSearchedParkingList] = useState([]);
 
-	const handleSearchParking = (e) => {
-		e.preventDefault();
+	const handleSearchParking = (searchParkingString) => {
+		// e.preventDefault();
 
 		fetchParkingsWithAddress(searchParkingString).then((parkingList) => {
 			setSearchedParkingList(parkingList);
@@ -87,41 +80,7 @@ export default function SearchParking({ featuredParkings }) {
 			</h1>
 
 			<div className="parkingSearchContainer">
-				<Paper
-					onMouseOver={() => setIsSearchElevated(true)}
-					onMouseLeave={() => setIsSearchElevated(false)}
-					elevation={isSearchElevated ? 4 : 1}
-					onSubmit={handleSearchParking}
-					component="form"
-					className={searchBarClasses.root}
-				>
-					<IconButton type="button">
-						<RestoreOutlined />
-					</IconButton>
-					<Divider
-						className={searchBarClasses.divider}
-						orientation="vertical"
-					/>
-					<InputBase
-						value={searchParkingString}
-						onChange={(e) => setSearchParkingString(e.target.value)}
-						className={searchBarClasses.input}
-						placeholder="Search Parkings"
-						inputProps={{ "aria-label": "search parkings" }}
-					/>
-
-					<IconButton
-						type="submit"
-						className={searchBarClasses.iconButton}
-						aria-label="search"
-					>
-						<SearchOutlined />
-					</IconButton>
-					<Divider
-						className={searchBarClasses.divider}
-						orientation="vertical"
-					/>
-				</Paper>
+				<ParkingSearchBar handleSearchParking={handleSearchParking} />
 			</div>
 
 			<div className="parkingsFetched">

@@ -13,8 +13,8 @@ public class BookingBillEmbeddable {
     @NotNull
     @Column(nullable = false)
     private Double totalAmount;
-    private Double discount;
-    private Double wallet;
+    private double discount;
+    private double wallet;
 
     @NotNull
     @Column(nullable = false)

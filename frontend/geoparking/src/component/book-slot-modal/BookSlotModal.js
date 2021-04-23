@@ -4,14 +4,17 @@ import {
 	Button,
 	Container,
 	Fade,
+	LinearProgress,
 	makeStyles,
 	Modal,
 	TextField,
 } from "@material-ui/core";
 import { CheckCircleOutlineRounded, Close } from "@material-ui/icons";
+import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../authentication/ProvideAuth";
+import PayByRazorPay from "../payment/PayByRazorPay";
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -101,15 +104,46 @@ function BookSlotModal({
 
 	const auth = useAuth();
 
+	console.log(selectedParkingId);
+
+	const [checkAvailabilityForm, setCheckAvailabilityForm] = useState({
+		parkingId: selectedParkingId,
+		arrivalDate: "",
+		arrivalTime: "",
+		departureDate: "",
+		departureTime: "",
+	});
+
+	const [errorMessage, setErrorMessage] = useState();
+	const [isLoading, setIsLoading] = useState(false);
+
 	// Reset or initialize state on modal different parking selection
 	useEffect(() => {
 		setIsParkingAvailableForBooking(false);
+
+		setCheckAvailabilityForm((checkAvailabilityForm) => {
+			return {
+				...checkAvailabilityForm,
+				parkingId: selectedParkingId,
+			};
+		});
+		setErrorMessage(null);
+		setIsLoading(false);
 	}, [selectedParkingId]);
 
 	const [
 		isParkingAvailableForBooking,
 		setIsParkingAvailableForBooking,
 	] = useState(false);
+
+	const handleCheckAvailabilityFormChange = (e) => {
+		setCheckAvailabilityForm({
+			...checkAvailabilityForm,
+			[e.target.name]: e.target.value,
+		});
+
+		console.log(checkAvailabilityForm);
+	};
 
 	// TODO-----------
 	// handle if the parking is available for booking
@@ -118,11 +152,38 @@ function BookSlotModal({
 		setIsParkingAvailableForBooking(true);
 	};
 
+	const handleErrorMessageAlert = (message) => {
+		setErrorMessage(message);
+	};
+
+	const handleModelClose = () => {
+		handleCloseBookSlotModal();
+		// setErrorMessage(null);
+		// setIsLoading(false);
+	};
+
+	const dimContentWhileLoading = () => {
+		return isLoading
+			? {
+					backgroundColor: "rgba(0, 0, 0, 0.3)",
+					pointerEvents: "none",
+			  }
+			: {};
+	};
+
+	const disablePointerWhileloading = () => {
+		return isLoading
+			? {
+					pointerEvents: "none",
+			  }
+			: {};
+	};
+
 	return (
 		<Modal
 			className={classes.modal}
 			open={openBookSlotModal}
-			onClose={handleCloseBookSlotModal}
+			onClose={handleModelClose}
 			aria-labelledby="book-slot-modal-title"
 			aria-describedby="book-slot-modal-description"
 			closeAfterTransition
@@ -147,14 +208,21 @@ function BookSlotModal({
 							)}
 						</h5>
 						<Close
-							onClick={handleCloseBookSlotModal}
+							onClick={handleModelClose}
 							style={{ cursor: "pointer" }}
 						/>
 					</div>
+					{isLoading && <LinearProgress />}
 					<div
+						style={dimContentWhileLoading()}
 						className={classes.modalContent}
 						id="book-slot-modal-description"
 					>
+						{/* ALert error message */}
+						{errorMessage && errorMessage.trim().length > 0 && (
+							<Alert severity="error">{errorMessage}</Alert>
+						)}
+
 						<Container fixed>
 							<Box my={2}>
 								<Button
@@ -171,8 +239,20 @@ function BookSlotModal({
 										Arrive
 									</span>
 								</Button>
-								<TextField type="date" variant="outlined" />
-								<TextField type="time" variant="outlined" />
+								<TextField
+									name="arrivalDate"
+									value={checkAvailabilityForm.arrivalDate}
+									onChange={handleCheckAvailabilityFormChange}
+									type="date"
+									variant="outlined"
+								/>
+								<TextField
+									name="arrivalTime"
+									value={checkAvailabilityForm.arrivalTime}
+									onChange={handleCheckAvailabilityFormChange}
+									type="time"
+									variant="outlined"
+								/>
 							</Box>
 							<Box my={2}>
 								<Button
@@ -189,12 +269,27 @@ function BookSlotModal({
 										Depart
 									</span>
 								</Button>
-								<TextField type="date" variant="outlined" />
-								<TextField type="time" variant="outlined" />
+								<TextField
+									name="departureDate"
+									value={checkAvailabilityForm.departureDate}
+									onChange={handleCheckAvailabilityFormChange}
+									type="date"
+									variant="outlined"
+								/>
+								<TextField
+									name="departureTime"
+									value={checkAvailabilityForm.departureTime}
+									onChange={handleCheckAvailabilityFormChange}
+									type="time"
+									variant="outlined"
+								/>
 							</Box>
 						</Container>
 					</div>
-					<div className={classes.modalFooter}>
+					<div
+						style={disablePointerWhileloading()}
+						className={classes.modalFooter}
+					>
 						<>
 							{isParkingAvailableForBooking &&
 								(!auth.isUserLoggedIn ? (
@@ -210,13 +305,18 @@ function BookSlotModal({
 										</Button>
 									</Link>
 								) : (
-									<Button
-										className={classes.modalSuccessBtn}
-										color="primary"
-										variant="contained"
-									>
-										Pay to Book
-									</Button>
+									<PayByRazorPay
+										handleErrorMessageAlert={
+											handleErrorMessageAlert
+										}
+										checkAvailabilityForm={
+											checkAvailabilityForm
+										}
+										handleCloseBookSlotModal={
+											handleModelClose
+										}
+										setIsLoading={setIsLoading}
+									/>
 								))}
 						</>
 

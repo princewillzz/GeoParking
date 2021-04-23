@@ -1,8 +1,10 @@
 package com.geoparking.bookingservice.dto;
 
+import java.util.Date;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.geoparking.bookingservice.model.BookingBillEmbeddable;
 
 import lombok.Data;
 
@@ -11,19 +13,28 @@ public class BookingDTO {
 
     private UUID uid;
 
-    private String createdAt;
+    private Date createdAt;
 
-    private String updatedAt;
+    private Date updatedAt;
 
-    private String fromTimeDate;
+    private Date deletedAt;
 
-    private String toTimeDate;
+    // Basic booking info
+    private Date arrivalTimeDate;
 
-    private Double totalAmount;
+    private Date departureTimeDate;
 
-    private Double wallet;
+    private BookingBillEmbeddable bill;
+    // private Double totalAmount;
 
-    private Double discount;
+    // private double wallet;
+
+    // private double discount;
+
+    // private Double amountToPay;
+    // End of basic booking info
+
+    private String parkingId;
 
     @JsonProperty(value = "order_id")
     private String razorpayOrderId;
@@ -35,7 +46,5 @@ public class BookingDTO {
     private String razorpaySignature;
 
     private boolean isPaymentDone;
-
-    private String parkingId;
 
 }

@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/public")
+@Slf4j
 public class PublicBookingController {
 
     private final BookingService bookingService;
@@ -25,8 +28,12 @@ public class PublicBookingController {
     @PostMapping(value = "/check-availability")
     public ResponseEntity<?> checkBookingAvailability(@RequestBody CheckAvailabilityForm checkAvailabilityForm) {
 
-        if (bookingService.checkSlotAvailability(checkAvailabilityForm)) {
-            return ResponseEntity.ok().build();
+        try {
+            if (bookingService.checkSlotAvailability(checkAvailabilityForm)) {
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
 
         return ResponseEntity.badRequest().build();

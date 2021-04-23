@@ -1,16 +1,16 @@
 package com.geoparking.bookingservice.util;
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
 public class CheckAvailabilityForm {
 
-    private Date fromDate;
-    private Date fromTime;
+    private String parkingId;
 
-    private String toDate;
-    private String toTime;
+    private String arrivalDate;
+    private String arrivalTime;
+
+    private String departureDate;
+    private String departureTime;
 
 }

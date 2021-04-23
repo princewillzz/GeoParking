@@ -1,4 +1,3 @@
-import { useAuth } from "../authentication/ProvideAuth";
 import { axiosInstance } from "./axios-config";
 
 export const fetchProfileInfo = async () => {
