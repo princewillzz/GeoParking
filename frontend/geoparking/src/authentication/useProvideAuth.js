@@ -24,15 +24,11 @@ function useProvideAuth() {
 		} catch (error) {}
 	}, []);
 
-	const signin = (credentials, cb) => {
+	const signin = async (credentials, cb) => {
 		return signinUser(credentials, () => {
-			try {
-				_initializeAuthState();
+			_initializeAuthState();
 
-				cb();
-			} catch (error) {
-				console.log(error);
-			}
+			cb();
 		});
 	};
 

@@ -1,25 +1,23 @@
 import jwtDecode from "jwt-decode";
 import { axiosInstance } from "./axios-config";
 
-export const signinUser = (credentials, cb) => {
-	axiosInstance.post("/auth/authenticate", credentials).then((res) => {
+export const signinUser = async (credentials, cb) => {
+	// const csrfToken = cookies.get("XSRF-TOKEN");
+
+	return axiosInstance.post("/auth/authenticate", credentials).then((res) => {
 		const token = res.data.jwt;
 
 		localStorage.setItem("token", token);
-		console.log(token);
 
 		cb();
 	});
 };
 
 export const checkAuth = () => {
-	const token = localStorage.getItem("token");
-	console.log(token);
+	// console.log(localStorage.getItem("token"));
 
 	try {
-		const decoded = jwtDecode(token);
-
-		console.log(decoded);
+		const decoded = jwtDecode(localStorage.getItem("token"));
 
 		if (decoded.exp > new Date().getTime() / 1000) {
 			return {

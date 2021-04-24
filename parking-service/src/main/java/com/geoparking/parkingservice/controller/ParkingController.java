@@ -53,7 +53,8 @@ public class ParkingController {
     @GetMapping(value = "/parking/featured")
     public ResponseEntity<?> getFeaturedParkingList(HttpServletRequest request) {
 
-        System.err.println(request.getHeader("Authorization"));
+        // parkingService.getFeaturedParkings().stream().forEach(p ->
+        // System.err.println(p.getId()));
 
         return ResponseEntity.ok().body(parkingService.getFeaturedParkings());
     }

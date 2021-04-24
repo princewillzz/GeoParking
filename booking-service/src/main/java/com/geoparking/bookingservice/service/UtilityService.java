@@ -50,7 +50,7 @@ final public class UtilityService {
 
         booking.setBill(bookingBill);
 
-        booking.setBookingStatus(BookingStatus.PENDING);
+        booking.setBookingStatus(BookingStatus.PAYMENT_PENDING);
 
     }
 

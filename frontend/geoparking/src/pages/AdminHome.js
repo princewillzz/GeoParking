@@ -31,7 +31,9 @@ function AdminHome() {
 	const [myParkings, setMyParkings] = useState([]);
 
 	useEffect(() => {
-		fetchAdminParkings(true).then((parkings) => setMyParkings(parkings));
+		fetchAdminParkings(true)
+			.then((parkings) => setMyParkings(parkings))
+			.catch((e) => alert("error"));
 	}, []);
 
 	const handleCloseAddParkingModal = () => {

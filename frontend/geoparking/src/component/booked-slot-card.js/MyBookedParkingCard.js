@@ -7,7 +7,8 @@ import {
 	makeStyles,
 	Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { axiosInstance } from "../../api/axios-config";
 import mapThumb from "../../assets/map_thumb.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,8 +47,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function MyBookedParkingCard() {
+function MyBookedParkingCard({ bookingData }) {
 	const classes = useStyles();
+
+	const [parking, setParking] = useState({
+		id: "",
+		name: "",
+		address: "",
+		hourlyRent: 0,
+		active: false,
+	});
+
+	useEffect(() => {
+		const fetchParkingInfo = async () => {
+			axiosInstance
+				.get("/api/parking-service/parking/" + bookingData.parkingId)
+				.then((response) => {
+					setParking(response.data);
+					console.log(response.data);
+				})
+				.catch((error) => {
+					console.log(error.response.status);
+				});
+		};
+
+		setTimeout(() => {
+			fetchParkingInfo();
+		}, 0);
+	}, [bookingData.parkingId]);
 
 	const [isRaised, setIsRaised] = useState(false);
 
@@ -62,12 +89,12 @@ function MyBookedParkingCard() {
 			<div className={classes.details}>
 				<CardContent className={classes.content}>
 					<Typography component="h5" variant="h5">
-						{"parkingData.name"}
+						{parking.name}
 					</Typography>
 					<Typography variant="subtitle1" color="textSecondary">
 						Asansol
 					</Typography>
-					<Typography>{"parkingData.location"}</Typography>
+					<Typography>{parking.address}</Typography>
 
 					<Box
 						display={"flex"}
@@ -94,21 +121,28 @@ function MyBookedParkingCard() {
 					<Divider className={classes.divider} />
 					<Box display="flex" justifyContent="space-between">
 						<Box>
-							<p>{new Date().toDateString()}</p>
 							<p>
 								{new Date(
-									new Date().getTime() +
-										2 * 24 * 60 * 60 * 1000
+									bookingData.arrivalTimeDate
+								).toDateString()}
+							</p>
+							<p>
+								{new Date(
+									bookingData.departureTimeDate
 								).toDateString()}
 							</p>
 						</Box>
 						<Box>
 							<p>
 								{new Date(
-									new Date().getTime() - 1000 * 60 * 60
+									bookingData.arrivalTimeDate
 								).toLocaleTimeString()}
 							</p>
-							<p>{new Date().toLocaleTimeString()}</p>
+							<p>
+								{new Date(
+									bookingData.departureTimeDate
+								).toLocaleTimeString()}
+							</p>
 						</Box>
 					</Box>
 					<Divider className={classes.divider} />

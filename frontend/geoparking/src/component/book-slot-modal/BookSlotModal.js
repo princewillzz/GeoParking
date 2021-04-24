@@ -104,8 +104,6 @@ function BookSlotModal({
 
 	const auth = useAuth();
 
-	console.log(selectedParkingId);
-
 	const [checkAvailabilityForm, setCheckAvailabilityForm] = useState({
 		parkingId: selectedParkingId,
 		arrivalDate: "",

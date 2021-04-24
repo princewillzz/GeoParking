@@ -1,7 +1,6 @@
 package com.geoparking.bookingservice.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,12 +18,9 @@ import com.geoparking.bookingservice.util.WithUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,12 +49,22 @@ public class UserBookingController {
         this.restTemplate = restTemplate;
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyBookings(@WithUser final DecodedUserInfo profile) {
+
+        final HashMap<String, Object> response = new HashMap<>(5);
+        response.put("bookings", bookingService.getAllBookingOfCustomer(profile));
+
+        return ResponseEntity.ok().body(response);
+
+    }
+
     @PostMapping("/initiate/payment")
     public ResponseEntity<?> initiatePayment(@RequestBody CheckAvailabilityForm checkAvailabilityForm,
             @WithUser final DecodedUserInfo decodedUserInfo, final HttpServletRequest request) {
 
-        System.err.println(decodedUserInfo);
-        System.out.println(request.getHeader("Authorization"));
+        // System.err.println(decodedUserInfo);
+        // System.out.println(request.getHeader("Authorization"));
 
         // Create booking and Generate payments link
 

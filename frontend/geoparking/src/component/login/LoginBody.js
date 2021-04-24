@@ -33,8 +33,8 @@ function LoginBody() {
 	let { from } = location.state || { from: { pathname: "/" } };
 
 	const [credentials, setCredentials] = useState({
-		username: "",
-		password: "",
+		username: "testadmin",
+		password: "testadmin",
 	});
 
 	const handleCredentialsChange = (event) => {
@@ -44,11 +44,11 @@ function LoginBody() {
 		});
 	};
 
-	const handleLogin = (event) => {
+	const handleLogin = async (event) => {
 		event.preventDefault();
 
 		try {
-			auth.signin(credentials, () => {
+			await auth.signin(credentials, () => {
 				history.replace(from);
 			});
 		} catch (error) {

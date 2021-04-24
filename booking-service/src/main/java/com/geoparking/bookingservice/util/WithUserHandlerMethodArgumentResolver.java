@@ -37,7 +37,9 @@ public class WithUserHandlerMethodArgumentResolver implements HandlerMethodArgum
         // System.err.println("Extracting claims in parking service...." +
         // claims.toString());
 
-        return new DecodedUserInfo((String) claims.get("sub"), (String) claims.get("username"));
+        return DecodedUserInfo.builder().userId((String) claims.get("sub")).username((String) claims.get("username"))
+                .build();
+
     }
 
 }

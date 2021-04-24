@@ -1,10 +1,15 @@
 package com.geoparking.bookingservice.service;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.geoparking.bookingservice.controller.PublicBookingController;
+import com.geoparking.bookingservice.dto.BookingDTO;
+import com.geoparking.bookingservice.mapper.BookingMapper;
 import com.geoparking.bookingservice.model.Booking;
 import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.DecodedUserInfo;
@@ -17,13 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.NotAcceptableStatusException;
-
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @Service
 @Qualifier("bookingService")
@@ -50,6 +53,30 @@ public class BookingService {
     }
 
     /**
+     * Fetch Booking modal from the database
+     * 
+     * @param id booking unique id
+     * @return Booking modal
+     * @throws NoSuchElementException
+     */
+    public Booking loadBookingById(final UUID id) throws NoSuchElementException {
+
+        return bookingRepository.findById(id).orElseThrow();
+
+    }
+
+    public Set<BookingDTO> getAllBookingOfCustomer(final DecodedUserInfo customer) {
+
+        return fetchBookingListOfCustomerFromDB(customer.getUserId()).stream().map(BookingMapper.INSTANCE::toBookingDTO)
+                .collect(Collectors.toSet());
+    }
+
+    @Transactional(readOnly = true)
+    private List<Booking> fetchBookingListOfCustomerFromDB(final String customerId) {
+        return bookingRepository.findByCustomerId(customerId);
+    }
+
+    /**
      * Check whether the booking for the given date time slot is available
      * 
      * @param checkAvailabilityForm
@@ -67,12 +94,6 @@ public class BookingService {
                 checkAvailabilityForm.getDepartureDate(), checkAvailabilityForm.getDepartureTime()));
 
         return true;
-    }
-
-    public Booking loadBookingById(final UUID id) throws NoSuchElementException {
-
-        return bookingRepository.findById(id).orElseThrow();
-
     }
 
     /**
@@ -130,4 +151,43 @@ public class BookingService {
         return bookingRepository.findByRazorpayOrderId(razorpayOrderId).orElseThrow();
     }
 
+    // /**Admin services */
+
+    @Transactional(readOnly = true)
+    private List<Booking> getAllBookingsWithParkingId(final String parkingId) {
+        return bookingRepository.findByParkingId(parkingId);
+    }
+
+    /**
+     * 
+     * @param parkingId
+     * @param adminInfo
+     * @return
+     * @throws IllegalAccessException
+     * @throws NotAcceptableStatusException
+     */
+    public List<BookingDTO> getBookingListForParkingOfAdmin(final String parkingId, final DecodedUserInfo adminInfo)
+            throws IllegalAccessException, NotAcceptableStatusException {
+
+        // Fetch parking from parking service
+        final ResponseEntity<Parking> parkingResponse = restTemplate
+                .getForEntity("http://parking-service/parking/" + parkingId, Parking.class);
+
+        if (!parkingResponse.getStatusCode().equals(HttpStatus.OK)) {
+            throw new NotAcceptableStatusException("Parking was not fetched!");
+        }
+
+        // get parking model
+        final Parking parking = parkingResponse.getBody();
+
+        // check admin of the parking equal to who is trying to access bookings
+        if (!parking.getOwnerId().equals(adminInfo.getUserId())) {
+            throw new IllegalAccessException("You are Unauthorized");
+        }
+
+        // get bookings from database, convert and return
+        return this.getAllBookingsWithParkingId(parkingId).parallelStream().map(BookingMapper.INSTANCE::toBookingDTO)
+                .collect(Collectors.toList());
+
+    }
 }

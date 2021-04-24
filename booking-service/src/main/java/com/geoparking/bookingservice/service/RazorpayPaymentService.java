@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.geoparking.bookingservice.model.Booking;
+import com.geoparking.bookingservice.model.BookingStatus;
 import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.PaymentRazorpay;
 import com.geoparking.bookingservice.model.RazorPayEntity;
@@ -129,6 +130,7 @@ public class RazorpayPaymentService {
                 booking.setRazorpaySignature(razorpaySignature);
 
                 booking.setPaymentDone(true);
+                booking.setBookingStatus(BookingStatus.PENDING);
             }
 
         }

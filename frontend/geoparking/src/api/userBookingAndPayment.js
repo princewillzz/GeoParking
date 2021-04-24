@@ -1,18 +1,10 @@
-import axios from "axios";
+import { axiosInstance } from "./axios-config";
 
 export const initiateBookingAndFetchPaymentOptions = async (
 	checkAvailabilityForm
 ) => {
-	return axios
-		.post(
-			"http://localhost:8301/user/initiate/payment",
-			checkAvailabilityForm,
-			{
-				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token"),
-				},
-			}
-		)
+	return axiosInstance
+		.post("api/booking/user/initiate/payment", checkAvailabilityForm)
 		.then((response) => {
 			return {
 				status: response.status,
@@ -25,8 +17,15 @@ export const initiateBookingAndFetchPaymentOptions = async (
 };
 
 export const callbackOnSuccessfullPayment = async (paymentInfo) => {
-	return axios
-		.put("http://localhost:8301/user/payment/success", paymentInfo)
+	return axiosInstance
+		.put("/api/booking/user/payment/success", paymentInfo)
 		.then((response) => response.status)
 		.catch((error) => error.response.status);
+};
+
+export const fetchMyBookings = async () => {
+	return axiosInstance
+		.get("/api/booking/user/my")
+		.then((response) => response)
+		.catch((error) => error.response);
 };
