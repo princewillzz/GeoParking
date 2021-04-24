@@ -109,7 +109,8 @@ function PayByRazorPay({
 					options.name = data.merchantName;
 					options.prefill.name = data.customerName;
 					options.prefill.contact = data.customerContact;
-					options.prefill.email = data.customerEmail;
+					options.prefill.email = data.customerEmail; // to be removed
+					options.prefill.email = "harshtiwariai@gmail.com"; // to be removed
 					options.description = data.purchaseDescription;
 					options.notes = data.notes.substr(15);
 

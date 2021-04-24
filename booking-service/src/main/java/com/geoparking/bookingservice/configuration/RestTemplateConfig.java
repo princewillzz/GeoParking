@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.resilience4j.common.circuitbreaker.configuration.CircuitBreakerConfigCustomizer;
+
 @Configuration
 public class RestTemplateConfig {
 
@@ -15,9 +17,13 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate() {
 
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(5);
+        clientHttpRequestFactory.setConnectTimeout(3000);
 
         return new RestTemplate(clientHttpRequestFactory);
     }
 
+    @Bean
+    public CircuitBreakerConfigCustomizer testCustomizer() {
+        return CircuitBreakerConfigCustomizer.of("backendA", builder -> builder.slidingWindowSize(100));
+    }
 }

@@ -7,6 +7,7 @@ import java.util.Date;
 import com.geoparking.bookingservice.model.Booking;
 import com.geoparking.bookingservice.model.BookingBillEmbeddable;
 import com.geoparking.bookingservice.model.BookingStatus;
+import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.Parking;
 import com.geoparking.bookingservice.util.CheckAvailabilityForm;
 
@@ -26,8 +27,8 @@ final public class UtilityService {
 
     }
 
-    void copyBookingDetailsToSaveInDB(final Booking booking, final Parking parking,
-            final CheckAvailabilityForm checkAvailabilityForm) throws ParseException {
+    void copyBookingDetailsToSaveInDB(final Booking booking, final Customer customer, final Parking parking,
+            final CheckAvailabilityForm checkAvailabilityForm) throws ParseException, IllegalAccessException {
 
         // Copy Arrival Departure date time
         booking.setArrivalTimeDate(this.convertDateTimeStringToDate(checkAvailabilityForm.getArrivalDate(),
@@ -37,6 +38,11 @@ final public class UtilityService {
 
         // copy info related to parking
         booking.setParkingId(parking.getId());
+
+        if (!customer.getIsActive() || !customer.getRole().equalsIgnoreCase("role_user")) {
+            throw new IllegalAccessException("Not Authorized");
+        }
+        booking.setCustomerId(customer.getId().toString());
 
         final BookingBillEmbeddable bookingBill = new BookingBillEmbeddable();
         bookingBill.setTotalAmount(parking.getHourlyRent());

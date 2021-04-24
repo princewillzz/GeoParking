@@ -82,14 +82,14 @@ public class RazorpayPaymentService {
         RazorPayEntity razorPay = new RazorPayEntity();
 
         razorPay.setApplicationFee(String.valueOf(bookingDetail.getBill().getAmountToPay() * 100));
-        razorPay.setCustomerName("customer");
-        razorPay.setCustomerEmail("harsh@gmail.com");
-        razorPay.setMerchantName("Merchant Name");
-        razorPay.setPurchaseDescription("TEST PURCHASES");
+        razorPay.setCustomerName(customer.getFirstName() + customer.getLastName());
+        razorPay.setCustomerEmail(customer.getEmail());
+        razorPay.setMerchantName("GeoParking");
+        razorPay.setPurchaseDescription("Book Slot");
         razorPay.setRazorpayOrderId(bookingDetail.getRazorpayOrderId());
         razorPay.setSecretKey(RAZORPAY_API_KEY);
         // razorPay.setImageURL("/logo")
-        razorPay.setCustomerContact("9879879879");
+        razorPay.setCustomerContact(customer.getMobile());
 
         razorPay.setTheme("#F37254");
         razorPay.setNotes("notes" + bookingDetail.getRazorpayOrderId());

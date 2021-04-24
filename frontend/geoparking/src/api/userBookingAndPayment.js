@@ -6,7 +6,12 @@ export const initiateBookingAndFetchPaymentOptions = async (
 	return axios
 		.post(
 			"http://localhost:8301/user/initiate/payment",
-			checkAvailabilityForm
+			checkAvailabilityForm,
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+			}
 		)
 		.then((response) => {
 			return {

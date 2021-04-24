@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import com.geoparking.bookingservice.controller.PublicBookingController;
 import com.geoparking.bookingservice.model.Booking;
+import com.geoparking.bookingservice.model.Customer;
+import com.geoparking.bookingservice.model.DecodedUserInfo;
 import com.geoparking.bookingservice.model.Parking;
 import com.geoparking.bookingservice.repository.BookingRepository;
 import com.geoparking.bookingservice.util.CheckAvailabilityForm;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.NotAcceptableStatusException;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @Service
 @Qualifier("bookingService")
@@ -76,10 +81,13 @@ public class BookingService {
      * @throws NotAcceptableStatusException if parking slot is not available
      * @throws ParseException
      * @throws RazorpayException
+     * @throws IllegalAccessException
      */
-    @Transactional
-    public Booking initiateBookingProcess(final CheckAvailabilityForm checkAvailabilityForm)
-            throws NotAcceptableStatusException, ParseException, RazorpayException {
+    // @CircuitBreaker(name = "backendA", fallbackMethod = "fetchParkingFallback")
+    // @TimeLimiter(name = "backendA") // , fallbackMethod = "fetchParkingFallback")
+    @Transactional(rollbackFor = { RazorpayException.class })
+    public Booking initiateBookingProcess(final CheckAvailabilityForm checkAvailabilityForm, final Customer customer)
+            throws NotAcceptableStatusException, ParseException, RazorpayException, IllegalAccessException {
 
         // 1. Check Availability
         final boolean isAvailable = applicationContext.getBean(PublicBookingController.class)
@@ -96,7 +104,7 @@ public class BookingService {
 
         // 2. Create Booking entity
         Booking booking = new Booking();
-        utilityService.copyBookingDetailsToSaveInDB(booking, parking, checkAvailabilityForm);
+        utilityService.copyBookingDetailsToSaveInDB(booking, customer, parking, checkAvailabilityForm);
 
         // Persist booking entity
         booking = bookingRepository.save(booking);
@@ -106,6 +114,14 @@ public class BookingService {
 
         return booking;
     }
+
+    // private Booking fetchParkingFallback(final CheckAvailabilityForm
+    // checkAvailabilityForm, Exception e) {
+    // System.err.println(checkAvailabilityForm);
+    // System.err.println("here");
+
+    // return null;
+    // }
 
     // fetch Booking Model with given razorpay order id
     @Transactional(readOnly = true)

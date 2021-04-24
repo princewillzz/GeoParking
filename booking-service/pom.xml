@@ -21,6 +21,12 @@
 	<dependencies>
 
 		
+		<!-- JWT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 			<!--  Razorpay  -->
 		<dependency>
@@ -51,10 +57,10 @@
 		</dependency>
 
 		<!-- Circuit breaker -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-		</dependency> -->
+		</dependency>
 		
 
 		<dependency>

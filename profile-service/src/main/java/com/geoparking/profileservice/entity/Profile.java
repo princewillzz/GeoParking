@@ -41,7 +41,7 @@ public class Profile {
     @Column(nullable = false)
     private String role;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String mobile;
 
     @Column(columnDefinition = "boolean default false")
