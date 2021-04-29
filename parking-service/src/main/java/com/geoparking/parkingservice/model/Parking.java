@@ -32,6 +32,8 @@ public class Parking {
 
     private long timeBooked;
 
+    private int totalSlots;
+
     @NotNull
     @NotBlank
     private String ownerId;

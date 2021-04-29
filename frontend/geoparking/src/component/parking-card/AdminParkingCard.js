@@ -166,7 +166,7 @@ function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 					<p>
 						Times Booked: <b>{parkingData.timeBooked}</b>
 						<Link
-							to="/admin/bookings?parking-id=123213"
+							to={`/admin/bookings?parking-id=${parkingData.id}`}
 							style={{ textDecoration: "none" }}
 						>
 							<Button

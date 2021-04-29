@@ -29,3 +29,9 @@ export const fetchMyBookings = async () => {
 		.then((response) => response)
 		.catch((error) => error.response);
 };
+
+export const cancelMyBookings = async (bookingId) => {
+	return axiosInstance
+		.delete("/api/booking/user/booking/" + bookingId)
+		.then((response) => response);
+};

@@ -1,0 +1,5 @@
+
+!!!!! Important
+1. Any booking with payment status unpaid cannot be a valid booking if its arrival time has arrived,
+means if the arrival time becomes equal to or before current local datetime then the booking will be considered as cancelled.
+

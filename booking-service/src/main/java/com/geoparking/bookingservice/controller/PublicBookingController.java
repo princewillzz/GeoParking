@@ -1,10 +1,13 @@
 package com.geoparking.bookingservice.controller;
 
+import javax.validation.Valid;
+
 import com.geoparking.bookingservice.service.BookingService;
 import com.geoparking.bookingservice.util.CheckAvailabilityForm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +29,17 @@ public class PublicBookingController {
     }
 
     @PostMapping(value = "/check-availability")
-    public ResponseEntity<?> checkBookingAvailability(@RequestBody CheckAvailabilityForm checkAvailabilityForm) {
+    public ResponseEntity<?> checkBookingAvailability(@RequestBody @Valid CheckAvailabilityForm checkAvailabilityForm) {
 
         try {
-            if (bookingService.checkSlotAvailability(checkAvailabilityForm)) {
+            System.out.println(checkAvailabilityForm);
+            final boolean isSlotAvailable = bookingService.checkSlotAvailability(checkAvailabilityForm);
+            if (isSlotAvailable) {
                 return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
             }
+
         } catch (Exception e) {
             log.error(e.getMessage());
         }

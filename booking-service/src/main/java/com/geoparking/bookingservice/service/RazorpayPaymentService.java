@@ -60,9 +60,9 @@ public class RazorpayPaymentService {
     public Booking createRazorPayOrder(final Booking booking) throws RazorpayException {
 
         // If payment already done
-        // if (booking.isPaymentDone()) {
-        // return booking;
-        // }
+        if (booking.isPaymentDone()) {
+            return booking;
+        }
 
         JSONObject options = new JSONObject();
         final double amountToPay = booking.getBill().getAmountToPay() * 100;

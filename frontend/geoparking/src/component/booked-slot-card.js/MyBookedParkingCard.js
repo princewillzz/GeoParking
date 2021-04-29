@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		width: "auto",
 		maxWidth: "30rem",
+
 		// justifyContent: "center",
 		// padding: "5px",
 		// margin: "5px",
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function MyBookedParkingCard({ bookingData }) {
+function MyBookedParkingCard({ bookingData, handleCancelBooking }) {
 	const classes = useStyles();
 
 	const [parking, setParking] = useState({
@@ -58,13 +59,15 @@ function MyBookedParkingCard({ bookingData }) {
 		active: false,
 	});
 
+	const [isRaised, setIsRaised] = useState(false);
+
 	useEffect(() => {
 		const fetchParkingInfo = async () => {
 			axiosInstance
 				.get("/api/parking-service/parking/" + bookingData.parkingId)
 				.then((response) => {
 					setParking(response.data);
-					console.log(response.data);
+					// console.log(response.data);
 				})
 				.catch((error) => {
 					console.log(error.response.status);
@@ -75,8 +78,6 @@ function MyBookedParkingCard({ bookingData }) {
 			fetchParkingInfo();
 		}, 0);
 	}, [bookingData.parkingId]);
-
-	const [isRaised, setIsRaised] = useState(false);
 
 	return (
 		<Card
@@ -89,7 +90,9 @@ function MyBookedParkingCard({ bookingData }) {
 			<div className={classes.details}>
 				<CardContent className={classes.content}>
 					<Typography component="h5" variant="h5">
-						{parking.name}
+						{parking.name.length > 10
+							? parking.name.substr(0, 15)
+							: parking.name}
 					</Typography>
 					<Typography variant="subtitle1" color="textSecondary">
 						Asansol
@@ -134,26 +137,46 @@ function MyBookedParkingCard({ bookingData }) {
 						</Box>
 						<Box>
 							<p>
+								~
 								{new Date(
 									bookingData.arrivalTimeDate
-								).toLocaleTimeString()}
+								).toLocaleString("en-US", {
+									hour: "numeric",
+									minute: "numeric",
+									hour12: true,
+								})}
 							</p>
 							<p>
+								~
 								{new Date(
 									bookingData.departureTimeDate
-								).toLocaleTimeString()}
+								).toLocaleString("en-US", {
+									hour: "numeric",
+									minute: "numeric",
+									hour12: true,
+								})}
 							</p>
 						</Box>
 					</Box>
-					<Divider className={classes.divider} />
-					<Button
-						style={{ margin: 0 }}
-						fullWidth
-						variant="outlined"
-						color="secondary"
-					>
-						Cancel
-					</Button>
+
+					{bookingData.status &&
+						bookingData.status.toUpperCase() !== "CANCELLED" &&
+						bookingData.status.toUpperCase() !== "COMPLETED" && (
+							<>
+								<Divider className={classes.divider} />
+								<Button
+									onClick={() =>
+										handleCancelBooking(bookingData.id)
+									}
+									style={{ margin: 0 }}
+									fullWidth
+									variant="outlined"
+									color="secondary"
+								>
+									Cancel
+								</Button>
+							</>
+						)}
 				</CardContent>
 			</div>
 		</Card>

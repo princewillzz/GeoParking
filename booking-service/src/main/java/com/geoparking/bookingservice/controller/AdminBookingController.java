@@ -1,5 +1,8 @@
 package com.geoparking.bookingservice.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.DecodedUserInfo;
 import com.geoparking.bookingservice.service.BookingService;
 import com.geoparking.bookingservice.util.WithUser;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.NotAcceptableStatusException;
 
@@ -29,11 +33,12 @@ public class AdminBookingController {
     }
 
     @GetMapping(value = "/parking/{parking-id}")
-    public ResponseEntity<?> getMethodName(@PathVariable("parking-id") final String parkingId,
+    public ResponseEntity<?> getMyBookingsRelatedToParking(@PathVariable("parking-id") final String parkingId,
             @WithUser final DecodedUserInfo profile) {
 
         try {
-            return ResponseEntity.ok(bookingService.getBookingListForParkingOfAdmin(parkingId, profile));
+
+            return ResponseEntity.ok(bookingService.getBookingsAndParkingInfoOfAdmin(parkingId, profile));
         } catch (NotAcceptableStatusException e) {
             log.error(e.getMessage());
         } catch (IllegalAccessException e) {
@@ -42,6 +47,14 @@ public class AdminBookingController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping(value = "/customer/info")
+    public ResponseEntity<Customer> getCustomerInfoForBooking(@RequestParam("customerId") final String customerId,
+            final HttpServletRequest request) {
+
+        return ResponseEntity.ok()
+                .body(bookingService.retrieveCustomerInfoForBooking(customerId, request.getHeader("Authorization")));
     }
 
 }

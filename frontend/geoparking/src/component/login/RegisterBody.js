@@ -62,7 +62,9 @@ function RegisterBody() {
 			);
 		};
 
-		registerProfile(formInputState, callback);
+		registerProfile(formInputState, callback).catch(() => {
+			console.log("unable ");
+		});
 	};
 
 	// change role change

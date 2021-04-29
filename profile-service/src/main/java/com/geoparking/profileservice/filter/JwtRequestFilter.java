@@ -17,7 +17,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private JwtUtilService jwtUtilService;
@@ -37,21 +40,31 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
             jwt = authHeader.substring(7);
-            final String subject = jwtUtilService.extractSubject(jwt);
-            if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                final ProfilePrincipal userDetails = this.profileService.loadUserBySubject(subject);
 
-                if (jwtUtilService.validateToken(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
+            try {
 
-                    usernamePasswordAuthenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                final String subject = jwtUtilService.extractSubject(jwt);
+                if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    final ProfilePrincipal userDetails = this.profileService.loadUserBySubject(subject);
 
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    if (jwtUtilService.validateToken(jwt, userDetails)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+
+                        usernamePasswordAuthenticationToken
+                                .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
                 }
+
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                SecurityContextHolder.clearContext();
             }
+
         }
 
         filterChain.doFilter(request, response);

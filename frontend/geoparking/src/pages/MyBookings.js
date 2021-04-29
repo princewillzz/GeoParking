@@ -1,7 +1,10 @@
 import { Divider, makeStyles } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
-import { fetchMyBookings } from "../api/userBookingAndPayment";
+import {
+	cancelMyBookings,
+	fetchMyBookings,
+} from "../api/userBookingAndPayment";
 import MyBookedParkingCard from "../component/booked-slot-card.js/MyBookedParkingCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +42,39 @@ function MyBookings() {
 			.catch(() => alert("error"));
 	}, []);
 
+	const handleCancelBooking = async (bookingId) => {
+		cancelMyBookings(bookingId)
+			.then((response) => {
+				if (response.status === 200) {
+					setBookingList((bookingList) =>
+						bookingList.map((booking) => {
+							if (booking.id === bookingId) {
+								booking.status = "CANCELLED";
+							}
+							return booking;
+						})
+					);
+				} else {
+					alert("Unable to cancel!");
+				}
+			})
+			.catch((error) => alert("Unable to cancel!"));
+		console.log(bookingId);
+	};
+
 	const loadOngoingBookings = () => {
 		const bookingComponentList = bookingList
-			.filter((booking) => booking.status.toUpperCase() !== "COMPLETED")
+			.filter(
+				(booking) =>
+					booking.status.toUpperCase() !== "COMPLETED" &&
+					booking.status.toUpperCase() !== "CANCELLED"
+			)
 			.map((booking) => (
-				<MyBookedParkingCard key={booking.id} bookingData={booking} />
+				<MyBookedParkingCard
+					handleCancelBooking={handleCancelBooking}
+					key={booking.id}
+					bookingData={booking}
+				/>
 			));
 
 		if (bookingComponentList.length > 0) {
@@ -59,9 +90,17 @@ function MyBookings() {
 
 	const loadPastBookings = () => {
 		const bookingComponentList = bookingList
-			.filter((booking) => booking.status.toUpperCase() === "COMPLETED")
+			.filter(
+				(booking) =>
+					booking.status.toUpperCase() === "COMPLETED" ||
+					booking.status.toUpperCase() === "CANCELLED"
+			)
 			.map((booking) => (
-				<MyBookedParkingCard key={booking.id} bookingData={booking} />
+				<MyBookedParkingCard
+					handleCancelBooking={handleCancelBooking}
+					key={booking.id}
+					bookingData={booking}
+				/>
 			));
 
 		if (bookingComponentList.length > 0) {

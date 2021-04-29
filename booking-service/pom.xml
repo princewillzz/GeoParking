@@ -20,6 +20,13 @@
 	</properties>
 	<dependencies>
 
+
+        <!-- Web client -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
 		
 		<!-- JWT -->
 		<dependency>

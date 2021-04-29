@@ -9,6 +9,7 @@ import com.geoparking.bookingservice.configuration.HeaderRequestInterceptor;
 import com.geoparking.bookingservice.model.Booking;
 import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.DecodedUserInfo;
+import com.geoparking.bookingservice.model.Parking;
 import com.geoparking.bookingservice.model.RazorPayEntity;
 import com.geoparking.bookingservice.service.BookingService;
 import com.geoparking.bookingservice.service.RazorpayPaymentService;
@@ -20,13 +21,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.NotAcceptableStatusException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/user")
 @Slf4j
 public class UserBookingController {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     private final BookingService bookingService;
     private final RazorpayPaymentService razorpayPaymentService;
@@ -85,6 +92,12 @@ public class UserBookingController {
                 final RazorPayEntity razorPayEntity = razorpayPaymentService.getRazorPayEntityForNewOrder(booking,
                         customer);
 
+                webClientBuilder.build().get()
+                        .uri("http://parking-service/internal/admin/parking/" + checkAvailabilityForm.getParkingId()
+                                + "/increment/booked")
+                        .header("Authorization", request.getHeader("Authorization")).retrieve()
+                        .bodyToMono(Parking.class).subscribe();
+
                 return ResponseEntity.ok().body(razorPayEntity);
             }
         } catch (NotAcceptableStatusException e) {
@@ -113,6 +126,22 @@ public class UserBookingController {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @DeleteMapping("/booking/{booking-id}")
+    public ResponseEntity<?> cancelMyBooking(@PathVariable("booking-id") final String bookingId,
+            @WithUser final DecodedUserInfo userInfo) {
+
+        try {
+
+            bookingService.cancelBookingOfCustomer(bookingId, userInfo);
+
+            return ResponseEntity.ok().build();
+        } catch (IllegalAccessException e) {
+            log.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
 }

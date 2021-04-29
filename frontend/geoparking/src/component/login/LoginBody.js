@@ -22,6 +22,16 @@ const useStyles = makeStyles((theme) => ({
 	input: {},
 }));
 
+const testUserCred = {
+	username: "harsh",
+	password: "harsh",
+};
+
+const testAdminCred = {
+	username: "testadmin",
+	password: "testadmin",
+};
+
 function LoginBody() {
 	const classes = useStyles();
 
@@ -33,8 +43,8 @@ function LoginBody() {
 	let { from } = location.state || { from: { pathname: "/" } };
 
 	const [credentials, setCredentials] = useState({
-		username: "testadmin",
-		password: "testadmin",
+		username: "harsh",
+		password: "harsh",
 	});
 
 	const handleCredentialsChange = (event) => {
@@ -54,6 +64,18 @@ function LoginBody() {
 		} catch (error) {
 			alert("login failed...!");
 		}
+	};
+
+	const [isTestCredUser, setIsTestCredUser] = useState(true);
+	const handleTestCredChange = () => {
+		if (isTestCredUser) {
+			setCredentials(testAdminCred);
+		} else {
+			setCredentials(testUserCred);
+		}
+		setIsTestCredUser(!isTestCredUser);
+
+		console.log(credentials);
 	};
 
 	return (
@@ -90,7 +112,12 @@ function LoginBody() {
 						fullWidth
 					/>
 				</Grid>
-				<Grid className={classes.forgotPasswordLink}>
+				<Grid
+					// To be removed later
+					onClick={handleTestCredChange}
+					// to be removed
+					className={classes.forgotPasswordLink}
+				>
 					<Button
 						onClick={(e) => {
 							e.preventDefault();

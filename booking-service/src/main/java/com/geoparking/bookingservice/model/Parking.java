@@ -32,4 +32,6 @@ public class Parking {
 
     private String ownerId;
 
+    private int totalSlots;
+
 }

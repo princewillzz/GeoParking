@@ -54,4 +54,38 @@ final public class UtilityService {
 
     }
 
+
+    // BookingStatus calculateBookingStatus(final Booking booking) throws InterruptedException {
+
+    //     final Date currentDateTime = new Date();
+
+    //     // when booking arrival time has already passed
+    //     if (booking.getArrivalTimeDate().before(currentDateTime)) {
+
+    //         // If the payment is not done and it is not already CANCELLED than cancel the
+    //         // booking
+    //         if (!booking.isPaymentDone() && !booking.getBookingStatus().equals(BookingStatus.CANCELLED)) {
+    //             booking.setBookingStatus(BookingStatus.CANCELLED);
+    //         }
+    //         // If the payment is done and the booking status is still pending
+    //         else if (booking.isPaymentDone() && booking.getBookingStatus().equals(BookingStatus.PENDING)) {
+    //             booking.setBookingStatus(BookingStatus.ONGOING);
+    //         }
+
+    //     }
+
+    //     // On booking departure time becoming already before current time
+    //     if (booking.getDepartureTimeDate().before(currentDateTime)) {
+
+    //         // if the payment is made and it is not already updated then update
+    //         if (booking.isPaymentDone() && !booking.getBookingStatus().equals(BookingStatus.COMPLETED)) {
+    //             booking.setBookingStatus(BookingStatus.COMPLETED);
+    //         }
+
+    //     }
+
+    //     return booking.getBookingStatus();
+
+    // }
+
 }

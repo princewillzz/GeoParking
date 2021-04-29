@@ -11,5 +11,5 @@ export const updateBasicProfileInfo = async (profile) => {
 };
 
 export const registerProfile = async (profile, callback) => {
-	axiosInstance.post("/auth/register", profile).then(callback);
+	return axiosInstance.post("/auth/register", profile).then(callback);
 };

@@ -1,44 +1,54 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-ProfileServiceApplication<profile-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.geoparking.profileservice.ProfileServiceApplication",
-            "projectName": "profile-service",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-ServiceRegistryApplication<service-registry>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.geoparking.serviceregistry.ServiceRegistryApplication",
-            "projectName": "service-registry",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GatewayServerApplication<gateway-server>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.geoparking.gatewayserver.GatewayServerApplication",
-            "projectName": "gateway-server",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-ParkingServiceApplication<parking-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.geoparking.parkingservice.ParkingServiceApplication",
-            "projectName": "parking-service",
-            "args": ""
-        }
-    ]
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Spring Boot-ProfileServiceApplication<profile-service>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.geoparking.profileservice.ProfileServiceApplication",
+			"projectName": "profile-service",
+			"args": "--spring.profiles.active=local"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-ServiceRegistryApplication<service-registry>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.geoparking.serviceregistry.ServiceRegistryApplication",
+			"projectName": "service-registry",
+			"args": "--spring.profiles.active=local"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-GatewayServerApplication<gateway-server>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.geoparking.gatewayserver.GatewayServerApplication",
+			"projectName": "gateway-server",
+			"args": ""
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-ParkingServiceApplication<parking-service>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.geoparking.parkingservice.ParkingServiceApplication",
+			"projectName": "parking-service",
+			"args": "--spring.profiles.active=local"
+		},
+		{
+			"type": "java",
+			"name": "Spring Boot-BookingServiceApplication<booking-service>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "internalConsole",
+			"mainClass": "com.geoparking.bookingservice.BookingServiceApplication",
+			"projectName": "booking-service",
+			"args": "--spring.profiles.active=local"
+		}
+	]
 }

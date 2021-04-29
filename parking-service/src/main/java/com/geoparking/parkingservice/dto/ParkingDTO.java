@@ -30,6 +30,9 @@ public class ParkingDTO {
 
     private long timeBooked;
 
+    private int totalSlots;
+
     private String ownerId;
+
 
 }

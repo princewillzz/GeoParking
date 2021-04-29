@@ -223,4 +223,15 @@ public class ParkingService {
         return parkingRepository.findAllByOwnerId(userInfo.getUserId());
     }
 
+    @Transactional
+    public Parking incrementTimesBooked(final String parkingId) {
+
+        final Parking parking = this.fetchParkingWithIdFromDatabase(parkingId);
+
+        parking.setTimeBooked(parking.getTimeBooked() + 1);
+
+        return parkingRepository.save(parking);
+
+    }
+
 }

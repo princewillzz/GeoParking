@@ -1,16 +1,22 @@
 package com.geoparking.bookingservice.service;
 
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.geoparking.bookingservice.configuration.HeaderRequestInterceptor;
 import com.geoparking.bookingservice.controller.PublicBookingController;
 import com.geoparking.bookingservice.dto.BookingDTO;
 import com.geoparking.bookingservice.mapper.BookingMapper;
 import com.geoparking.bookingservice.model.Booking;
+import com.geoparking.bookingservice.model.BookingStatus;
 import com.geoparking.bookingservice.model.Customer;
 import com.geoparking.bookingservice.model.DecodedUserInfo;
 import com.geoparking.bookingservice.model.Parking;
@@ -21,6 +27,7 @@ import com.razorpay.RazorpayException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,8 +35,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.NotAcceptableStatusException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Qualifier("bookingService")
+@Slf4j
 public class BookingService {
 
     // Depended repository
@@ -50,6 +60,13 @@ public class BookingService {
         this.utilityService = utilityService;
         this.restTemplate = restTemplate;
 
+    }
+
+    // APi calls
+
+    private ResponseEntity<Parking> fetchParkingWithId(final String parkingId) {
+
+        return restTemplate.getForEntity("http://parking-service/parking/" + parkingId, Parking.class);
     }
 
     /**
@@ -73,7 +90,8 @@ public class BookingService {
 
     @Transactional(readOnly = true)
     private List<Booking> fetchBookingListOfCustomerFromDB(final String customerId) {
-        return bookingRepository.findByCustomerId(customerId);
+
+        return bookingRepository.findByCustomerId(customerId, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     /**
@@ -85,15 +103,101 @@ public class BookingService {
      */
     public boolean checkSlotAvailability(final CheckAvailabilityForm checkAvailabilityForm) throws ParseException {
 
-        final Booking booking = new Booking();
+        // Fetch parking with id
+        final String parkingId = checkAvailabilityForm.getParkingId();
 
-        // Format date and store in the booking model
-        booking.setArrivalTimeDate(utilityService.convertDateTimeStringToDate(checkAvailabilityForm.getArrivalDate(),
-                checkAvailabilityForm.getArrivalTime()));
-        booking.setDepartureTimeDate(utilityService.convertDateTimeStringToDate(
-                checkAvailabilityForm.getDepartureDate(), checkAvailabilityForm.getDepartureTime()));
+        final Date arrivalDateTime = utilityService.convertDateTimeStringToDate(checkAvailabilityForm.getArrivalDate(),
+                checkAvailabilityForm.getArrivalTime());
+        final Date departureDateTime = utilityService.convertDateTimeStringToDate(
+                checkAvailabilityForm.getDepartureDate(), checkAvailabilityForm.getDepartureTime());
 
-        return true;
+        final ResponseEntity<Parking> parkingResponse = fetchParkingWithId(parkingId);
+
+        if (!parkingResponse.getStatusCode().equals(HttpStatus.OK)) {
+            log.info("Couldn't fetch parking with id " + parkingId);
+            return false;
+        }
+
+        final Parking parking = parkingResponse.getBody();
+
+        // Fetch all the bookings with given parking id
+        List<Booking> onGoingBookings = getAllOngoingAndFutureBookings(parkingId);
+
+        onGoingBookings.parallelStream().forEach(System.err::println);
+        System.err.println(onGoingBookings.size());
+
+        final long countOfBookingInGivenDuration = onGoingBookings.parallelStream().filter(booking -> {
+            Date bookingArrivateDateTime = booking.getArrivalTimeDate();
+            Date bookingDepartureDateTime = booking.getDepartureTimeDate();
+
+            if (bookingArrivateDateTime.compareTo(arrivalDateTime) == 0
+                    || bookingDepartureDateTime.compareTo(departureDateTime) == 0) {
+                return true;
+            }
+
+            // Case 1
+            if (bookingArrivateDateTime.after(arrivalDateTime) && bookingDepartureDateTime.before(departureDateTime)) {
+                return true;
+            }
+
+            // Case 2
+            if (bookingArrivateDateTime.before(arrivalDateTime) && bookingDepartureDateTime.after(departureDateTime)) {
+                return true;
+            }
+
+            // Case 3
+            if (bookingDepartureDateTime.after(arrivalDateTime) && bookingDepartureDateTime.before(departureDateTime)) {
+                return true;
+            }
+
+            // Case 4
+            if (bookingArrivateDateTime.after(arrivalDateTime) && bookingArrivateDateTime.before(departureDateTime)) {
+                return true;
+            }
+
+            return false;
+        }).count();
+
+        System.err.println(countOfBookingInGivenDuration + "<----->" + parking.getTotalSlots());
+        if (countOfBookingInGivenDuration < parking.getTotalSlots()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Retreive all future booking from the database
+     * 
+     * @param parkingId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<Booking> getAllOngoingAndFutureBookings(final String parkingId) {
+
+        return bookingRepository.findAllByParkingIdAndBookingStatusNotInAndDepartureTimeDateGreaterThan(parkingId,
+                Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED), new Date());
+    }
+
+    // @Transactional(readOnly = true)
+    // List<Booking> getBookingsForSchedular(final Date arrivalTimeDateIsAfter) {
+
+    //     List<BookingStatus> excluded = Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED);
+    //     // get all bookings which arrive before now() and also which have departed
+    //     // currently
+    //     return bookingRepository.findAllByArrivalTimeDateGreaterThanAndBookingStatusNotIn(arrivalTimeDateIsAfter,
+    //             excluded);
+    // }
+
+    /**
+     * Get list of future bookings
+     * 
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<Booking> getAllOngoingAndFutureBookings() {
+        return bookingRepository.findAllByBookingStatusNotInAndDepartureTimeDateGreaterThan(
+                Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED), new Date());
     }
 
     /**
@@ -166,7 +270,7 @@ public class BookingService {
      * @throws IllegalAccessException
      * @throws NotAcceptableStatusException
      */
-    public List<BookingDTO> getBookingListForParkingOfAdmin(final String parkingId, final DecodedUserInfo adminInfo)
+    public Map<String, Object> getBookingsAndParkingInfoOfAdmin(final String parkingId, final DecodedUserInfo adminInfo)
             throws IllegalAccessException, NotAcceptableStatusException {
 
         // Fetch parking from parking service
@@ -185,9 +289,54 @@ public class BookingService {
             throw new IllegalAccessException("You are Unauthorized");
         }
 
+        final Map<String, Object> data = new HashMap<>(5);
+        data.put("parking", parking);
+
         // get bookings from database, convert and return
-        return this.getAllBookingsWithParkingId(parkingId).parallelStream().map(BookingMapper.INSTANCE::toBookingDTO)
-                .collect(Collectors.toList());
+        data.put("bookings", this.getAllBookingsWithParkingId(parkingId).parallelStream()
+                .map(BookingMapper.INSTANCE::toBookingDTO).collect(Collectors.toList()));
+
+        return data;
 
     }
+
+    public Customer retrieveCustomerInfoForBooking(final String customerId, final String authorizationHeader) {
+
+        restTemplate.getInterceptors().add(new HeaderRequestInterceptor("Authorization", authorizationHeader));
+
+        final ResponseEntity<Customer> customerResponse = restTemplate
+                .getForEntity("http://profile-service/internal/admin/profile/" + customerId, Customer.class);
+
+        if (!customerResponse.getStatusCode().equals(HttpStatus.OK)) {
+            throw new RuntimeException("unable to get customer info");
+        }
+        final Customer customer = customerResponse.getBody();
+
+        return customer;
+    }
+
+    /**
+     * Cancel booking for customer
+     * 
+     * @param bookingId
+     * @param userInfo
+     * @throws IllegalAccessException
+     */
+    @Transactional
+    public void cancelBookingOfCustomer(final String bookingId, final DecodedUserInfo userInfo)
+            throws IllegalAccessException {
+
+        final Booking booking = this.loadBookingById(UUID.fromString(bookingId));
+        if (!booking.getCustomerId().equals(userInfo.getUserId())) {
+            throw new IllegalAccessException("Access denied");
+        }
+
+        List<BookingStatus> status = Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED);
+
+        if(!status.contains(booking.getBookingStatus())) {            
+            booking.setBookingStatus(BookingStatus.CANCELLED);
+        }
+    }
+
+
 }

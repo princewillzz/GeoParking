@@ -1,11 +1,13 @@
 import {
+	CircularProgress,
 	makeStyles,
 	Paper,
 	TablePagination,
 	Typography,
 } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
+import { fetchBookingsOfParking } from "../api/admin-booking-api";
 import BookingsTable from "../component/bookings/BookingsTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,14 +32,28 @@ function AdminBookings() {
 		"parking-id"
 	);
 
-	useEffect(() => {
-		if (!parkingId) {
-			history.push("/admin");
-		}
-	});
+	const [bookings, setBookings] = useState([]);
+	const [parking, setParking] = useState();
 
-	console.log(useLocation());
-	console.log(parkingId);
+	const [isLoading, setIsLoading] = useState(true);
+
+	const loadBookings = useCallback(() => {
+		setIsLoading(true);
+		fetchBookingsOfParking(parkingId)
+			.then((data) => {
+				setBookings(data.bookings);
+
+				setTimeout(() => {
+					setParking(data.parking);
+					setIsLoading(false);
+				}, 500);
+			})
+			.catch(() => alert("unable to load..."));
+	}, [parkingId]);
+
+	useEffect(() => {
+		setTimeout(loadBookings, 0);
+	}, [parkingId, loadBookings]);
 
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -51,14 +67,23 @@ function AdminBookings() {
 		setPage(0);
 	};
 
+	if (!parkingId) {
+		history.push("/admin");
+	}
+
 	return (
 		<>
-			<Typography className={classes.heading} component="p">
-				Parking Name
+			(
+			<Typography className={classes.heading} component="div">
+				{parking && parking.name ? parking.name : <CircularProgress />}
 			</Typography>
-
 			<Paper className={classes.root}>
-				<BookingsTable className={classes.table} />
+				<BookingsTable
+					isLoading={isLoading}
+					reloadBookings={loadBookings}
+					bookings={bookings}
+					className={classes.table}
+				/>
 				<TablePagination
 					rowsPerPageOptions={[10, 25, 100]}
 					component="div"

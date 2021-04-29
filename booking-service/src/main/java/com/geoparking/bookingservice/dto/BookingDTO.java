@@ -39,6 +39,8 @@ public class BookingDTO {
 
     private String parkingId;
 
+    private String customerId;
+
     @JsonProperty(value = "order_id", access = Access.WRITE_ONLY)
     private String razorpayOrderId;
 
