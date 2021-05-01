@@ -100,6 +100,7 @@ function BookSlotModal({
 	handleCloseBookSlotModal,
 	selectedParkingId,
 }) {
+	// console.log(selectedParkingId);
 	const classes = useStyles();
 
 	const auth = useAuth();

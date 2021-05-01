@@ -1,78 +1,19 @@
 import { Divider } from "@material-ui/core";
-import React, { useState } from "react";
-import { fetchParkingsWithAddress } from "../../api/parking-public-api";
-import BookSlotModal from "../book-slot-modal/BookSlotModal";
+import React from "react";
 import ParkingCard from "../parking-card/ParkingCard";
 import ParkingSearchBar from "./ParkingSearchBar";
 import "./SearchParking.css";
 
-// const searchBarStyle = makeStyles((theme) => ({
-// 	root: {
-// 		padding: "2px 4px",
-// 		display: "flex",
-// 		alignItems: "center",
-// 		width: "min(400px, 80vw)",
-// 	},
-// 	input: {
-// 		marginLeft: theme.spacing(1),
-// 		flex: 1,
-// 		// "&.Mui-focused": {		},
-// 	},
-// 	iconButton: {
-// 		padding: 10,
-// 	},
-// 	divider: {
-// 		height: 28,
-// 		margin: 4,
-// 	},
-// }));
-
-// const parkingCardContainerStyle = makeStyles((theme) => ({
-// 	root: {
-// 		flexGrow: 1,
-// 		maxWidth: 400,
-// 	},
-// 	paper: {
-// 		padding: theme.spacing(2),
-// 		textAlign: "center",
-// 		color: theme.palette.text.secondary,
-// 	},
-// }));
-
-export default function SearchParking({ featuredParkings }) {
-	// const searchBarClasses = searchBarStyle();
-	// const parkingCardContainerClasses = parkingCardContainerStyle();
-
-	// Selected parking's id for modal
-	const [selectedParkingIdForModal, setSelectedParkingIdForModal] = useState(
-		null
-	);
-
-	// styling state values
-	// const [isSearchElevated, setIsSearchElevated] = useState(false);
-
-	// State values
-	// const [searchParkingString, setSearchParkingString] = useState("");
-	const [searchedParkingList, setSearchedParkingList] = useState([]);
-
-	const handleSearchParking = (searchParkingString) => {
-		// e.preventDefault();
-
-		fetchParkingsWithAddress(searchParkingString).then((parkingList) => {
-			setSearchedParkingList(parkingList);
-		});
-	};
-
-	const [openBookSlotModal, setOpenBookSlotModal] = useState(false);
-	const handleOpenBookSlotModal = (selectedParkingIdForModal) => {
-		setSelectedParkingIdForModal(selectedParkingIdForModal);
-		setOpenBookSlotModal(true);
-	};
-
-	const handleCloseBookSlotModal = () => {
-		setOpenBookSlotModal(false);
-	};
-
+export default function SearchParking({
+	featuredParkings,
+	searchedParkingList,
+	handleSearchParking,
+	openBookSlotModal,
+	handleOpenBookSlotModal,
+	selectedParkingIdForModal,
+	handleCloseBookSlotModal,
+	children,
+}) {
 	return (
 		<>
 			<h1 style={{ textAlign: "center", fontWeight: 400, marginTop: 50 }}>
@@ -93,7 +34,12 @@ export default function SearchParking({ featuredParkings }) {
 				))}
 			</div>
 
-			<Divider style={{ width: "80%", marginInline: "auto" }} />
+			<Divider
+				style={{ width: "80%", marginInline: "auto", marginBottom: 30 }}
+			/>
+
+			{/* Render the map here */}
+			<>{children}</>
 
 			<>
 				<h1 style={{ textAlign: "center", fontWeight: 400 }}>
@@ -112,12 +58,6 @@ export default function SearchParking({ featuredParkings }) {
 			</>
 
 			<hr style={{ width: "80%" }} />
-
-			<BookSlotModal
-				selectedParkingId={selectedParkingIdForModal}
-				openBookSlotModal={openBookSlotModal}
-				handleCloseBookSlotModal={handleCloseBookSlotModal}
-			/>
 		</>
 	);
 }

@@ -13,8 +13,9 @@ import {
 	TextField,
 } from "@material-ui/core";
 import { Close, PhotoCamera } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { createParking } from "../../api/parking-admin-api";
+import AdminInputMap from "../map/AdminInputMap";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -44,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 22,
 		fontWeight: 500,
 	},
+	map: {
+		height: 200,
+		width: "100%",
+	},
 }));
 
 const initialState = {
@@ -60,6 +65,8 @@ function AddParkingModal({
 	const classes = useStyles();
 
 	const [parkingData, setParkingData] = useState(initialState);
+	const [lat, setLat] = useState(0);
+	const [lng, setLng] = useState(0);
 
 	const handleFormDataChange = (e) => {
 		setParkingData({ ...parkingData, [e.target.name]: e.target.value });
@@ -67,16 +74,22 @@ function AddParkingModal({
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		console.log(parkingData);
 
-		createParking(parkingData)
-			.then((parking) => {
-				handleNewParkingAdded(parking);
-				setParkingData(initialState);
-				handleCloseAddParkingModal();
-			})
-			.catch((error) => console.log(error));
+		console.log({ ...parkingData, latitude: lat, longitude: lng });
+
+		// createParking(parkingData)
+		// 	.then((parking) => {
+		// 		handleNewParkingAdded(parking);
+		// 		setParkingData(initialState);
+		// 		handleCloseAddParkingModal();
+		// 	})
+		// 	.catch((error) => console.log(error));
 	};
+
+	const handleLocationChange = useCallback((location) => {
+		setLng(location.longitude);
+		setLat(location.latitude);
+	}, []);
 
 	return (
 		<>
@@ -159,6 +172,22 @@ function AddParkingModal({
 								<IconButton>
 									<PhotoCamera />
 								</IconButton>
+							</FormControl>
+
+							<FormControl
+								style={{
+									marginBottom: 15,
+									alignSelf: "center",
+								}}
+								fullWidth
+							>
+								<AdminInputMap
+									lat={lat}
+									lng={lng}
+									setLat={setLat}
+									setLng={setLng}
+									handleLocationChange={handleLocationChange}
+								/>
 							</FormControl>
 
 							<FormControl>
