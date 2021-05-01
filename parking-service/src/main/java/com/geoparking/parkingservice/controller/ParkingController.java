@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.geoparking.parkingservice.dto.ParkingCoordinate;
 import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.service.ParkingService;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,6 +59,13 @@ public class ParkingController {
         // System.err.println(p.getId()));
 
         return ResponseEntity.ok().body(parkingService.getFeaturedParkings());
+    }
+
+    @GetMapping(value = "/parking/nearby")
+    public ResponseEntity<?> getNearbyParking(@RequestBody ParkingCoordinate coords, @RequestParam double distance) {
+
+        System.err.println(distance);
+        return ResponseEntity.ok(parkingService.searchNearbyParking(coords, distance));
     }
 
 }

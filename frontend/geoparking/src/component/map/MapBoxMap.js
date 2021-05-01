@@ -1,14 +1,11 @@
 /* eslint import/no-webpack-loader-syntax: off */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./mapbox.css";
-
-import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
-import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
-import { Button } from "@material-ui/core";
-
-import Geocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import { Button } from "@material-ui/core";
+import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
+import "./mapbox.css";
 
 // import Geocoder from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 // import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
@@ -43,7 +40,10 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 					},
 					geometry: {
 						type: "Point",
-						coordinates: [87.5 + Math.random(), 22 + Math.random()],
+						coordinates: [
+							parking.position.longitude,
+							parking.position.latitude,
+						],
 					},
 				});
 			});
@@ -146,7 +146,8 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 			style: "mapbox://styles/mapbox/streets-v11",
 			center: [lng, lat],
 			zoom: zoom,
-			scrollZoom: false,
+			minZoom: 1,
+			scrollZoom: true,
 		});
 
 		// Adding navbar to zoom in and out
@@ -164,40 +165,11 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 		// Add markers to the map for parkings to book
 		map.on("load", () => loadMarkers(map));
 
-		// Adding the geocoder
-		// const geocoder = new Geocoder({
-		// 	accessToken: mapboxgl.accessToken,
-		// 	mapboxgl: mapboxgl,
-		// 	autocomplete: false,
-		// 	localGeocoder: forwardGeocoder,
-		// 	proximity: { longitude: lng, latitude: lat },
-		// 	marker: false,
-		// 	// marker: {
-		// 	// 	color: "orange",
-		// 	// 	draggable: true,
-		// 	// },
-		// });
-
-		// map.addControl(geocoder, "top-left");
-
-		// geocoder.on("result", function (e) {
-		// 	console.log(e.result.center);
-		// 	const marker = new mapboxgl.Marker({
-		// 		color: "orange",
-		// 		draggable: true,
-		// 	})
-		// 		.setLngLat(e.result.center)
-		// 		.addTo(map);
-		// 	marker.on("dragend", function (e) {
-		// 		var lngLat = e.target.getLngLat();
-		// 	});
-		// });
-
 		// remove the map object on destroy
 		return () => map.remove();
 	}, [lat, lng, zoom, parkings, loadMarkers]);
 
-	const [isScrollEnabled, setIsScrollEnabled] = useState(false);
+	const [isScrollEnabled, setIsScrollEnabled] = useState(true);
 
 	const handleToggleScroll = () => {
 		if (isScrollEnabled) {

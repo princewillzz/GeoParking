@@ -1,13 +1,15 @@
 package com.geoparking.parkingservice.model;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.Data;
 
 @Document("parking")
 @Data
@@ -33,6 +35,9 @@ public class Parking {
     private long timeBooked;
 
     private int totalSlots;
+
+    @GeoSpatialIndexed
+    GeoJsonPoint location;
 
     @NotNull
     @NotBlank

@@ -10,6 +10,7 @@ public class ParkingServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ParkingServiceApplication.class, args);
+
     }
 
     // @Bean

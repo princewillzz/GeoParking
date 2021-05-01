@@ -77,13 +77,16 @@ function AddParkingModal({
 
 		console.log({ ...parkingData, latitude: lat, longitude: lng });
 
-		// createParking(parkingData)
-		// 	.then((parking) => {
-		// 		handleNewParkingAdded(parking);
-		// 		setParkingData(initialState);
-		// 		handleCloseAddParkingModal();
-		// 	})
-		// 	.catch((error) => console.log(error));
+		createParking({
+			...parkingData,
+			position: { latitude: lat, longitude: lng },
+		})
+			.then((parking) => {
+				handleNewParkingAdded(parking);
+				setParkingData(initialState);
+				handleCloseAddParkingModal();
+			})
+			.catch((error) => console.log(error));
 	};
 
 	const handleLocationChange = useCallback((location) => {

@@ -6,6 +6,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.springframework.data.geo.Point;
+
 import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -34,5 +36,6 @@ public class ParkingDTO {
 
     private String ownerId;
 
+    private ParkingCoordinate position;
 
 }

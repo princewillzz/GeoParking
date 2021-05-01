@@ -5,6 +5,7 @@ import java.util.List;
 import com.geoparking.parkingservice.model.Parking;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Circle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -16,5 +17,7 @@ public interface ParkingRepository extends MongoRepository<Parking, String> {
     List<Parking> findByActive(boolean active);
 
     List<Parking> findAllByOwnerId(String ownerId);
+
+    List<Parking> findByLocationWithin(Circle circle);
 
 }

@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 
 import com.geoparking.parkingservice.Exception.InvalidParkingAddressException;
+import com.geoparking.parkingservice.dto.ParkingCoordinate;
 import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.mapper.ParkingMapper;
 import com.geoparking.parkingservice.model.DecodedUserInfo;
@@ -22,6 +23,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +45,22 @@ public class ParkingService {
     public ParkingService(final ParkingRepository parkingRepository, final ParkingMapper parkingMapper) {
         this.parkingRepository = parkingRepository;
         this.parkingMapper = parkingMapper;
+    }
+
+    public List<ParkingDTO> searchNearlyParkingDTOs(ParkingCoordinate coords, double distance) {
+
+        return searchNearbyParking(coords, distance).stream().map(parkingMapper::toDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Parking> searchNearbyParking(ParkingCoordinate coords, double distance) {
+
+        Point fromPoint = new Point(coords.getLatitude(), coords.getLongitude());
+        Distance dist = new Distance(distance, Metrics.KILOMETERS);
+        Circle area = new Circle(fromPoint, dist);
+
+        return parkingRepository.findByLocationWithin(area);
+
     }
 
     // Get all parking from the database then covert it to dto
@@ -90,12 +112,17 @@ public class ParkingService {
         parking.setActive(true);
         parking.setOwnerId(adminInfo.getUserId());
 
+        GeoJsonPoint location = new GeoJsonPoint(parkingDTO.getPosition().getLatitude(),
+                parkingDTO.getPosition().getLongitude());
+        parking.setLocation(location);
+
         return parkingMapper.toDTO(saveParkingToDatabase(parking));
     }
 
     @Transactional
     private Parking saveParkingToDatabase(final Parking parking) {
         validateParkingEntity(parking);
+        // return parking;
         return parkingRepository.save(parking);
     }
 
