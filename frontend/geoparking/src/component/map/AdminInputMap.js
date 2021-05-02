@@ -34,6 +34,7 @@ function AdminInputMap({ handleLocationChange }) {
 			style: "mapbox://styles/mapbox/streets-v11",
 			center: [lng, lat],
 			zoom: zoom,
+			minZoom: 1,
 		});
 
 		// Adding navbar to zoom in and out

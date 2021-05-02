@@ -45,6 +45,12 @@ function Home() {
 		}, 0);
 	}, []);
 
+	const fetchNearbyParking = useCallback((center) => {
+		console.log("api calls");
+		setSearchedParkingList([]);
+		setParkingForMap([]);
+	}, []);
+
 	return (
 		<>
 			<SearchParking
@@ -57,6 +63,7 @@ function Home() {
 				handleCloseBookSlotModal={handleCloseBookSlotModal}
 			>
 				<MapBoxMap
+					fetchNearbyParking={fetchNearbyParking}
 					parkings={parkingsForMap}
 					handleOpenBookSlotModal={handleOpenBookSlotModal}
 				/>

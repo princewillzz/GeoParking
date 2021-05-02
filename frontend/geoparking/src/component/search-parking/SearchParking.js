@@ -24,6 +24,9 @@ export default function SearchParking({
 				<ParkingSearchBar handleSearchParking={handleSearchParking} />
 			</div>
 
+			{/* Render the map here */}
+			<>{children}</>
+
 			<div className="parkingsFetched">
 				{searchedParkingList.map((eachParking) => (
 					<ParkingCard
@@ -35,11 +38,13 @@ export default function SearchParking({
 			</div>
 
 			<Divider
-				style={{ width: "80%", marginInline: "auto", marginBottom: 30 }}
+				style={{
+					width: "80%",
+					marginInline: "auto",
+					marginTop: 30,
+					marginBottom: 30,
+				}}
 			/>
-
-			{/* Render the map here */}
-			<>{children}</>
 
 			<>
 				<h1 style={{ textAlign: "center", fontWeight: 400 }}>

@@ -134,7 +134,7 @@ public class ParkingService {
             throw new InvalidParkingAddressException("Address insufficient...!");
         }
 
-        final Pageable pageable = PageRequest.of(0, 20);
+        final Pageable pageable = PageRequest.of(0, 50);
 
         return fetchParkingsSimiliarToAddressFromDatabase(address, pageable).stream().map(parkingMapper::toDTO)
                 .collect(Collectors.toSet());

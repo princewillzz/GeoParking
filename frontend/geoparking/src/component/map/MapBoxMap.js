@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import "./mapbox.css";
 
+import Geocoder from "@mapbox/mapbox-gl-geocoder";
 // import Geocoder from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 // import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 
@@ -17,11 +18,12 @@ mapboxgl.accessToken =
 	"pk.eyJ1IjoicHJpbmNld2lsbHoiLCJhIjoiY2tvMzFqMWFpMG8yNTJ3czU4NWVjcG5kdyJ9.F20bN0FJ8byK6BxdoBFOfA";
 
 let map;
-export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
+export default function MapBoxMap({
+	parkings,
+	handleOpenBookSlotModal,
+	fetchNearbyParking,
+}) {
 	const mapContainer = useRef();
-	const [lng, setLng] = useState(-70.9);
-	const [lat, setLat] = useState(42.35);
-	const [zoom] = useState(8);
 
 	const loadMarkers = useCallback(
 		(map) => {
@@ -121,24 +123,11 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 	);
 
 	useEffect(() => {
-		console.log("use effect render");
-		// Getting current location
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				console.log(
-					position.coords.longitude,
-					position.coords.latitude
-				);
-				setLng(position.coords.longitude);
-				setLat(position.coords.latitude);
-			},
-			() => {
-				console.log("map error!!!!");
-			},
-			{
-				enableHighAccuracy: true,
-			}
-		);
+		console.log("use effect render", map);
+
+		let lng = -70.9;
+		let lat = 42.35;
+		let zoom = 8;
 
 		// Creating an instance of map
 		map = new mapboxgl.Map({
@@ -154,20 +143,71 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 		const nav = new mapboxgl.NavigationControl();
 		map.addControl(nav);
 
-		// Adding marker to current location of the user
-		new mapboxgl.Marker({
-			color: "#191970",
-			draggable: true,
-		})
-			.setLngLat([lng, lat])
-			.addTo(map);
-
 		// Add markers to the map for parkings to book
 		map.on("load", () => loadMarkers(map));
 
+		// Add the control to the map.
+
+		let geocoder = new Geocoder({
+			accessToken: mapboxgl.accessToken,
+			mapboxgl: mapboxgl,
+		});
+
+		geocoder.on("result", function (e) {
+			console.log("getting result");
+
+			console.log(e.result.center);
+
+			// setLng(e.result.center[0]);
+			// setLat(e.result.center[1]);
+
+			fetchNearbyParking(e.result.center);
+		});
+
+		document
+			.getElementById("parkingSearchGeocoder")
+			.appendChild(geocoder.onAdd(map));
+
+		// Fly to current location in map
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				console.log(
+					position.coords.longitude,
+					position.coords.latitude
+				);
+
+				map.flyTo({
+					center: [
+						position.coords.longitude,
+						position.coords.latitude,
+					],
+					zoom: zoom,
+				});
+				new mapboxgl.Marker({
+					color: "#191970",
+					draggable: true,
+				})
+					.setLngLat([
+						position.coords.longitude,
+						position.coords.latitude,
+					])
+					.addTo(map);
+			},
+			() => {
+				console.log("map error!!!!");
+			},
+			{
+				enableHighAccuracy: true,
+			}
+		);
+
 		// remove the map object on destroy
-		return () => map.remove();
-	}, [lat, lng, zoom, parkings, loadMarkers]);
+		return () => {
+			map.remove();
+			let searchBox = document.getElementById("parkingSearchGeocoder");
+			if (searchBox) searchBox.innerHTML = "";
+		};
+	}, [fetchNearbyParking, loadMarkers]);
 
 	const [isScrollEnabled, setIsScrollEnabled] = useState(true);
 
@@ -182,24 +222,27 @@ export default function MapBoxMap({ parkings, handleOpenBookSlotModal }) {
 	};
 
 	return (
-		<div
-			style={{
-				position: "relative",
-			}}
-		>
-			<Button
-				variant="contained"
-				color={isScrollEnabled ? "primary" : "inherit"}
+		<>
+			<div id="parkingSearchGeocoder" className="geocoder"></div>
+			<div
 				style={{
-					position: "absolute",
-					zIndex: 1000,
-					// fontSize: 13,
+					position: "relative",
 				}}
-				onClick={handleToggleScroll}
 			>
-				{isScrollEnabled ? "Disable" : "Enable"} Zoom on Scroll
-			</Button>
-			<div className="map-container" ref={mapContainer} />
-		</div>
+				<Button
+					variant="contained"
+					color={isScrollEnabled ? "primary" : "inherit"}
+					style={{
+						position: "absolute",
+						zIndex: 1000,
+						// fontSize: 13,
+					}}
+					onClick={handleToggleScroll}
+				>
+					{isScrollEnabled ? "Disable" : "Enable"} Zoom on Scroll
+				</Button>
+				<div className="map-container" ref={mapContainer} />
+			</div>
+		</>
 	);
 }
