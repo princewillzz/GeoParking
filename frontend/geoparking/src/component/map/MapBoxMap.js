@@ -1,5 +1,6 @@
 /* eslint import/no-webpack-loader-syntax: off */
 
+import Geocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { Button } from "@material-ui/core";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
@@ -7,7 +8,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import "./mapbox.css";
 
-import Geocoder from "@mapbox/mapbox-gl-geocoder";
 // import Geocoder from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 // import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 
@@ -19,26 +19,25 @@ mapboxgl.accessToken =
 
 let map;
 export default function MapBoxMap({
-	parkings,
 	handleOpenBookSlotModal,
 	fetchNearbyParking,
 }) {
 	const mapContainer = useRef();
 
 	const loadMarkers = useCallback(
-		(map) => {
-			console.log("loadmarkers", parkings);
+		(parkings) => {
+			console.log(`loading markers for ${parkings.length} parkings`);
 
 			const parkingMarker = [];
 
-			parkings.forEach((parking, index) => {
+			parkings.forEach((parking) => {
 				parkingMarker.push({
 					type: "Feature",
 					properties: {
 						description: `<h2 style="overflow-wrap: break-word;">${parking.name}</h2>
-					<p>${parking.address}</p>
-                    <h3>Rs ${parking.hourlyRent}/hr</h3>
-					<button class="mapboxPopupBtn" id="mapboxPopupBtn" value="${parking.id}" >book</button>`,
+						<p>${parking.address}</p>
+						<h3>Rs ${parking.hourlyRent}/hr</h3>
+						<button class="mapboxPopupBtn" id="mapboxPopupBtn" value="${parking.id}" >book</button>`,
 					},
 					geometry: {
 						type: "Point",
@@ -51,7 +50,7 @@ export default function MapBoxMap({
 			});
 
 			if (!map.getSource("places")) {
-				console.log("loading fresh");
+				// console.log("loading fresh");
 
 				map.addSource("places", {
 					type: "geojson",
@@ -72,7 +71,7 @@ export default function MapBoxMap({
 					},
 				});
 			} else {
-				console.log("already exists");
+				// console.log("already exists");
 				map.getSource("places").setData({
 					type: "FeatureCollection",
 					features: parkingMarker,
@@ -106,12 +105,12 @@ export default function MapBoxMap({
 				// based on the feature found.
 				popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
-				document
-					.querySelector("#mapboxPopupBtn")
-					.addEventListener("click", function () {
+				document.querySelectorAll(".mapboxPopupBtn").forEach((btn) => {
+					btn.addEventListener("click", function () {
 						console.log("Book slot", this);
 						handleOpenBookSlotModal(this.value);
 					});
+				});
 			});
 
 			// map.on("mouseleave", "places", function () {
@@ -119,7 +118,16 @@ export default function MapBoxMap({
 			// 	popup.remove();
 			// });
 		},
-		[parkings, handleOpenBookSlotModal]
+		[handleOpenBookSlotModal]
+	);
+
+	const handleSearchNearbyParking = useCallback(
+		(center) => {
+			fetchNearbyParking(center).then((parkings) => {
+				loadMarkers(parkings);
+			});
+		},
+		[fetchNearbyParking, loadMarkers]
 	);
 
 	useEffect(() => {
@@ -144,7 +152,7 @@ export default function MapBoxMap({
 		map.addControl(nav);
 
 		// Add markers to the map for parkings to book
-		map.on("load", () => loadMarkers(map));
+		// map.on("load", () => loadMarkers(map));
 
 		// Add the control to the map.
 
@@ -153,53 +161,54 @@ export default function MapBoxMap({
 			mapboxgl: mapboxgl,
 		});
 
-		geocoder.on("result", function (e) {
-			console.log("getting result");
-
-			console.log(e.result.center);
-
-			// setLng(e.result.center[0]);
-			// setLat(e.result.center[1]);
-
-			fetchNearbyParking(e.result.center);
-		});
+		geocoder.on("result", (e) =>
+			handleSearchNearbyParking(e.result.center)
+		);
 
 		document
 			.getElementById("parkingSearchGeocoder")
 			.appendChild(geocoder.onAdd(map));
 
 		// Fly to current location in map
-		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				console.log(
-					position.coords.longitude,
-					position.coords.latitude
-				);
 
-				map.flyTo({
-					center: [
-						position.coords.longitude,
-						position.coords.latitude,
-					],
-					zoom: zoom,
-				});
-				new mapboxgl.Marker({
-					color: "#191970",
-					draggable: true,
-				})
-					.setLngLat([
-						position.coords.longitude,
-						position.coords.latitude,
-					])
-					.addTo(map);
-			},
-			() => {
-				console.log("map error!!!!");
-			},
-			{
-				enableHighAccuracy: true,
-			}
-		);
+		map.on("load", () => {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					setTimeout(() => {
+						map.flyTo({
+							center: [
+								position.coords.longitude,
+								position.coords.latitude,
+							],
+							zoom: zoom,
+						});
+						new mapboxgl.Marker({
+							color: "red",
+							draggable: true,
+						})
+							.setLngLat([
+								position.coords.longitude,
+								position.coords.latitude,
+							])
+							.addTo(map);
+
+						console.log("herer");
+
+						console.log("here");
+						handleSearchNearbyParking([
+							position.coords.longitude,
+							position.coords.latitude,
+						]);
+					}, 100);
+				},
+				() => {
+					console.log("map error!!!!");
+				},
+				{
+					enableHighAccuracy: true,
+				}
+			);
+		});
 
 		// remove the map object on destroy
 		return () => {
@@ -207,7 +216,7 @@ export default function MapBoxMap({
 			let searchBox = document.getElementById("parkingSearchGeocoder");
 			if (searchBox) searchBox.innerHTML = "";
 		};
-	}, [fetchNearbyParking, loadMarkers]);
+	}, [handleSearchNearbyParking]);
 
 	const [isScrollEnabled, setIsScrollEnabled] = useState(true);
 

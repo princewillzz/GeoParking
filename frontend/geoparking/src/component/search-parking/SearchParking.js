@@ -1,17 +1,13 @@
 import { Divider } from "@material-ui/core";
 import React from "react";
+import LazyLoad from "react-lazyload";
 import ParkingCard from "../parking-card/ParkingCard";
-import ParkingSearchBar from "./ParkingSearchBar";
 import "./SearchParking.css";
 
 export default function SearchParking({
 	featuredParkings,
 	searchedParkingList,
-	handleSearchParking,
-	openBookSlotModal,
 	handleOpenBookSlotModal,
-	selectedParkingIdForModal,
-	handleCloseBookSlotModal,
 	children,
 }) {
 	return (
@@ -20,20 +16,22 @@ export default function SearchParking({
 				Parkings
 			</h1>
 
-			<div className="parkingSearchContainer">
+			{/* <div className="parkingSearchContainer">
 				<ParkingSearchBar handleSearchParking={handleSearchParking} />
-			</div>
+			</div> */}
 
 			{/* Render the map here */}
 			<>{children}</>
 
 			<div className="parkingsFetched">
 				{searchedParkingList.map((eachParking) => (
-					<ParkingCard
-						key={eachParking.id}
-						handleOpenBookSlotModal={handleOpenBookSlotModal}
-						parkingData={eachParking}
-					/>
+					<LazyLoad key={eachParking.id} once={true}>
+						<ParkingCard
+							key={eachParking.id}
+							handleOpenBookSlotModal={handleOpenBookSlotModal}
+							parkingData={eachParking}
+						/>
+					</LazyLoad>
 				))}
 			</div>
 

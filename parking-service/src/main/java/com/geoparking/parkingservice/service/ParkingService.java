@@ -59,6 +59,8 @@ public class ParkingService {
         Distance dist = new Distance(distance, Metrics.KILOMETERS);
         Circle area = new Circle(fromPoint, dist);
 
+        log.info("Parking in area " + area);
+
         return parkingRepository.findByLocationWithin(area);
 
     }
@@ -247,7 +249,10 @@ public class ParkingService {
      */
     @Transactional(readOnly = true)
     private List<Parking> getParkingsOfAdminFromDatabase(final DecodedUserInfo userInfo) {
-        return parkingRepository.findAllByOwnerId(userInfo.getUserId());
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        return parkingRepository.findAllByOwnerId(userInfo.getUserId(), pageable);
     }
 
     @Transactional

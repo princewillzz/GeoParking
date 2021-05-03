@@ -62,10 +62,13 @@ public class ParkingController {
     }
 
     @GetMapping(value = "/parking/nearby")
-    public ResponseEntity<?> getNearbyParking(@RequestBody ParkingCoordinate coords, @RequestParam double distance) {
+    public ResponseEntity<?> getNearbyParking(@RequestParam("lat") double latitude,
+            @RequestParam("lng") double longitude, @RequestParam double distance) {
+
+        ParkingCoordinate coords = new ParkingCoordinate(latitude, longitude);
 
         System.err.println(distance);
-        return ResponseEntity.ok(parkingService.searchNearbyParking(coords, distance));
+        return ResponseEntity.ok(parkingService.searchNearlyParkingDTOs(coords, distance));
     }
 
 }
