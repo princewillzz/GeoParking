@@ -19,6 +19,9 @@ import com.geoparking.parkingservice.repository.ParkingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -94,6 +97,7 @@ public class ParkingService {
     }
 
     // Get a parking
+    @Cacheable(value = "parkings", key = "#parkingId")
     public ParkingDTO getParking(final String parkingId) throws NoSuchElementException {
         return parkingMapper.toDTO(fetchParkingWithIdFromDatabase(parkingId));
     }
@@ -101,10 +105,12 @@ public class ParkingService {
     // get the parking Entity from the database
     @Transactional(readOnly = true)
     private Parking fetchParkingWithIdFromDatabase(final String parkingId) throws NoSuchElementException {
+        System.out.println("Fetching from db");
         return parkingRepository.findById(parkingId).orElseThrow();
     }
 
     // Add a parking to the database then return its dto
+    @CachePut(value = "parkings", key = "#result.getId()")
     public ParkingDTO createParking(final ParkingDTO parkingDTO, final DecodedUserInfo adminInfo)
             throws ConstraintViolationException {
 
@@ -149,6 +155,7 @@ public class ParkingService {
     }
 
     @Transactional
+    @CacheEvict(value = "parkings", key = "#result.getId()")
     public ParkingDTO updateParkingInfo(final ParkingDTO parkingDTO, final DecodedUserInfo adminInfo)
             throws ConstraintViolationException, IllegalStateException, IllegalAccessError {
 
@@ -189,7 +196,7 @@ public class ParkingService {
     }
 
     // Delete a parking
-    @Transactional
+    @CacheEvict(value = "parkings", key = "#parkingId")
     public void deleteParkingWithId(final String parkingId, final DecodedUserInfo adminInfo) throws IllegalAccessError {
 
         final Parking parking = fetchParkingWithIdFromDatabase(parkingId);
@@ -256,13 +263,14 @@ public class ParkingService {
     }
 
     @Transactional
-    public Parking incrementTimesBooked(final String parkingId) {
+    @CachePut(value = "parkings", key = "#parkingId")
+    public ParkingDTO incrementTimesBooked(final String parkingId) {
 
         final Parking parking = this.fetchParkingWithIdFromDatabase(parkingId);
 
         parking.setTimeBooked(parking.getTimeBooked() + 1);
 
-        return parkingRepository.save(parking);
+        return parkingMapper.toDTO(parkingRepository.save(parking));
 
     }
 

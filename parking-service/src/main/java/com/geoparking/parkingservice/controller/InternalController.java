@@ -1,7 +1,7 @@
 package com.geoparking.parkingservice.controller;
 
+import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.model.DecodedUserInfo;
-import com.geoparking.parkingservice.model.Parking;
 import com.geoparking.parkingservice.service.ParkingService;
 import com.geoparking.parkingservice.utility.WithUser;
 
@@ -20,10 +20,10 @@ public class InternalController {
     private ParkingService parkingService;
 
     @GetMapping(value = "/admin/parking/{id}/increment/booked")
-    public ResponseEntity<Parking> incrementTimesBooked(@PathVariable("id") String parkingId,
+    public ResponseEntity<ParkingDTO> incrementTimesBooked(@PathVariable("id") String parkingId,
             @WithUser final DecodedUserInfo userInfo) {
 
-        final Parking parking = parkingService.incrementTimesBooked(parkingId);
+        final ParkingDTO parking = parkingService.incrementTimesBooked(parkingId);
 
         return ResponseEntity.ok(parking);
 

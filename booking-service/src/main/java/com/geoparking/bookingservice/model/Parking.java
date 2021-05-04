@@ -34,4 +34,8 @@ public class Parking {
 
     private int totalSlots;
 
+    private ParkingCoordinate position;
+
 }
+   
+

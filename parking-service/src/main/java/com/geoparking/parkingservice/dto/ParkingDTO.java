@@ -1,18 +1,20 @@
 package com.geoparking.parkingservice.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import org.springframework.data.geo.Point;
-
 import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class ParkingDTO {
+public class ParkingDTO implements Serializable {
+
+    static final long serialVersionUID = 1L;
 
     private String id;
 

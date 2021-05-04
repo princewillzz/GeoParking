@@ -1,4 +1,4 @@
-package com.geoparking.parkingservice.dto;
+package com.geoparking.bookingservice.model;
 
 import java.io.Serializable;
 

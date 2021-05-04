@@ -26,7 +26,9 @@ export default function MapBoxMap({
 
 	const loadMarkers = useCallback(
 		(parkings) => {
-			console.log(`loading markers for ${parkings.length} parkings`);
+			console.log(
+				`loading markers for ${parkings.length} parkings, DEBUG: map-${map}`
+			);
 
 			const parkingMarker = [];
 
@@ -49,7 +51,7 @@ export default function MapBoxMap({
 				});
 			});
 
-			if (!map.getSource("places")) {
+			if (!map || !map.getSource("places")) {
 				// console.log("loading fresh");
 
 				map.addSource("places", {
