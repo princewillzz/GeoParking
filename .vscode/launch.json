@@ -28,7 +28,7 @@
 			"console": "internalConsole",
 			"mainClass": "com.geoparking.gatewayserver.GatewayServerApplication",
 			"projectName": "gateway-server",
-			"args": ""
+			"args": "--spring.profiles.active=local"
 		},
 		{
 			"type": "java",

@@ -12,7 +12,7 @@ import {
 	OutlinedInput,
 	TextField,
 } from "@material-ui/core";
-import { Close, PhotoCamera } from "@material-ui/icons";
+import { Close, LocalParkingOutlined, PhotoCamera } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 import { createParking } from "../../api/parking-admin-api";
 import AdminInputMap from "../map/AdminInputMap";
@@ -55,6 +55,7 @@ const initialState = {
 	name: "",
 	address: "",
 	hourlyRent: 0,
+	totalSlots: 0,
 };
 
 function AddParkingModal({
@@ -129,6 +130,7 @@ function AddParkingModal({
 									name={"name"}
 									value={parkingData.name}
 									onChange={handleFormDataChange}
+									required
 								/>
 							</FormControl>
 							<FormControl style={{ marginBottom: 15 }}>
@@ -140,6 +142,31 @@ function AddParkingModal({
 									name={"address"}
 									value={parkingData.address}
 									onChange={handleFormDataChange}
+									required
+								/>
+							</FormControl>
+
+							<FormControl
+								style={{ marginBottom: 15 }}
+								fullWidth
+								variant="outlined"
+							>
+								<InputLabel htmlFor="outline-parking-slots">
+									Total Slots
+								</InputLabel>
+								<OutlinedInput
+									id="outline-parking-slots"
+									startAdornment={
+										<InputAdornment position="start">
+											<LocalParkingOutlined />
+										</InputAdornment>
+									}
+									labelWidth={90}
+									type="number"
+									name={"totalSlots"}
+									value={parkingData.totalSlots}
+									onChange={handleFormDataChange}
+									required
 								/>
 							</FormControl>
 
@@ -163,6 +190,7 @@ function AddParkingModal({
 									name={"hourlyRent"}
 									value={parkingData.hourlyRent}
 									onChange={handleFormDataChange}
+									required
 								/>
 							</FormControl>
 

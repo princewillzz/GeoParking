@@ -18,11 +18,11 @@ public class CronJob {
 
     private final BookingRepository bookingRepository;
 
-    public CronJob( final BookingRepository bookingRepository) {
+    public CronJob(final BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
 
-    @Scheduled(initialDelayString = "PT10S", fixedDelayString = "PT20S")
+    @Scheduled(initialDelayString = "PT30S", fixedDelayString = "PT30S")
     @Transactional
     void reconfigureBookingStatus() throws InterruptedException {
 
@@ -38,7 +38,8 @@ public class CronJob {
 
         Iterable<Booking> updatedBookings = bookings.stream().filter(booking -> {
 
-            System.err.print("Booking ======> uid: " + booking.getUid() + "  before status: " + booking.getBookingStatus());
+            System.err.print(
+                    "Booking ======> uid: " + booking.getUid() + "  before status: " + booking.getBookingStatus());
 
             boolean isUpdated = false;
             // when booking arrival time has already passed

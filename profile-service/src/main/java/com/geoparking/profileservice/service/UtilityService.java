@@ -30,6 +30,8 @@ final public class UtilityService {
         // Required profiles
         profile.setEmail(profileDTO.getEmail());
         profile.setPassword(profileDTO.getPassword());
+        profile.setMobile(profileDTO.getMobile());
+
         if (profileDTO.getRole().equalsIgnoreCase("admin")) {
             profile.setRole("ROLE_ADMIN");
         } else if (profileDTO.getRole().equalsIgnoreCase("user")) {

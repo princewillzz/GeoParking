@@ -27,8 +27,15 @@ export default function MapBoxMap({
 	const loadMarkers = useCallback(
 		(parkings) => {
 			console.log(
-				`loading markers for ${parkings.length} parkings, DEBUG: map-${map}`
+				`loading markers for ${
+					parkings.length
+				} parkings, is map loaded ${map.loaded()}, DEBUG: map-${map}`
 			);
+
+			if (!map || !map.loaded()) return;
+			if (map.loaded()) {
+			} else {
+			}
 
 			const parkingMarker = [];
 
@@ -50,8 +57,9 @@ export default function MapBoxMap({
 					},
 				});
 			});
+			// !map.getSource("places")
 
-			if (!map || !map.getSource("places")) {
+			if (!map.getSource("places")) {
 				// console.log("loading fresh");
 
 				map.addSource("places", {
@@ -88,7 +96,7 @@ export default function MapBoxMap({
 				closeOnClick: true,
 			});
 
-			map.on("mouseenter", "places", function (e) {
+			map.on("mouseenter", "places", (e) => {
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = "pointer";
 
@@ -108,9 +116,9 @@ export default function MapBoxMap({
 				popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
 				document.querySelectorAll(".mapboxPopupBtn").forEach((btn) => {
-					btn.addEventListener("click", function () {
-						console.log("Book slot", this);
-						handleOpenBookSlotModal(this.value);
+					btn.addEventListener("click", (e) => {
+						console.log("Book slot", e.target.value);
+						handleOpenBookSlotModal(e.target.value);
 					});
 				});
 			});
@@ -126,7 +134,15 @@ export default function MapBoxMap({
 	const handleSearchNearbyParking = useCallback(
 		(center) => {
 			fetchNearbyParking(center).then((parkings) => {
-				loadMarkers(parkings);
+				setTimeout(() => {
+					if (map.loaded()) {
+						console.log("loading marker as map is ready");
+						loadMarkers(parkings);
+					} else {
+						console.log("will load marker on map is ready");
+						map.on("load", () => loadMarkers(parkings));
+					}
+				}, 0);
 			});
 		},
 		[fetchNearbyParking, loadMarkers]
@@ -135,7 +151,7 @@ export default function MapBoxMap({
 	useEffect(() => {
 		console.log("use effect render", map);
 
-		let lng = -70.9;
+		let lng = -70.91;
 		let lat = 42.35;
 		let zoom = 8;
 
@@ -173,44 +189,39 @@ export default function MapBoxMap({
 
 		// Fly to current location in map
 
-		map.on("load", () => {
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					setTimeout(() => {
-						map.flyTo({
-							center: [
-								position.coords.longitude,
-								position.coords.latitude,
-							],
-							zoom: zoom,
-						});
-						new mapboxgl.Marker({
-							color: "red",
-							draggable: true,
-						})
-							.setLngLat([
-								position.coords.longitude,
-								position.coords.latitude,
-							])
-							.addTo(map);
-
-						console.log("herer");
-
-						console.log("here");
-						handleSearchNearbyParking([
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				setTimeout(() => {
+					map.flyTo({
+						center: [
 							position.coords.longitude,
 							position.coords.latitude,
-						]);
-					}, 100);
-				},
-				() => {
-					console.log("map error!!!!");
-				},
-				{
-					enableHighAccuracy: true,
-				}
-			);
-		});
+						],
+						zoom: zoom,
+					});
+					new mapboxgl.Marker({
+						color: "red",
+						draggable: true,
+					})
+						.setLngLat([
+							position.coords.longitude,
+							position.coords.latitude,
+						])
+						.addTo(map);
+
+					handleSearchNearbyParking([
+						position.coords.longitude,
+						position.coords.latitude,
+					]);
+				}, 500);
+			},
+			() => {
+				console.log("map error!!!!");
+			},
+			{
+				enableHighAccuracy: true,
+			}
+		);
 
 		// remove the map object on destroy
 		return () => {

@@ -183,6 +183,7 @@ public class ParkingService {
         parking.setAddress(parkingDTO.getAddress());
         parking.setHourlyRent(parkingDTO.getHourlyRent());
         parking.setName(parkingDTO.getName());
+        parking.setTotalSlots(parkingDTO.getTotalSlots());
 
     }
 

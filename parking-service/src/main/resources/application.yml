@@ -3,7 +3,8 @@ spring:
         name: parking-service
     data:
         mongodb:
-            database: geoparking
+            uri: mongodb+srv://geoparking_parking:passwordshouldbestrong@geoparking-parking-serv.8f3zb.mongodb.net/geoparkingDB?retryWrites=true&w=majority
+            database: geoparkingDB
 server:
     port: 8300
 
@@ -13,5 +14,9 @@ eureka:
         fetch-registry: true
         service-url:
             default-zone: http://localhost:8761/eureka
-    instance:
-        hostname: localhost
+    # instance:
+    #     hostname: localhost
+# passwordshouldbestrong
+# geoparking_user
+
+# mongodb+srv://geoparking_parking:<password>@geoparking-parking-serv.8f3zb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

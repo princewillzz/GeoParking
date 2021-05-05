@@ -54,6 +54,7 @@ function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 		name: parkingData.name,
 		address: parkingData.address,
 		hourlyRent: parkingData.hourlyRent,
+		totalSlots: parkingData.totalSlots,
 	});
 
 	const handleChangeParkingData = (e) => {
@@ -89,6 +90,7 @@ function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 				image="/p1.jpg"
 				title="parking photos"
 			/>
+
 			<CardContent className={classes.cardBodyContainer}>
 				{!isEditable ? (
 					<>
@@ -115,6 +117,15 @@ function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 							gutterBottom
 						>
 							Rs {parkingEditInfo.hourlyRent} /- per hour
+						</Typography>
+						<Typography
+							style={{
+								textAlign: "center",
+								marginTop: 10,
+							}}
+							gutterBottom
+						>
+							Total Slots {"=>"} {parkingEditInfo.totalSlots}
 						</Typography>
 					</>
 				) : (
@@ -147,6 +158,16 @@ function AdminParkingCard({ parkingData, handleRemoveParkingCard }) {
 								label="Parking Hourly Rent"
 								aria-label="Parking hourly Rent"
 								aria-labelledby="Parking rent per hour"
+								fullWidth
+								type="number"
+							/>
+							<TextField
+								name="totalSlots"
+								value={parkingEditInfo.totalSlots}
+								onChange={handleChangeParkingData}
+								label="Parking Slots"
+								aria-label="Parking slots"
+								aria-labelledby="Parking slots"
 								fullWidth
 								type="number"
 							/>
