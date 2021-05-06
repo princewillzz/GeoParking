@@ -1,6 +1,6 @@
 spring:
     application:
-        name: parking-service
+        name: PARKING-SERVICE
     data:
         mongodb:
             uri: mongodb+srv://geoparking_parking:passwordshouldbestrong@geoparking-parking-serv.8f3zb.mongodb.net/geoparkingDB?retryWrites=true&w=majority
@@ -13,9 +13,9 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            default-zone: http://localhost:8761/eureka
-    # instance:
-    #     hostname: localhost
+            defaultZone: https://evening-caverns-75917.herokuapp.com/eureka
+    instance:
+        hostname: PARKING-SERVICE.herokuapp.com
 # passwordshouldbestrong
 # geoparking_user
 

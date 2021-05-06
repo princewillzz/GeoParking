@@ -21,6 +21,14 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            default-zone: http://localhost:8761/eureka
-    instance:
-        hostname: localhost
+            default-zone: https://localhost:8761/eureka
+    # instance:
+    #     hostname: localhost
+# logging.level.org.springframework.data.mongodb.repository.Query=DEBUG
+# logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG
+# spring.data.mongodb.database=geoparking
+# spring.data.mongodb.host=mongodb://127.0.0.1:27017
+# spring.data.mongodb.port=27017
+# spring.data.mongodb.authentication-database=[authentication_database]
+# spring.data.mongodb.username=[username]
+# spring.data.mongodb.password=[password]
