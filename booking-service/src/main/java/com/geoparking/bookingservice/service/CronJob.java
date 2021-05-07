@@ -22,7 +22,7 @@ public class CronJob {
         this.bookingRepository = bookingRepository;
     }
 
-    @Scheduled(initialDelayString = "PT30S", fixedDelayString = "PT30S")
+    @Scheduled(initialDelayString = "PT1M", fixedDelayString = "PT10M")
     @Transactional
     void reconfigureBookingStatus() throws InterruptedException {
 

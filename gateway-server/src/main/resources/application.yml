@@ -1,21 +1,37 @@
-# server:
-#     port: 8080
+server:
+    port: 8080
 
-# spring:
-#     application:
-#         name: API-GATEWAY
+spring:
+    application:
+        name: API-GATEWAY
 
-# eureka:
-#     client:
-#         register-with-eureka: true
-#         fetch-registry: true
-#         serviceUrl:
-#             defaultZone: https://evening-caverns-75917.herokuapp.com/eureka
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        serviceUrl:
+            defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
 #     # instance:
 #     #     hostname: localhost
 
-# ribbon:
-#     ReadTimeout: 60000
+zuul:
+    ignored-services:
+        - "*"
+    routes:
+        parking-service:
+            path: /api/parking-service/**
+            # serviceId: parking-service
+            url: https://geoparking-parking.herokuapp.com/
+        booking-service:
+            path: /api/booking/**
+            url: https://geoparking-booking.herokuapp.com/
+        profile-service:
+            path: /auth/**
+            url: https://geoparking-profile.herokuapp.com/
+            strip-prefix: false
+
+    sensitive-headers:
+        - Cookie,Set-Cookie
 
 endpoints:
     restart:
@@ -26,4 +42,4 @@ ribbon:
     maxAutoRetries: 1
     MaxAutoRetriesNextServer: 2
     eureka:
-        enabled: true
+        enabled: false

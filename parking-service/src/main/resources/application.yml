@@ -13,9 +13,10 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            defaultZone: https://evening-caverns-75917.herokuapp.com/eureka
+            defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
     instance:
-        hostname: PARKING-SERVICE.herokuapp.com
+        hostname: geoparking-parking.herokuapp.com
+        nonSecurePort: 80
 # passwordshouldbestrong
 # geoparking_user
 

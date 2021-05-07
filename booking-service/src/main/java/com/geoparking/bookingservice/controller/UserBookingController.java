@@ -77,11 +77,15 @@ public class UserBookingController {
 
         try {
 
+            log.info("Requesting: " + decodedUserInfo.toString());
             restTemplate.getInterceptors()
                     .add(new HeaderRequestInterceptor("Authorization", request.getHeader("Authorization")));
 
             final ResponseEntity<Customer> customerResponse = restTemplate
                     .getForEntity("http://profile-service/auth/profile", Customer.class);
+            // .getForEntity("http://profile-service/auth/profile", Customer.class);
+
+            log.info("Request completed" + decodedUserInfo.toString());
 
             if (customerResponse.getStatusCode() == HttpStatus.OK) {
                 final Customer customer = customerResponse.getBody();

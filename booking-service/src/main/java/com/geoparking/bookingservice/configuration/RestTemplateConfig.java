@@ -17,7 +17,7 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate() {
 
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(3000);
+        clientHttpRequestFactory.setConnectTimeout(10000);
 
         return new RestTemplate(clientHttpRequestFactory);
     }

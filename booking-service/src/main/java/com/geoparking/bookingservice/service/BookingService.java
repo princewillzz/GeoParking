@@ -182,11 +182,13 @@ public class BookingService {
     // @Transactional(readOnly = true)
     // List<Booking> getBookingsForSchedular(final Date arrivalTimeDateIsAfter) {
 
-    //     List<BookingStatus> excluded = Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED);
-    //     // get all bookings which arrive before now() and also which have departed
-    //     // currently
-    //     return bookingRepository.findAllByArrivalTimeDateGreaterThanAndBookingStatusNotIn(arrivalTimeDateIsAfter,
-    //             excluded);
+    // List<BookingStatus> excluded = Arrays.asList(BookingStatus.CANCELLED,
+    // BookingStatus.COMPLETED);
+    // // get all bookings which arrive before now() and also which have departed
+    // // currently
+    // return
+    // bookingRepository.findAllByArrivalTimeDateGreaterThanAndBookingStatusNotIn(arrivalTimeDateIsAfter,
+    // excluded);
     // }
 
     /**
@@ -333,10 +335,9 @@ public class BookingService {
 
         List<BookingStatus> status = Arrays.asList(BookingStatus.CANCELLED, BookingStatus.COMPLETED);
 
-        if(!status.contains(booking.getBookingStatus())) {            
+        if (!status.contains(booking.getBookingStatus())) {
             booking.setBookingStatus(BookingStatus.CANCELLED);
         }
     }
-
 
 }
