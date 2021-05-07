@@ -73,7 +73,6 @@ function AdminBookings() {
 
 	return (
 		<>
-			(
 			<Typography className={classes.heading} component="div">
 				{parking && parking.name ? parking.name : <CircularProgress />}
 			</Typography>

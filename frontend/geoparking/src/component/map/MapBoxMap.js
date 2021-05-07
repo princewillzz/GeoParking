@@ -32,10 +32,10 @@ export default function MapBoxMap({
 				} parkings, is map loaded ${map.loaded()}, DEBUG: map-${map}`
 			);
 
-			if (!map || !map.loaded()) return;
-			if (map.loaded()) {
-			} else {
-			}
+			// if (!map || !map.loaded()) return;
+			// if (map.loaded()) {
+			// } else {
+			// }
 
 			const parkingMarker = [];
 
@@ -131,25 +131,34 @@ export default function MapBoxMap({
 		[handleOpenBookSlotModal]
 	);
 
+	const onMapRenderComplete = useCallback((map, fn) => {
+		// console.log("On Map render complete fun", map.loaded());
+		if (map.loaded()) return process.nextTick(fn);
+		map.once("render", () => onMapRenderComplete(map, fn));
+	}, []);
+
 	const handleSearchNearbyParking = useCallback(
 		(center) => {
 			fetchNearbyParking(center).then((parkings) => {
-				setTimeout(() => {
-					if (map.loaded()) {
-						console.log("loading marker as map is ready");
-						loadMarkers(parkings);
-					} else {
-						console.log("will load marker on map is ready");
-						map.on("load", () => loadMarkers(parkings));
-					}
-				}, 0);
+				onMapRenderComplete(map, () => loadMarkers(parkings));
+
+				// setTimeout(() => {
+
+				// 	if (map.loaded()) {
+				// 		console.log("loading marker as map is ready");
+				// 		loadMarkers(parkings);
+				// 	} else {
+				// 		console.log("will load marker on map is ready");
+				// 		map.on("load", () => loadMarkers(parkings));
+				// 	}
+				// }, 0);
 			});
 		},
-		[fetchNearbyParking, loadMarkers]
+		[fetchNearbyParking, loadMarkers, onMapRenderComplete]
 	);
 
 	useEffect(() => {
-		console.log("use effect render", map);
+		// console.log("use effect render", map);
 
 		let lng = -70.91;
 		let lat = 42.35;
