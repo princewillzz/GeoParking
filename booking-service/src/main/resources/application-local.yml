@@ -6,7 +6,7 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         serviceUrl:
-            defaultZone: https://evening-caverns-75917.herokuapp.com/eureka
+            defaultZone: http://localhost:8761/eureka
 
     # instance:
     #     hostname: localhost

@@ -1,5 +1,7 @@
 package com.geoparking.parkingservice.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.geoparking.parkingservice.dto.ParkingDTO;
 import com.geoparking.parkingservice.model.DecodedUserInfo;
 import com.geoparking.parkingservice.service.ParkingService;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/internal")
+@Slf4j
 public class InternalController {
 
     @Autowired
@@ -27,6 +32,12 @@ public class InternalController {
 
         return ResponseEntity.ok(parking);
 
+    }
+
+    @GetMapping("/awake")
+    public ResponseEntity<?> awakeMe() {
+        log.info(" Woke me Up");
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,0 +1,46 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: api-gateway
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
+    # instance:
+    #     hostname: localhost
+
+zuul:
+    ignored-services:
+        - "*"
+    routes:
+        parking-service:
+            path: /api/parking-service/**
+            serviceId: parking-service
+            # url: http://localhost:8300/
+        booking-service:
+            path: /api/booking/**
+            serviceId: booking-service
+            # url: https://geoparking-booking.herokuapp.com/
+        profile-service:
+            path: /auth/**
+            serviceId: profile-service
+            # url: https://geoparking-profile.herokuapp.com/
+            strip-prefix: false
+
+    sensitive-headers:
+        - Cookie,Set-Cookie
+endpoints:
+    restart:
+        enabled: true
+ribbon:
+    ConnectTimeout: 30000
+    ReadTimeout: 60000
+    maxAutoRetries: 1
+    MaxAutoRetriesNextServer: 2
+    eureka:
+        enabled: true

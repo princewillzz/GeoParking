@@ -20,8 +20,8 @@ eureka:
     client:
         register-with-eureka: true
         fetch-registry: true
-        service-url:
-            default-zone: https://localhost:8761/eureka
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
     # instance:
     #     hostname: localhost
 # logging.level.org.springframework.data.mongodb.repository.Query=DEBUG

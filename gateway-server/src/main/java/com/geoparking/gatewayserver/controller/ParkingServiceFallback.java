@@ -11,7 +11,7 @@ public class ParkingServiceFallback implements FallbackProvider {
 
     @Override
     public String getRoute() {
-        return "parking-ervice";
+        return "parking-service";
     }
 
     @Override

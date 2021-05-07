@@ -15,12 +15,11 @@ spring:
     application:
         name: profile-service
     jpa:
-        database-platform: org.hibernate.dialect.MySQL8Dialect
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
         show-sql: true
         hibernate:
             ddl-auto: update
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/geoparking_profile
-        username: root
+        url: jdbc:postgresql://localhost:5432/geoparking_profile
+        username: postgres
         password: password
