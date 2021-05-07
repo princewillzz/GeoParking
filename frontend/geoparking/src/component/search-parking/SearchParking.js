@@ -13,7 +13,7 @@ export default function SearchParking({
 	return (
 		<>
 			<h1 style={{ textAlign: "center", fontWeight: 400, marginTop: 50 }}>
-				All Parkings
+				Parkings
 			</h1>
 
 			{/* <div className="parkingSearchContainer">
