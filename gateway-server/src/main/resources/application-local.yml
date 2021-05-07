@@ -25,11 +25,11 @@ zuul:
         booking-service:
             path: /api/booking/**
             serviceId: booking-service
-            # url: https://geoparking-booking.herokuapp.com/
+            # url: http://localhost:8300/
         profile-service:
             path: /auth/**
             serviceId: profile-service
-            # url: https://geoparking-profile.herokuapp.com/
+            # url: http://localhost:8201/
             strip-prefix: false
 
     sensitive-headers:

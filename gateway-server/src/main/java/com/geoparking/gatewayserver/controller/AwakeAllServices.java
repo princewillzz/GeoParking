@@ -1,8 +1,5 @@
 package com.geoparking.gatewayserver.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -11,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class AwakeAllServices {
@@ -26,23 +24,24 @@ public class AwakeAllServices {
     }
 
     @GetMapping(value = "/api/awake")
-    public ResponseEntity<?> make(final HttpServletRequest request) {
+    public ResponseEntity<?> awakeme(final HttpServletRequest request) {
+
+        log.info(request.getRemoteAddr() + " woke me Up");
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/api/awake/all")
+    public ResponseEntity<?> awakeAll(final HttpServletRequest request) {
 
         log.info(request.getRemoteAddr() + " woke me Up");
         try {
-            Object a = null;
 
-            System.err.println("Calll 0");
-            // a = restTemplate.getForEntity("http://parking-service/parking/featured",
-            // Object.class);
-            System.err.println(a);
-            a = restTemplate.getForObject("http://parking-service/internal/awake", Object.class);
-            System.out.println(a);
+            restTemplate.getForObject("http://parking-service/internal/awake", Object.class);
 
-            // a = restTemplate.getForObject("http://profile-service/internal/awake",
-            // Object.class);
-            // a = restTemplate.getForObject("http://booking-service/internal/awake",
-            // Object.class);
+            restTemplate.getForObject("http://profile-service/internal/awake", Object.class);
+
+            restTemplate.getForObject("http://booking-service/internal/awake", Object.class);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -51,5 +50,4 @@ public class AwakeAllServices {
 
         return ResponseEntity.ok().build();
     }
-
 }

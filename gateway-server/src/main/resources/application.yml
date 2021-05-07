@@ -20,14 +20,16 @@ zuul:
     routes:
         parking-service:
             path: /api/parking-service/**
-            # serviceId: parking-service
-            url: https://geoparking-parking.herokuapp.com/
+            serviceId: parking-service
+            # url: https://geoparking-parking.herokuapp.com/
         booking-service:
             path: /api/booking/**
-            url: https://geoparking-booking.herokuapp.com/
+            serviceId: booking-service
+            # url: https://geoparking-booking.herokuapp.com/
         profile-service:
             path: /auth/**
-            url: https://geoparking-profile.herokuapp.com/
+            serviceId: profile-service
+            # url: https://geoparking-profile.herokuapp.com/
             strip-prefix: false
 
     sensitive-headers:
@@ -42,4 +44,4 @@ ribbon:
     maxAutoRetries: 1
     MaxAutoRetriesNextServer: 2
     eureka:
-        enabled: false
+        enabled: true

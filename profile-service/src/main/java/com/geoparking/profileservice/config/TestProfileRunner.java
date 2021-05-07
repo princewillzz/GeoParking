@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.geoparking.profileservice.dto.ProfileDTO;
-import com.geoparking.profileservice.entity.Profile;
-import com.geoparking.profileservice.repository.ProfileRepository;
 import com.geoparking.profileservice.service.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;

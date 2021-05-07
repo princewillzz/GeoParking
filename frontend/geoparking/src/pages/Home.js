@@ -56,8 +56,7 @@ function Home() {
 				setSearchedParkingList(res.data);
 				return res.data;
 			})
-			.catch((e) => {
-				console.log(e.response.error);
+			.catch(() => {
 				return [];
 			});
 	}, []);
