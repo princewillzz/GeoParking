@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class ParkingController {
 
     private ParkingService parkingService;
@@ -56,6 +59,8 @@ public class ParkingController {
 
         // parkingService.getFeaturedParkings().stream().forEach(p ->
         // System.err.println(p.getId()));
+
+        log.info("Fetching featured parking info");
 
         return ResponseEntity.ok().body(parkingService.getFeaturedParkings());
     }

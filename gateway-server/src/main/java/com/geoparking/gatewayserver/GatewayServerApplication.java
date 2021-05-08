@@ -7,10 +7,12 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@EnableScheduling
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy
@@ -42,4 +44,5 @@ public class GatewayServerApplication {
 		return new RestTemplate(clientHttpRequestFactory);
 
 	}
+
 }

@@ -1,6 +1,11 @@
 import axios from "axios";
 import { axiosInstance } from "./axios-config";
 
+// waking up all
+export const wakeUpAllMicroservices = async () => {
+	return axiosInstance.get("/api/awke/all").then(() => true);
+};
+
 // waking up gateway
 export const wakeUpApiGateway = async () => {
 	return axiosInstance

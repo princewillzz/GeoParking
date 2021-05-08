@@ -1,5 +1,7 @@
 package com.geoparking.parkingservice.controller;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.geoparking.parkingservice.dto.ParkingDTO;
@@ -39,7 +41,7 @@ public class InternalController {
     @GetMapping("/awake")
     public ResponseEntity<?> awakeMe() {
         log.info(" Woke me Up");
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Arrays.asList("harsh", "nsihi"));
     }
 
 }
