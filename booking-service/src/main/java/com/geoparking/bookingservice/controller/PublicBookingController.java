@@ -32,7 +32,7 @@ public class PublicBookingController {
     public ResponseEntity<?> checkBookingAvailability(@RequestBody @Valid CheckAvailabilityForm checkAvailabilityForm) {
 
         try {
-            System.out.println(checkAvailabilityForm);
+
             final boolean isSlotAvailable = bookingService.checkSlotAvailability(checkAvailabilityForm);
             if (isSlotAvailable) {
                 return ResponseEntity.ok().build();

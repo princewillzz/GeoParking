@@ -101,7 +101,8 @@ public class BookingService {
      * @return boolean value
      * @throws ParseException
      */
-    public boolean checkSlotAvailability(final CheckAvailabilityForm checkAvailabilityForm) throws ParseException {
+    public boolean checkSlotAvailability(final CheckAvailabilityForm checkAvailabilityForm)
+            throws ParseException, IllegalArgumentException {
 
         // Fetch parking with id
         final String parkingId = checkAvailabilityForm.getParkingId();
@@ -110,6 +111,10 @@ public class BookingService {
                 checkAvailabilityForm.getArrivalTime());
         final Date departureDateTime = utilityService.convertDateTimeStringToDate(
                 checkAvailabilityForm.getDepartureDate(), checkAvailabilityForm.getDepartureTime());
+
+        if (arrivalDateTime.before(new Date()) || arrivalDateTime.after(departureDateTime)) {
+            throw new IllegalArgumentException("Invalid Arguments");
+        }
 
         final ResponseEntity<Parking> parkingResponse = fetchParkingWithId(parkingId);
 

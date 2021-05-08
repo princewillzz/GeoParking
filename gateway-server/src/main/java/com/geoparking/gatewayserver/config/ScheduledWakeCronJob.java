@@ -25,7 +25,7 @@ public class ScheduledWakeCronJob {
         this.webClientBuilder = WebClient.builder();
     }
 
-    @Scheduled(initialDelayString = "PT1S", fixedDelayString = "PT5S")
+    @Scheduled(initialDelayString = "PT1M", fixedDelayString = "PT2M")
     void awakeOtherServices() {
 
         try {
@@ -33,21 +33,15 @@ public class ScheduledWakeCronJob {
             // parking service
 
             webClientBuilder.build().get().uri("https://geoparking-parking.herokuapp.com/internal/awake").retrieve()
-                    .bodyToMono(Object.class).subscribe(r -> {
-                        System.err.println("got it ");
-                    });
+                    .bodyToMono(Object.class).subscribe();
 
             // profile service
             webClientBuilder.build().get().uri("https://geoparking-profile.herokuapp.com/internal/awake").retrieve()
-                    .bodyToMono(Object.class).subscribe(r -> {
-                        System.err.println("got it ");
-                    });
+                    .bodyToMono(Object.class).subscribe();
 
             // booking service
             webClientBuilder.build().get().uri("https://geoparking-booking.herokuapp.com/internal/awake").retrieve()
-                    .bodyToMono(Object.class).subscribe(r -> {
-                        System.err.println("got it ");
-                    });
+                    .bodyToMono(Object.class).subscribe();
 
             // profile service
             // restTemplate.getForObject("http://parking-service/internal/awake",
