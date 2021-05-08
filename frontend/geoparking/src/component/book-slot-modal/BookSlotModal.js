@@ -153,6 +153,7 @@ function BookSlotModal({
 		checkBookingSpotAvailability(checkAvailabilityForm)
 			.then((status) => {
 				if (status === 200) {
+					setErrorMessage(null);
 					setIsParkingAvailableForBooking(true);
 				} else if (status === 400 || status === 406) {
 					setErrorMessage("Date Not compatible");
