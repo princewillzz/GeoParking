@@ -13,6 +13,7 @@ import { CheckCircleOutlineRounded, Close } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { checkBookingSpotAvailability } from "../../api/userBookingAndPayment";
 import { useAuth } from "../../authentication/ProvideAuth";
 import PayByRazorPay from "../payment/PayByRazorPay";
 
@@ -146,9 +147,25 @@ function BookSlotModal({
 
 	// TODO-----------
 	// handle if the parking is available for booking
-	const handleCheckIsParkingAvailable = () => {
+	const handleCheckIsParkingAvailable = async () => {
 		//  to be completed for with api calls
-		setIsParkingAvailableForBooking(true);
+		setIsLoading(true);
+		checkBookingSpotAvailability(checkAvailabilityForm)
+			.then((status) => {
+				if (status === 200) {
+					setIsParkingAvailableForBooking(true);
+				} else if (status === 400 || status === 406) {
+					setErrorMessage("Date Not compatible");
+				} else if (status === 503) {
+					setErrorMessage("Service unavailable!!");
+				} else {
+					setErrorMessage("Not available");
+				}
+			})
+			.catch((e) => {
+				setErrorMessage("Something went Wrong!!");
+			})
+			.finally(() => setIsLoading(false));
 	};
 
 	const handleErrorMessageAlert = (message) => {

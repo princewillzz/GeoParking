@@ -3,9 +3,11 @@ import {
 	FormControlLabel,
 	Grid,
 	makeStyles,
+	Snackbar,
 	Switch,
 	TextField,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { registerProfile } from "../../api/profile-api";
@@ -33,7 +35,7 @@ const initialState = {
 	role: "user",
 };
 
-function RegisterBody() {
+function RegisterBody({ handleChangeLoading, setSnackBar }) {
 	const classes = useStyles();
 
 	const history = useHistory();
@@ -42,8 +44,14 @@ function RegisterBody() {
 	const [formInputState, setFormInputState] = useState(initialState);
 	const [adminChecked, setAdminChecked] = useState(false);
 
+	const [
+		openSnackBarRegistrationDone,
+		setOpenSnackBarRegistrationDone,
+	] = useState(false);
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		handleChangeLoading(true);
 
 		let replaceURLTo = "/";
 		if (adminChecked) {
@@ -57,14 +65,22 @@ function RegisterBody() {
 					password: formInputState.password,
 				},
 				() => {
-					history.replace(replaceURLTo);
+					setOpenSnackBarRegistrationDone(true);
+					setTimeout(() => {
+						history.replace(replaceURLTo);
+					}, 1000);
 				}
 			);
 		};
 
 		registerProfile(formInputState, callback).catch(() => {
 			console.log("unable ");
+			setSnackBar(true);
 		});
+
+		setTimeout(() => {
+			handleChangeLoading(false);
+		}, 1000);
 	};
 
 	// change role change
@@ -93,6 +109,12 @@ function RegisterBody() {
 
 	return (
 		<form onSubmit={handleSubmit}>
+			<Snackbar
+				open={openSnackBarRegistrationDone}
+				anchorOrigin={{ vertical: "top", horizontal: "center" }}
+			>
+				<Alert severity="success">Successfully registered!!</Alert>
+			</Snackbar>
 			<Grid>
 				<Grid
 					item

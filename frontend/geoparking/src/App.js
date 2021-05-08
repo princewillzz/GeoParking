@@ -40,11 +40,11 @@ function App() {
 		const tryWakeUpAllMicroservicesService = async () => {
 			wakeUpAllMicroservices()
 				.then(() => {
-					console.log("Done setting useeffect");
-					setIsPreLoadingDone(true);
+					console.log("App loaded");
+					// setIsPreLoadingDone(true);
 				})
 				.catch(() => {
-					console.log("In error useeffec");
+					console.log("App loading");
 					setTimeout(() => {
 						tryWakeUpAllMicroservicesService();
 					}, 100);
@@ -61,12 +61,10 @@ function App() {
 				.then(() => {
 					count++;
 					if (count >= numberOfServers) {
-						console.log(count, "Done setting useeffect");
 						setIsPreLoadingDone(true);
 					}
 				})
 				.catch(() => {
-					console.log("In error useeffec");
 					setTimeout(() => {
 						tryWakeUpGatewayService();
 					}, 200);
@@ -79,12 +77,10 @@ function App() {
 				.then(() => {
 					count++;
 					if (count >= numberOfServers) {
-						console.log(count, "Done setting useeffect");
 						setIsPreLoadingDone(true);
 					}
 				})
 				.catch(() => {
-					console.log("In error useeffec");
 					setTimeout(() => {
 						tryWakeUpParkingService();
 					}, 200);
@@ -97,12 +93,10 @@ function App() {
 				.then(() => {
 					count++;
 					if (count >= numberOfServers) {
-						console.log(count, "Done setting useeffect");
 						setIsPreLoadingDone(true);
 					}
 				})
 				.catch(() => {
-					console.log("In error useeffec");
 					setTimeout(() => {
 						tryWakeUpProfileService();
 					}, 200);
@@ -115,12 +109,10 @@ function App() {
 				.then(() => {
 					count++;
 					if (count >= numberOfServers) {
-						console.log(count, "Done setting useeffect");
 						setIsPreLoadingDone(true);
 					}
 				})
 				.catch(() => {
-					console.log("In error useeffec");
 					setTimeout(() => {
 						tryWakeUpBookingService();
 					}, 200);
@@ -149,12 +141,17 @@ function App() {
 						options={defaultOptions}
 						height={"100%"}
 						width={"100%"}
-						style={
-							{
-								// backgroundColor
-							}
-						}
 					/>
+
+					<div className="animationCreator">
+						<a
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://lottiefiles.com/BojanMitevskii"
+						>
+							Animation by Chris Gannon on LottieFiles
+						</a>
+					</div>
 				</div>
 			) : (
 				<>

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
+	// baseURL: "http://localhost:8080",
 	baseURL: "https://geoparking-gateway.herokuapp.com",
 	timeout: 30000,
 });

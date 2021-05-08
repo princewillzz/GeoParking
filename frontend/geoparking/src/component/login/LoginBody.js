@@ -32,7 +32,7 @@ const testAdminCred = {
 	password: "testadmin",
 };
 
-function LoginBody() {
+function LoginBody({ handleChangeLoading, setSnackBar }) {
 	const classes = useStyles();
 
 	let auth = useAuth();
@@ -57,13 +57,22 @@ function LoginBody() {
 	const handleLogin = async (event) => {
 		event.preventDefault();
 
+		handleChangeLoading(true);
+
 		try {
 			await auth.signin(credentials, () => {
-				history.replace(from);
+				setTimeout(() => {
+					history.replace(from);
+				}, 1000);
 			});
 		} catch (error) {
-			alert("login failed...!");
+			console.log("login failed...!");
+			setSnackBar(true);
 		}
+
+		setTimeout(() => {
+			handleChangeLoading(false);
+		}, 1000);
 	};
 
 	const [isTestCredUser, setIsTestCredUser] = useState(true);

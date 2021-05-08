@@ -4,9 +4,12 @@ import {
 	CardActions,
 	CardContent,
 	CardHeader,
+	CircularProgress,
 	Container,
 	makeStyles,
+	Snackbar,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React, { useState } from "react";
 import LoginBody from "../component/login/LoginBody";
 import RegisterBody from "../component/login/RegisterBody";
@@ -19,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: "none",
 		color: "blueviolet",
 	},
+	loginContainer: {
+		marginTop: "10vh",
+	},
 }));
 
 function Login() {
@@ -26,6 +32,12 @@ function Login() {
 
 	const [openLoginForm, setOpenLoginForm] = useState(true);
 	const [openRegsiterForm, setOpenRegisterForm] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [openSnackBar, setSnackBar] = useState(false);
+
+	const handleChangeLoading = (status) => {
+		setIsLoading(status);
+	};
 
 	const handleLoginRegisterFormChange = () => {
 		setOpenLoginForm((openLoginForm) => !openLoginForm);
@@ -44,19 +56,51 @@ function Login() {
 
 	const getBody = () => {
 		if (openLoginForm && !openRegsiterForm) {
-			return <LoginBody />;
+			return (
+				<LoginBody
+					setSnackBar={setSnackBar}
+					handleChangeLoading={handleChangeLoading}
+				/>
+			);
 		} else if (openRegsiterForm && !openLoginForm) {
-			return <RegisterBody />;
+			return (
+				<RegisterBody
+					setSnackBar={setSnackBar}
+					handleChangeLoading={handleChangeLoading}
+				/>
+			);
 		} else {
 			return "Forgot Password";
 		}
 	};
 
+	const dimContentWhileLoading = () => {
+		return isLoading
+			? {
+					backgroundColor: "rgba(0, 0, 0, 0.1)",
+					pointerEvents: "none",
+			  }
+			: {};
+	};
+
 	return (
 		<>
 			<center>
-				<Container style={{ marginTop: "10vh" }}>
-					<Card className={classes.root}>
+				<Snackbar
+					open={openSnackBar}
+					anchorOrigin={{ vertical: "top", horizontal: "center" }}
+					autoHideDuration={6000}
+					onClose={() => setSnackBar(false)}
+				>
+					<Alert onClose={() => setSnackBar(false)} severity="error">
+						Unable to Sign In/Up
+					</Alert>
+				</Snackbar>
+				<Container className={classes.loginContainer}>
+					<Card
+						style={dimContentWhileLoading()}
+						className={classes.root}
+					>
 						<CardHeader title={getCardTitle()} />
 
 						{/* Main content of the card */}
@@ -65,6 +109,11 @@ function Login() {
 								width: "min(400px, 80vw)",
 							}}
 						>
+							{isLoading && (
+								<CircularProgress
+									style={{ position: "absolute", top: "40%" }}
+								/>
+							)}
 							{getBody()}
 						</CardContent>
 

@@ -1,5 +1,12 @@
 import { axiosInstance } from "./axios-config";
 
+export const checkBookingSpotAvailability = async (checkAvailabilityForm) => {
+	return axiosInstance
+		.post("/api/booking/public/check-availability", checkAvailabilityForm)
+		.then((response) => response.status)
+		.catch((e) => e.response.status);
+};
+
 export const initiateBookingAndFetchPaymentOptions = async (
 	checkAvailabilityForm
 ) => {
