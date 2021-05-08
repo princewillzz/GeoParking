@@ -56,7 +56,7 @@ public class InternalController {
                     log.info("Woke up API gateway");
                 });
 
-        return ResponseEntity.ok().body(Arrays.asList("harsh", "nsihi"));
+        return ResponseEntity.ok().build();
     }
 
 }

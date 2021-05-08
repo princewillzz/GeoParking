@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import * as animationData from "./28880-database-connection-transfer-data-on-remote-cloud-storage-server-rack.json";
-import { wakeUpAllMicroservices } from "./api/setupMicroservices";
+import {
+	wakeUpAllMicroservices,
+	wakeUpApiGateway,
+	wakeUpBookingService,
+	wakeUpParkingService,
+	wakeUpProfileService,
+} from "./api/setupMicroservices";
 import "./App.css";
 import AdminPrivateRoute from "./authentication/AdminPrivateRoute";
 import { ProvideAuth } from "./authentication/ProvideAuth";
