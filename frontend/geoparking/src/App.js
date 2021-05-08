@@ -1,6 +1,10 @@
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import * as animationData from "./28880-database-connection-transfer-data-on-remote-cloud-storage-server-rack.json";
+import { wakeUpAllMicroservices } from "./api/setupMicroservices";
 import "./App.css";
 import AdminPrivateRoute from "./authentication/AdminPrivateRoute";
 import { ProvideAuth } from "./authentication/ProvideAuth";
@@ -12,18 +16,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MyAccount from "./pages/MyAccount";
 import MyBookings from "./pages/MyBookings";
-
-import * as animationData from "./28880-database-connection-transfer-data-on-remote-cloud-storage-server-rack.json";
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-
-import {
-	wakeUpApiGateway,
-	wakeUpProfileService,
-	wakeUpBookingService,
-	wakeUpParkingService,
-	wakeUpAllMicroservices,
-} from "./api/setupMicroservices";
 
 function App() {
 	const defaultOptions = {
@@ -49,7 +41,7 @@ function App() {
 					console.log("In error useeffec");
 					setTimeout(() => {
 						tryWakeUpAllMicroservicesService();
-					}, 200);
+					}, 100);
 				});
 		};
 
