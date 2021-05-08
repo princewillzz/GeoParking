@@ -42,7 +42,7 @@ function App() {
 		const tryWakeUpAllMicroservicesService = async () => {
 			wakeUpAllMicroservices()
 				.then(() => {
-					console.log(count, "Done setting useeffect");
+					console.log("Done setting useeffect");
 					setIsPreLoadingDone(true);
 				})
 				.catch(() => {
