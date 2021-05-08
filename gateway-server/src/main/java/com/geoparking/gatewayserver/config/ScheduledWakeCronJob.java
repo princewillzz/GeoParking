@@ -1,6 +1,6 @@
 package com.geoparking.gatewayserver.config;
 
-import java.util.Date;
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,25 +13,54 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class ScheduledWakeCronJob {
 
-    WebClient webClient = WebClient.create();
     @Autowired
     RestTemplate restTemplate;
 
     Logger log = LoggerFactory.getLogger(ScheduledWakeCronJob.class);
 
-    // @Scheduled(initialDelayString = "PT10S", fixedDelayString = "PT30S")
-    void awakeOtherServices() {
+    WebClient.Builder webClientBuilder;
 
-        // Parking service
+    @PostConstruct
+    void init() {
+        this.webClientBuilder = WebClient.builder();
+    }
+
+    @Scheduled(initialDelayString = "PT1S", fixedDelayString = "PT5S")
+    void awakeOtherServices() {
 
         try {
 
-            log.info("Waking all at " + new Date().toString());
-            restTemplate.getForObject("http://parking-service/internal/awake", Object.class);
+            // parking service
 
-            restTemplate.getForObject("http://profile-service/internal/awake", Object.class);
+            webClientBuilder.build().get().uri("https://geoparking-parking.herokuapp.com/internal/awake").retrieve()
+                    .bodyToMono(Object.class).subscribe(r -> {
+                        System.err.println("got it ");
+                    });
 
-            restTemplate.getForObject("http://booking-service/internal/awake", Object.class);
+            // profile service
+            webClientBuilder.build().get().uri("https://geoparking-profile.herokuapp.com/internal/awake").retrieve()
+                    .bodyToMono(Object.class).subscribe(r -> {
+                        System.err.println("got it ");
+                    });
+
+            // booking service
+            webClientBuilder.build().get().uri("https://geoparking-booking.herokuapp.com/internal/awake").retrieve()
+                    .bodyToMono(Object.class).subscribe(r -> {
+                        System.err.println("got it ");
+                    });
+
+            // profile service
+            // restTemplate.getForObject("http://parking-service/internal/awake",
+            // Object.class);
+            // System.err.println("got park");
+
+            // restTemplate.getForObject("http://profile-service/internal/awake",
+            // Object.class);
+            // System.err.println("got pro");
+
+            // restTemplate.getForObject("http://booking-service/internal/awake",
+            // Object.class);
+            // System.err.println("got book");
 
         } catch (Exception e) {
             log.error(e.getMessage());

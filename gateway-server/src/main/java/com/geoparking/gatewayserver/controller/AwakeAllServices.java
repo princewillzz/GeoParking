@@ -1,7 +1,5 @@
 package com.geoparking.gatewayserver.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +22,13 @@ public class AwakeAllServices {
     }
 
     @GetMapping(value = "/api/awake")
-    public ResponseEntity<?> awakeme(final HttpServletRequest request) {
-
-        log.info(request.getRemoteAddr() + " woke me Up");
-
+    public ResponseEntity<?> awakeme() {
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/api/awake/all")
-    public ResponseEntity<?> awakeAll(final HttpServletRequest request) {
+    public ResponseEntity<?> awakeAll() {
 
-        log.info(request.getRemoteAddr() + " woke me Up");
         try {
 
             restTemplate.getForObject("http://parking-service/internal/awake", Object.class);

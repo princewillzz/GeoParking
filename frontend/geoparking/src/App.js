@@ -47,84 +47,84 @@ function App() {
 
 		tryWakeUpAllMicroservicesService();
 
-		// let count = 0;
-		// let numberOfServers = 4;
-		// // API Gateway
-		// const tryWakeUpGatewayService = async () => {
-		// 	wakeUpApiGateway()
-		// 		.then(() => {
-		// 			count++;
-		// 			if (count >= numberOfServers) {
-		// 				console.log(count, "Done setting useeffect");
-		// 				setIsPreLoadingDone(true);
-		// 			}
-		// 		})
-		// 		.catch(() => {
-		// 			console.log("In error useeffec");
-		// 			setTimeout(() => {
-		// 				tryWakeUpGatewayService();
-		// 			}, 200);
-		// 		});
-		// };
+		let count = 0;
+		let numberOfServers = 4;
+		// API Gateway
+		const tryWakeUpGatewayService = async () => {
+			wakeUpApiGateway()
+				.then(() => {
+					count++;
+					if (count >= numberOfServers) {
+						console.log(count, "Done setting useeffect");
+						setIsPreLoadingDone(true);
+					}
+				})
+				.catch(() => {
+					console.log("In error useeffec");
+					setTimeout(() => {
+						tryWakeUpGatewayService();
+					}, 200);
+				});
+		};
 
-		// // parking service
-		// const tryWakeUpParkingService = async () => {
-		// 	wakeUpParkingService()
-		// 		.then(() => {
-		// 			count++;
-		// 			if (count >= numberOfServers) {
-		// 				console.log(count, "Done setting useeffect");
-		// 				setIsPreLoadingDone(true);
-		// 			}
-		// 		})
-		// 		.catch(() => {
-		// 			console.log("In error useeffec");
-		// 			setTimeout(() => {
-		// 				tryWakeUpParkingService();
-		// 			}, 200);
-		// 		});
-		// };
+		// parking service
+		const tryWakeUpParkingService = async () => {
+			wakeUpParkingService()
+				.then(() => {
+					count++;
+					if (count >= numberOfServers) {
+						console.log(count, "Done setting useeffect");
+						setIsPreLoadingDone(true);
+					}
+				})
+				.catch(() => {
+					console.log("In error useeffec");
+					setTimeout(() => {
+						tryWakeUpParkingService();
+					}, 200);
+				});
+		};
 
-		// // profile service
-		// const tryWakeUpProfileService = async () => {
-		// 	wakeUpProfileService()
-		// 		.then(() => {
-		// 			count++;
-		// 			if (count >= numberOfServers) {
-		// 				console.log(count, "Done setting useeffect");
-		// 				setIsPreLoadingDone(true);
-		// 			}
-		// 		})
-		// 		.catch(() => {
-		// 			console.log("In error useeffec");
-		// 			setTimeout(() => {
-		// 				tryWakeUpProfileService();
-		// 			}, 200);
-		// 		});
-		// };
+		// profile service
+		const tryWakeUpProfileService = async () => {
+			wakeUpProfileService()
+				.then(() => {
+					count++;
+					if (count >= numberOfServers) {
+						console.log(count, "Done setting useeffect");
+						setIsPreLoadingDone(true);
+					}
+				})
+				.catch(() => {
+					console.log("In error useeffec");
+					setTimeout(() => {
+						tryWakeUpProfileService();
+					}, 200);
+				});
+		};
 
-		// // booking service
-		// const tryWakeUpBookingService = async () => {
-		// 	wakeUpBookingService()
-		// 		.then(() => {
-		// 			count++;
-		// 			if (count >= numberOfServers) {
-		// 				console.log(count, "Done setting useeffect");
-		// 				setIsPreLoadingDone(true);
-		// 			}
-		// 		})
-		// 		.catch(() => {
-		// 			console.log("In error useeffec");
-		// 			setTimeout(() => {
-		// 				tryWakeUpBookingService();
-		// 			}, 200);
-		// 		});
-		// };
+		// booking service
+		const tryWakeUpBookingService = async () => {
+			wakeUpBookingService()
+				.then(() => {
+					count++;
+					if (count >= numberOfServers) {
+						console.log(count, "Done setting useeffect");
+						setIsPreLoadingDone(true);
+					}
+				})
+				.catch(() => {
+					console.log("In error useeffec");
+					setTimeout(() => {
+						tryWakeUpBookingService();
+					}, 200);
+				});
+		};
 
-		// tryWakeUpGatewayService();
-		// tryWakeUpParkingService();
-		// tryWakeUpProfileService();
-		// tryWakeUpBookingService();
+		tryWakeUpGatewayService();
+		tryWakeUpParkingService();
+		tryWakeUpProfileService();
+		tryWakeUpBookingService();
 	}, []);
 
 	return (
