@@ -108,7 +108,7 @@ export default function MapBoxMap({
 				closeOnClick: true,
 			});
 
-			map.on("mouseenter", "places", (e) => {
+			const popupController = (e) => {
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = "pointer";
 
@@ -133,7 +133,13 @@ export default function MapBoxMap({
 						handleOpenBookSlotModal(e.target.value);
 					});
 				});
-			});
+			};
+
+			map.on("mouseenter", "places", popupController).on(
+				"click",
+				"places",
+				popupController
+			);
 
 			// map.on("mouseleave", "places", function () {
 			// 	map.getCanvas().style.cursor = "";
@@ -238,6 +244,11 @@ export default function MapBoxMap({
 			},
 			() => {
 				console.log("map error!!!!");
+				map.flyTo({
+					center: [86.8181, 23.73],
+					zoom: zoom,
+				});
+				handleSearchNearbyParking([86.8181, 23.73]);
 			},
 			{
 				enableHighAccuracy: true,
