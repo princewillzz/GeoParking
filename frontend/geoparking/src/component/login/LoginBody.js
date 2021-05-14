@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "min(600px, 80vw)",
 	},
+	gridContainer: {},
 	inputContainer: {},
 	forgotPasswordLink: {
 		display: "flex",
@@ -89,7 +90,7 @@ function LoginBody({ handleChangeLoading, setSnackBar }) {
 
 	return (
 		<form onSubmit={handleLogin}>
-			<Grid>
+			<Grid className={classes.gridContainer}>
 				<Grid
 					item
 					className={classes.inputContainer}

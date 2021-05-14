@@ -16,7 +16,7 @@ import RegisterBody from "../component/login/RegisterBody";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: "min(600px, 80vw)",
+		width: "min(600px, 90vw)",
 	},
 	loginRegisterSwitchBtn: {
 		textTransform: "none",
@@ -107,6 +107,8 @@ function Login() {
 						<CardContent
 							style={{
 								width: "min(400px, 80vw)",
+								// width: "80vw",
+								// maxWidth: "400px",
 							}}
 						>
 							{isLoading && (

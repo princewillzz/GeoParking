@@ -218,7 +218,7 @@ export default function PrimarySearchAppBar() {
 
 			{isAdminLogged() && (
 				<div>
-					<Link to="/admin/my-account" className={classes.link}>
+					<Link to="/admin" className={classes.link}>
 						<MenuItem>
 							<IconButton
 								aria-label="account of current user"
