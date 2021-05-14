@@ -2,7 +2,7 @@
 
 import Geocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
@@ -18,10 +18,22 @@ mapboxgl.accessToken =
 	"pk.eyJ1IjoicHJpbmNld2lsbHoiLCJhIjoiY2tvMzFqMWFpMG8yNTJ3czU4NWVjcG5kdyJ9.F20bN0FJ8byK6BxdoBFOfA";
 
 let map;
+
+const useStyles = makeStyles((theme) => ({
+	scrollToggleBtn: {
+		position: "absolute",
+		zIndex: 1000,
+		[theme.breakpoints.down("sm")]: {
+			bottom: 0,
+		},
+	},
+}));
 export default function MapBoxMap({
 	handleOpenBookSlotModal,
 	fetchNearbyParking,
 }) {
+	const classes = useStyles();
+
 	const mapContainer = useRef();
 
 	const loadMarkers = useCallback(
@@ -263,11 +275,11 @@ export default function MapBoxMap({
 				<Button
 					variant="contained"
 					color={isScrollEnabled ? "primary" : "inherit"}
-					style={{
-						position: "absolute",
-						zIndex: 1000,
-						// fontSize: 13,
-					}}
+					className={classes.scrollToggleBtn}
+					// style={{
+					// 	position: "absolute",
+					// 	zIndex: 1000,
+					// }}
 					onClick={handleToggleScroll}
 				>
 					{isScrollEnabled ? "Disable" : "Enable"} Zoom on Scroll
