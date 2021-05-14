@@ -18,7 +18,8 @@ import { deleteParking, updateParking } from "../../api/parking-admin-api";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: 400,
-		minWidth: 400,
+		// minWidth: 400,
+		minWidth: "min(95vw, 400px)",
 		width: "auto",
 		[theme.breakpoints.down("xs")]: {
 			width: "90vw",
