@@ -14,12 +14,24 @@ eureka:
 spring:
     application:
         name: profile-service
+    # jpa:
+    #     # database-platform: org.hibernate.dialect.PostgreSQLDialect
+    #     show-sql: true
+    #     hibernate:
+    #         ddl-auto: update
+    # datasource:
+    #     url: jdbc:postgresql://localhost:5432/geoparking_profile
+    #     username: postgres
+    #     password: password
+
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        database-platform: org.hibernate.dialect.MySQL8Dialect
         show-sql: true
         hibernate:
             ddl-auto: update
     datasource:
-        url: jdbc:postgresql://localhost:5432/geoparking_profile
-        username: postgres
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://profile-mysql:3306/geoparking_profile?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=3
+        # url: jdbc:mysql://localhost:3306/geoparking_profile
+        username: sa
         password: password

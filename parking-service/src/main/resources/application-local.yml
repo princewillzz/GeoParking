@@ -3,15 +3,19 @@ spring:
         name: parking-service
     data:
         mongodb:
-            database: geoparking
-    cache:
-        type: redis
-        redis:
-            cache-null-values: false
-            time-to-live: 60000
-    redis:
-        host: localhost
-        port: 6379
+            uri: mongodb+srv://geoparking_parking:passwordshouldbestrong@geoparking-parking-serv.8f3zb.mongodb.net/geoparkingDB?retryWrites=true&w=majority
+            database: geoparkingDB
+    # data:
+    #     mongodb:
+    #         database: geoparking
+    # cache:
+    #     type: redis
+    #     redis:
+    #         cache-null-values: false
+    #         time-to-live: 60000
+    # redis:
+    #     host: localhost
+    #     port: 6379
 
 server:
     port: 8300
