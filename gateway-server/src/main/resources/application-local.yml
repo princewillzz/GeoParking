@@ -20,12 +20,12 @@ zuul:
     routes:
         parking-service:
             path: /api/parking-service/**
-            # serviceId: parking-service
-            url: http://localhost:8300/
+            serviceId: parking-service
+            # url: http://localhost:8300/
         booking-service:
             path: /api/booking/**
-            # serviceId: booking-service
-            url: http://localhost:8301/
+            serviceId: booking-service
+            # url: http://localhost:8301/
         profile-service:
             path: /auth/**
             # serviceId: profile-service

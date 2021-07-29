@@ -11,6 +11,8 @@ eureka:
         fetch-registry: true
         serviceUrl:
             defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
+            # Temporary change
+            # defaultZone: https://parking-service-registry.herokuapp.com/eureka
 #     # instance:
 #     #     hostname: localhost
 

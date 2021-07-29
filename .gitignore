@@ -1,2 +1,8 @@
 frontend/geoparking/.env.development
 .vscode/launch.json
+booking-service/output.log
+gateway-server/output.log
+service-registry/output.log
+profile-service/output.log
+parking-service/output.log
+gateway-server/pid.file

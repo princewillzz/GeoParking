@@ -6,9 +6,13 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         serviceUrl:
-            defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
+            # defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
+            # Temporary deploy
+            defaultZone: https://parking-service-registry.herokuapp.com/eureka
     instance:
-        hostname: geoparking-profile.herokuapp.com
+        # hostname: geoparking-profile.herokuapp.com
+        # Temporary
+        hostname: parking-profile-service.herokuapp.com
         nonSecurePort: 80
 
 spring:

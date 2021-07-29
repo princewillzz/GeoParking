@@ -7,8 +7,12 @@ eureka:
         fetch-registry: true
         serviceUrl:
             defaultZone: https://geoparking-service-registry.herokuapp.com/eureka
+            # Temporary hosting
+            # defaultZone: https://parking-service-registry.herokuapp.com/eureka
     instance:
         hostname: geoparking-booking.herokuapp.com
+        # Temporary hosting
+        # hostname: parking-booking-service.herokuapp.com
         nonSecurePort: 80
 
 spring:

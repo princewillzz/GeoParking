@@ -35,7 +35,8 @@ spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         # url: jdbc:mysql://profile-mysql:3306/geoparking_profile?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=3
-        url: jdbc:mysql://localhost:3306/geoparking_booking
+        # url: jdbc:mysql://localhost:3306/geoparking_booking
+        url: jdbc:mysql://localhost:3306/geoparking_profile?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&failOverReadOnly=false&maxReconnects=30
         username: sa
         # username: root
         password: password
