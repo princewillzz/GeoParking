@@ -48,7 +48,7 @@ function App() {
 					console.log("App loading");
 					setTimeout(() => {
 						tryWakeUpAllMicroservicesService();
-					}, 100);
+					}, 10000);
 				});
 		};
 
@@ -65,7 +65,7 @@ function App() {
 				})
 				.catch(() => {
 					setTimeout(() => {
-						tryWakeUpGatewayService();
+						if (count < 10) tryWakeUpGatewayService();
 					}, 200);
 				});
 		};
@@ -81,7 +81,7 @@ function App() {
 				})
 				.catch(() => {
 					setTimeout(() => {
-						tryWakeUpParkingService();
+						if (count < 10) tryWakeUpParkingService();
 					}, 200);
 				});
 		};
@@ -97,7 +97,7 @@ function App() {
 				})
 				.catch(() => {
 					setTimeout(() => {
-						tryWakeUpProfileService();
+						if (count < 10) tryWakeUpProfileService();
 					}, 200);
 				});
 		};
@@ -113,7 +113,7 @@ function App() {
 				})
 				.catch(() => {
 					setTimeout(() => {
-						tryWakeUpBookingService();
+						if (count < 10) tryWakeUpBookingService();
 					}, 200);
 				});
 		};
@@ -126,9 +126,12 @@ function App() {
 			tryWakeUpBookingService();
 
 			setTimeout(() => {
-				count += 10;
 				setIsPreLoadingDone(true);
 			}, 2000);
+
+			setTimeout(() => {
+				count += 10;
+			}, 60 * 1000);
 		} else {
 			setIsPreLoadingDone(true);
 		}
