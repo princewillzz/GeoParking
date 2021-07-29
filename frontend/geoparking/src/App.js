@@ -126,6 +126,7 @@ function App() {
 			tryWakeUpBookingService();
 
 			setTimeout(() => {
+				count += 10;
 				setIsPreLoadingDone(true);
 			}, 2000);
 		} else {
