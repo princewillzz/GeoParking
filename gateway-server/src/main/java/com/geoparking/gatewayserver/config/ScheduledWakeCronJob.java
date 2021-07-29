@@ -25,7 +25,7 @@ public class ScheduledWakeCronJob {
         this.webClientBuilder = WebClient.builder();
     }
 
-    @Scheduled(initialDelayString = "PT1M", fixedDelayString = "PT2M")
+    @Scheduled(initialDelayString = "PT5M", fixedDelayString = "PT5M")
     void awakeOtherServices() {
 
         try {

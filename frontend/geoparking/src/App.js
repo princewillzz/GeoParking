@@ -54,7 +54,7 @@ function App() {
 		tryWakeUpAllMicroservicesService();
 
 		let count = 0;
-		let numberOfServers = 4;
+		let numberOfServers = 3;
 		// API Gateway
 		const tryWakeUpGatewayService = async () => {
 			wakeUpApiGateway()
