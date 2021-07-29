@@ -16,7 +16,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../authentication/ProvideAuth";
-import logo from "../../logo.svg";
+import logo from "../../logo1.svg";
 
 const useStyles = makeStyles((theme) => ({
 	offset: theme.mixins.toolbar,
