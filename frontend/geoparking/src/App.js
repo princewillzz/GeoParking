@@ -16,6 +16,7 @@ import AdminPrivateRoute from "./authentication/AdminPrivateRoute";
 import { ProvideAuth } from "./authentication/ProvideAuth";
 import UserPrivateRoute from "./authentication/UserPrivateRoute";
 import PrimarySearchAppBar from "./component/appbar/PrimarySearchAppBar";
+import { ENV, ENVIRONMENTS } from "./config";
 import AdminBookings from "./pages/AdminBookings";
 import AdminHome from "./pages/AdminHome";
 import Home from "./pages/Home";
@@ -50,8 +51,6 @@ function App() {
 					}, 100);
 				});
 		};
-
-		tryWakeUpAllMicroservicesService();
 
 		let count = 0;
 		let numberOfServers = 3;
@@ -119,10 +118,15 @@ function App() {
 				});
 		};
 
-		tryWakeUpGatewayService();
-		tryWakeUpParkingService();
-		tryWakeUpProfileService();
-		tryWakeUpBookingService();
+		if (ENV === ENVIRONMENTS.PRODUCTION) {
+			tryWakeUpAllMicroservicesService();
+			tryWakeUpGatewayService();
+			tryWakeUpParkingService();
+			tryWakeUpProfileService();
+			tryWakeUpBookingService();
+		} else {
+			setIsPreLoadingDone(true);
+		}
 	}, []);
 
 	return (

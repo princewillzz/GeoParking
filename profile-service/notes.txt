@@ -1,0 +1,1 @@
+docker run --name profile-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=geoparking_profile -e MYSQL_USER=sa -e MYSQL_PASSWORD=password -d --rm mysql:8.0.23

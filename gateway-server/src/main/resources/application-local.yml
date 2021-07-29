@@ -11,8 +11,8 @@ eureka:
         fetch-registry: true
         serviceUrl:
             defaultZone: http://localhost:8761/eureka
-    # instance:
-    #     hostname: localhost
+    instance:
+        hostname: localhost
 
 zuul:
     ignored-services:
@@ -20,16 +20,16 @@ zuul:
     routes:
         parking-service:
             path: /api/parking-service/**
-            serviceId: parking-service
-            # url: http://localhost:8300/
+            # serviceId: parking-service
+            url: http://localhost:8300/
         booking-service:
             path: /api/booking/**
-            serviceId: booking-service
-            # url: http://localhost:8300/
+            # serviceId: booking-service
+            url: http://localhost:8301/
         profile-service:
             path: /auth/**
-            serviceId: profile-service
-            # url: http://localhost:8201/
+            # serviceId: profile-service
+            url: http://localhost:8201/
             strip-prefix: false
 
     sensitive-headers:

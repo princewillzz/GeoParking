@@ -1,8 +1,19 @@
 import axios from "axios";
+import { ENV, ENVIRONMENTS } from "../config";
+
+let baseURL;
+
+if (ENV === ENVIRONMENTS.PRODUCTION) {
+	baseURL = "https://geoparking-gateway.herokuapp.com";
+} else if (ENV === ENVIRONMENTS.DEVELOPMENT) {
+	baseURL = "http://localhost:8080";
+}
+
+// const baseURL = "https://geoparking-gateway.herokuapp.com"
 
 export const axiosInstance = axios.create({
 	// baseURL: "http://localhost:8080",
-	baseURL: "https://geoparking-gateway.herokuapp.com",
+	baseURL: baseURL,
 	timeout: 30000,
 });
 
