@@ -124,6 +124,10 @@ function App() {
 			tryWakeUpParkingService();
 			tryWakeUpProfileService();
 			tryWakeUpBookingService();
+
+			setTimeout(() => {
+				setIsPreLoadingDone(true);
+			}, 2000);
 		} else {
 			setIsPreLoadingDone(true);
 		}
