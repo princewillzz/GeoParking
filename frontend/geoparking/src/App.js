@@ -127,7 +127,7 @@ function App() {
 
 			setTimeout(() => {
 				setIsPreLoadingDone(true);
-			}, 2000);
+			}, 5 * 2000);
 
 			setTimeout(() => {
 				count += 10;
